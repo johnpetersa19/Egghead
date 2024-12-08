@@ -1,0 +1,9 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/io.github.josephmawa.Egghead.desktop.in
+data/io.github.josephmawa.Egghead.metainfo.xml.in
+data/io.github.josephmawa.Egghead.gschema.xml
+
+src/main.js
+src/window.js
+src/window.ui

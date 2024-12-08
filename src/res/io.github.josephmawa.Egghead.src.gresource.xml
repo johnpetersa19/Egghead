@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/josephmawa/Egghead/js">
+    <file>main.js</file>
+    <file>window.js</file>
+    <file>application.js</file>
+    <file>about.js</file>
+    <file>category.js</file>
+  </gresource>
+  <gresource prefix="/io/github/josephmawa/Egghead/js">
+    <file>util/data.js</file>
+  </gresource>
+</gresources>

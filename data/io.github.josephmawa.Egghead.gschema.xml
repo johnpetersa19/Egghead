@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="egghead">
+	<schema id="io.github.josephmawa.Egghead" path="/io/github/josephmawa/Egghead/">
+	</schema>
+</schemalist>

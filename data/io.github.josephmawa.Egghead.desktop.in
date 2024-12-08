@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=egghead
+Exec=io.github.josephmawa.Egghead
+Icon=io.github.josephmawa.Egghead
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

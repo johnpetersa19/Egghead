@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="EggheadWindow" parent="AdwApplicationWindow">
+    <property name="title" translatable="yes">Egghead</property>
+    <property name="handle-menubar-accel">true</property>
+    <property name="default-width">800</property>
+    <property name="default-height">600</property>
+    <property name="content">
+      <object class="GtkWindowHandle">
+        <child>
+          <object class="AdwOverlaySplitView" id="split_view">
+            <property name="max-sidebar-width">330</property>
+            <property name="sidebar-width-fraction">0.4</property>
+            <property name="sidebar">
+              <object class="AdwToolbarView">
+                <child type="top">
+                  <object class="AdwHeaderBar">
+                    <child type="start">
+                      <object class="GtkToggleButton" id="search_button">
+                        <property name="icon-name">system-search-symbolic</property>
+                        <property name="valign">center</property>
+                        <property name="tooltip-text" translatable="yes">Search Categories</property>
+                        <property name="action-name">win.enable-search-mode</property>
+                      </object>
+                    </child>
+                    <property name="title-widget">
+                      <object class="GtkLabel">
+                        <property name="ellipsize">end</property>
+                        <property name="label" translatable="yes">Categories</property>
+                        <style>
+                          <class name="heading" />
+                        </style>
+                      </object>
+                    </property>
+                    <child type="end">
+                      <object class="GtkMenuButton">
+                        <property name="icon-name">egghead-open-menu-symbolic</property>
+                        <property name="menu-model">primary_menu</property>
+                        <property name="primary">true</property>
+                        <property name="tooltip-text" translatable="yes">Primary Menu</property>
+                        <accessibility>
+                          <property name="label" translatable="yes" context="accessibility">Primary menu</property>
+                        </accessibility>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="top">
+                  <object class="GtkSearchBar" id="search_bar">
+                    <property name="child">
+                      <object class="GtkSearchEntry">
+                        <property name="placeholder-text" translatable="yes">Search categories</property>
+                        <property name="hexpand">true</property>
+                        <accessibility>
+                          <property name="label" translatable="yes" context="a11y">Search</property>
+                          <property name="description" translatable="yes" context="a11y">Type to search categories</property>
+                        </accessibility>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <property name="content">
+                  <object class="GtkScrolledWindow">
+                    <property name="hscrollbar-policy">never</property>
+                    <property name="vscrollbar-policy">automatic</property>
+                    <property name="propagate-natural-height">true</property>
+                    <property name="vexpand">true</property>
+                    <property name="child">
+                      <object class="GtkListView" id="list_view">
+                        <property name="single-click-activate">true</property>
+                        <property name="vexpand">true</property>
+                        <!-- EXPERIMENTING -->
+                        <!-- <property name="model">
+                          <object class="GtkTreeListModel">
+                            <property name="autoexpand">true</property>
+                            <property name="model">
+                              <object class="GtkFilterListModel">
+                                <property name="filter">
+                                  <object class="GtkFilter" />
+                                </property>
+                                <property name="model">
+                                  <object class="GtkNoSelection" id="selection_model">
+                                    <property name="model" bind-source="EggheadWindow" bind-property="categories" bind-flags="sync-create" />
+                                  </object>
+                                </property>
+                              </object>
+                            </property>
+                          </object>
+                        </property> -->
+                        <property name="model">
+                          <object class="GtkNoSelection" id="selection_model">
+                            <property name="model" bind-source="EggheadWindow" bind-property="categories" bind-flags="sync-create" />
+                          </object>
+                        </property>
+                        <property name="factory">
+                          <object class="GtkBuilderListItemFactory">
+                            <property name="resource">/io/github/josephmawa/Egghead/category-list-item.ui</property>
+                          </object>
+                        </property>
+                        <style>
+                          <class name="navigation-sidebar" />
+                        </style>
+                        <signal name="activate" handler="activateCategory" object="EggheadWindow" swapped="no" />
+                      </object>
+                    </property>
+                  </object>
+                </property>
+              </object>
+            </property>
+            <property name="content">
+              <object class="AdwToolbarView">
+                <child type="top">
+                  <object class="AdwHeaderBar">
+                    <property name="show-title">true</property>
+                    <property name="centering-policy">strict</property>
+                    <child type="start">
+                      <object class="GtkToggleButton">
+                        <property name="icon-name">egghead-sidebar-show-right-symbolic-rtl</property>
+                        <property name="tooltip-text" translatable="yes" context="Navigate back to the main screen">Toggle Sidebar</property>
+                        <accessibility>
+                          <property name="label" translatable="yes" context="accessibility">Toggle Sidebar</property>
+                        </accessibility>
+                        <property name="action-name">win.toggle-sidebar</property>
+                      </object>
+                    </child>
+                    <property name="title-widget">
+                      <object class="AdwWindowTitle">
+                        <property name="title">00:00</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <property name="content">
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="vexpand">true</property>
+                    <child>
+                      <object class="GtkButton" id="button">
+                        <property name="label" translatable="yes">Hello, World!</property>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Preferences</attribute>
+        <attribute name="action">app.preferences</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
+        <attribute name="action">win.show-help-overlay</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">About Egghead</attribute>
+        <attribute name="action">app.about</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>
