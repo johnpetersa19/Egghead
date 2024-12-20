@@ -9,5 +9,6 @@
   </gresource>
   <gresource prefix="/io/github/josephmawa/Egghead/js">
     <file>util/data.js</file>
+    <file>util/utils.js</file>
   </gresource>
 </gresources>

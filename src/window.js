@@ -4,6 +4,7 @@ import Gio from "gi://Gio";
 
 import { Category } from "./category.js";
 import { triviaCategories } from "./util/data.js";
+import { parseTriviaCategories } from "./util/utils.js";
 
 export const EggheadWindow = GObject.registerClass(
   {
@@ -26,6 +27,7 @@ export const EggheadWindow = GObject.registerClass(
 
       this.createCategoryListStore();
       this.createActions();
+      this.triviaCategories = parseTriviaCategories(triviaCategories);
     }
     createCategoryListStore = () => {
       this.categories = Gio.ListStore.new(Category);
@@ -45,7 +47,8 @@ export const EggheadWindow = GObject.registerClass(
         name: "enable-search-mode",
       });
       enableSearchMode.connect("activate", (action) => {
-        this._search_bar.search_mode_enabled = !this._search_bar.search_mode_enabled
+        this._search_bar.search_mode_enabled =
+          !this._search_bar.search_mode_enabled;
       });
 
       this.add_action(toggleSidebar);
