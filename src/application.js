@@ -5,6 +5,7 @@ import Adw from "gi://Adw?version=1";
 
 import { EggheadWindow } from "./window.js";
 import { AboutDialog } from "./about.js";
+import { EggheadPreferencesDialog } from "./preferences.js";
 
 export const EggheadApplication = GObject.registerClass(
   class EggheadApplication extends Adw.Application {
@@ -19,8 +20,18 @@ export const EggheadApplication = GObject.registerClass(
         this.quit();
       });
       this.add_action(quitAction);
+
+      const preferencesAction = new Gio.SimpleAction({ name: "preferences" });
+      preferencesAction.connect("activate", (action) => {
+        const preferencesDialog = new EggheadPreferencesDialog();
+
+        preferencesDialog.present(this.active_window);
+      });
+      this.add_action(preferencesAction);
+
       this.set_accels_for_action("app.quit", ["<primary>q"]);
       this.set_accels_for_action("win.toggle-sidebar", ["F9"]);
+      this.set_accels_for_action("app.preferences", ["<primary>comma"]);
 
       const showAboutAction = new Gio.SimpleAction({ name: "about" });
       showAboutAction.connect("activate", (action) => {

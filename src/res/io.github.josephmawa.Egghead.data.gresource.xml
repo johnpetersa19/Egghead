@@ -5,6 +5,10 @@
     current GtkApplicationWindow. Check https://docs.gtk.org/gtk4/class.Application.html -->
     <file preprocess="xml-stripblanks" compressed="true" alias="gtk/help-overlay.ui">ui/help-overlay.ui</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="window.ui">ui/window.ui</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="preferences.ui">ui/preferences.ui</file>
+  </gresource>
+  <gresource prefix="/io/github/josephmawa/Egghead">
+    <file alias="index.css">styles/index.css</file>
   </gresource>
   <gresource prefix="/io/github/josephmawa/Egghead/icons">
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/egghead-open-menu-symbolic.svg">icons/egghead-open-menu-symbolic.svg</file>

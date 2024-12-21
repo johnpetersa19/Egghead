@@ -19,6 +19,10 @@ export const EggheadWindow = GObject.registerClass(
 
       this.createActions();
       this.createSidebar();
+
+      this.loadStyles();
+      this.bindSettings();
+      this.setPreferredColorScheme();
     }
 
     createActions = () => {
@@ -42,8 +46,6 @@ export const EggheadWindow = GObject.registerClass(
     activateCategory(listView, position) {
       const model = listView.model;
       const selectedItem = model?.selected_item?.item;
-
-    
     }
 
     createSidebar = () => {
@@ -86,6 +88,64 @@ export const EggheadWindow = GObject.registerClass(
 
       this._list_view.model = selection;
       this._list_view.factory = factory;
+    };
+
+    bindSettings = () => {
+      this.settings = Gio.Settings.new("io.github.josephmawa.Egghead");
+      this.settings.bind(
+        "window-width",
+        this,
+        "default-width",
+        Gio.SettingsBindFlags.DEFAULT
+      );
+      this.settings.bind(
+        "window-height",
+        this,
+        "default-height",
+        Gio.SettingsBindFlags.DEFAULT
+      );
+      this.settings.bind(
+        "window-maximized",
+        this,
+        "maximized",
+        Gio.SettingsBindFlags.DEFAULT
+      );
+
+      this.settings.connect(
+        "changed::preferred-theme",
+        this.setPreferredColorScheme
+      );
+    };
+
+    loadStyles = () => {
+      const cssProvider = new Gtk.CssProvider();
+      cssProvider.load_from_resource("io/github/josephmawa/Egghead/index.css");
+
+      Gtk.StyleContext.add_provider_for_display(
+        this.display,
+        cssProvider,
+        Gtk.STYLE_PROVIDER_PRIORITY_USER
+      );
+    };
+
+    setPreferredColorScheme = () => {
+      const preferredColorScheme = this.settings.get_string("preferred-theme");
+      const { DEFAULT, FORCE_LIGHT, FORCE_DARK } = Adw.ColorScheme;
+      let colorScheme = DEFAULT;
+
+      if (preferredColorScheme === "system") {
+        colorScheme = DEFAULT;
+      }
+
+      if (preferredColorScheme === "light") {
+        colorScheme = FORCE_LIGHT;
+      }
+
+      if (preferredColorScheme === "dark") {
+        colorScheme = FORCE_DARK;
+      }
+
+      this.application.get_style_manager().color_scheme = colorScheme;
     };
   }
 );
