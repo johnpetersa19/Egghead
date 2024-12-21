@@ -1,5 +1,5 @@
 import Adw from "gi://Adw?version=1";
-import Gtk from "gi://Gtk"
+import Gtk from "gi://Gtk";
 
 const aboutParams = {
   application_name: __APPLICATION_NAME__,
@@ -9,6 +9,7 @@ const aboutParams = {
   license_type: Gtk.License.LGPL_3_0,
   developers: ["Joseph Mawa"],
   copyright: "Copyright © 2024 Joseph Mawa",
+  ...__PROJECT_URLS__,
 };
 
 export const AboutDialog = () => {

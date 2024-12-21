@@ -1,0 +1,3 @@
+option('website_url', type : 'string', value : 'https://github.com/josephmawa/Egghead', description : 'Project URL')
+option('issue_url', type : 'string', value : 'https://github.com/josephmawa/Egghead/issues', description : 'Issue URL')
+option('support_url', type : 'string', value : 'https://github.com/josephmawa/Egghead/issues', description : 'Support URL')

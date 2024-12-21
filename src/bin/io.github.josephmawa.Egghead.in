@@ -11,6 +11,11 @@ imports.package.init({
 });
 
 globalThis.__APPLICATION_NAME__ = "Egghead";
+globalThis.__PROJECT_URLS__ = {
+  website: "@WEBSITE_URL@",
+  issue_url: "@ISSUE_URL@",
+  support_url: "@SUPPORT_URL@",
+};
 
 globalThis.__getResourceUri__ = (resource) => {
   return "resource://@resource_path@/" + resource;
