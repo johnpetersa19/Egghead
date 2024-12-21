@@ -17,7 +17,7 @@ export const triviaCategories = [
   },
   {
     id: 13,
-    name: "Entertainment: Musicals And Theatres",
+    name: "Entertainment: Musicals & Theatres",
   },
   {
     id: 14,
@@ -33,7 +33,7 @@ export const triviaCategories = [
   },
   {
     id: 17,
-    name: "Science And Nature",
+    name: "Science & Nature",
   },
   {
     id: 18,
@@ -89,10 +89,10 @@ export const triviaCategories = [
   },
   {
     id: 31,
-    name: "Entertainment: Japanese Anime And Manga",
+    name: "Entertainment: Japanese Anime & Manga",
   },
   {
     id: 32,
-    name: "Entertainment: Cartoon And Animations",
+    name: "Entertainment: Cartoon & Animations",
   },
 ];

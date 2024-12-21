@@ -1,5 +1,6 @@
 import GObject from "gi://GObject";
 import Adw from "gi://Adw";
+import Gtk from "gi://Gtk";
 import Gio from "gi://Gio";
 
 import { Category } from "./category.js";
@@ -10,32 +11,15 @@ export const EggheadWindow = GObject.registerClass(
   {
     GTypeName: "EggheadWindow",
     Template: "resource:///io/github/josephmawa/Egghead/window.ui",
-    Properties: {
-      categories: GObject.ParamSpec.object(
-        "categories",
-        "Categories",
-        "Trivia Categories",
-        GObject.ParamFlags.READWRITE,
-        Gio.ListStore
-      ),
-    },
-    InternalChildren: ["split_view", "search_bar"],
+    InternalChildren: ["split_view", "search_bar", "list_view"],
   },
   class EggheadWindow extends Adw.ApplicationWindow {
     constructor(application) {
       super({ application });
 
-      this.createCategoryListStore();
       this.createActions();
-      this.triviaCategories = parseTriviaCategories(triviaCategories);
+      this.createSidebar();
     }
-    createCategoryListStore = () => {
-      this.categories = Gio.ListStore.new(Category);
-
-      for (const category of triviaCategories) {
-        this.categories.append(new Category(category));
-      }
-    };
 
     createActions = () => {
       const toggleSidebar = new Gio.SimpleAction({ name: "toggle-sidebar" });
@@ -56,7 +40,52 @@ export const EggheadWindow = GObject.registerClass(
     };
 
     activateCategory(listView, position) {
-      console.log(position);
+      const model = listView.model;
+      const selectedItem = model?.selected_item?.item;
+
+    
     }
+
+    createSidebar = () => {
+      this.triviaCategories = parseTriviaCategories(triviaCategories);
+
+      const store = Gio.ListStore.new(Category);
+      for (const category of this.triviaCategories) {
+        store.append(new Category(category));
+      }
+
+      const tree = Gtk.TreeListModel.new(store, false, false, (item) => {
+        if (!item.hasChildren) return null;
+
+        const store = Gio.ListStore.new(Category);
+        for (const category of item.children) {
+          store.append(new Category(category));
+        }
+
+        return store;
+      });
+
+      const selection = Gtk.SingleSelection.new(tree);
+      const factory = new Gtk.SignalListItemFactory();
+
+      factory.connect("setup", (_, listItem) => {
+        listItem.child = new Gtk.TreeExpander({ child: new Gtk.Label() });
+      });
+
+      factory.connect("bind", (_, listItem) => {
+        const listRow = listItem.item;
+        const expander = listItem.child;
+
+        expander.list_row = listRow;
+
+        const label = expander.child;
+        const object = listRow.item;
+
+        label.label = object.name;
+      });
+
+      this._list_view.model = selection;
+      this._list_view.factory = factory;
+    };
   }
 );

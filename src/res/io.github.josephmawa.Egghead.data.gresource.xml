@@ -6,11 +6,8 @@
     <file preprocess="xml-stripblanks" compressed="true" alias="gtk/help-overlay.ui">ui/help-overlay.ui</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="window.ui">ui/window.ui</file>
   </gresource>
-  <gresource prefix="/io/github/josephmawa/Egghead">
-    <file preprocess="xml-stripblanks" compressed="true" alias="category-list-item.ui">ui/category-list/category-list-item.ui</file>
-  </gresource>
   <gresource prefix="/io/github/josephmawa/Egghead/icons">
-    <file preprocess="xml-stripblanks" alias="scalable/actions/egghead-open-menu-symbolic.svg">icons/egghead-open-menu-symbolic.svg</file>
-    <file preprocess="xml-stripblanks" alias="scalable/actions/egghead-sidebar-show-right-symbolic-rtl.svg">icons/egghead-sidebar-show-right-symbolic-rtl.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/egghead-open-menu-symbolic.svg">icons/egghead-open-menu-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/egghead-sidebar-show-right-symbolic-rtl.svg">icons/egghead-sidebar-show-right-symbolic-rtl.svg</file>
   </gresource>
 </gresources>

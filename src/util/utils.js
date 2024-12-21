@@ -5,11 +5,12 @@ export function parseTriviaCategories(categories) {
     if (category.name.includes(":")) {
       let [_category, _name] = category.name.split(":");
 
-      _category = _category.trim();
-      _name = _name.trim();
+      _category = _category.replaceAll("&", "And").trim();
+      _name = _name.replaceAll("&", "And").trim();
 
       category.name = _name;
-      category.category = _category;
+      category.hasChildren = false;
+      category.children = [];
 
       if (!categoriesMap.has(_category)) {
         categoriesMap.set(_category, [category]);
@@ -22,11 +23,13 @@ export function parseTriviaCategories(categories) {
 
     category.hasChildren = false;
     category.children = [];
+    category.name = category.name.replaceAll("&", "And");
     categoriesMap.set(category.name, category);
   }
 
   const parsedCategories = [];
   let id = 900;
+
   for (const [key, value] of categoriesMap.entries()) {
     if (Array.isArray(value)) {
       const categoryObject = {

@@ -71,34 +71,6 @@
                       <object class="GtkListView" id="list_view">
                         <property name="single-click-activate">true</property>
                         <property name="vexpand">true</property>
-                        <!-- EXPERIMENTING -->
-                        <!-- <property name="model">
-                          <object class="GtkTreeListModel">
-                            <property name="autoexpand">true</property>
-                            <property name="model">
-                              <object class="GtkFilterListModel">
-                                <property name="filter">
-                                  <object class="GtkFilter" />
-                                </property>
-                                <property name="model">
-                                  <object class="GtkNoSelection" id="selection_model">
-                                    <property name="model" bind-source="EggheadWindow" bind-property="categories" bind-flags="sync-create" />
-                                  </object>
-                                </property>
-                              </object>
-                            </property>
-                          </object>
-                        </property> -->
-                        <property name="model">
-                          <object class="GtkNoSelection" id="selection_model">
-                            <property name="model" bind-source="EggheadWindow" bind-property="categories" bind-flags="sync-create" />
-                          </object>
-                        </property>
-                        <property name="factory">
-                          <object class="GtkBuilderListItemFactory">
-                            <property name="resource">/io/github/josephmawa/Egghead/category-list-item.ui</property>
-                          </object>
-                        </property>
                         <style>
                           <class name="navigation-sidebar" />
                         </style>
