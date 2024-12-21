@@ -12,6 +12,14 @@ imports.package.init({
 
 globalThis.__APPLICATION_NAME__ = "Egghead";
 
+globalThis.__getResourceUri__ = (resource) => {
+  return "resource://@resource_path@/" + resource;
+};
+
+globalThis.__getResourcePath__ = (resource) => {
+  return "@resource_path@/" + resource;
+};
+
 pkg.initGettext();
 pkg.initFormat();
 

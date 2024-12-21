@@ -5,7 +5,7 @@ import Gio from "gi://Gio";
 export const EggheadPreferencesDialog = GObject.registerClass(
   {
     GTypeName: "EggheadPreferencesDialog",
-    Template: "resource:///io/github/josephmawa/Egghead/preferences.ui",
+    Template: __getResourceUri__("preferences.ui"),
     InternalChildren: ["system", "dark", "light"],
     Properties: {
       theme: GObject.ParamSpec.string(

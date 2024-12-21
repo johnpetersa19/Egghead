@@ -10,7 +10,7 @@ import { parseTriviaCategories } from "./util/utils.js";
 export const EggheadWindow = GObject.registerClass(
   {
     GTypeName: "EggheadWindow",
-    Template: "resource:///io/github/josephmawa/Egghead/window.ui",
+    Template: __getResourceUri__("window.ui"),
     InternalChildren: ["split_view", "search_bar", "list_view"],
   },
   class EggheadWindow extends Adw.ApplicationWindow {
@@ -91,7 +91,7 @@ export const EggheadWindow = GObject.registerClass(
     };
 
     bindSettings = () => {
-      this.settings = Gio.Settings.new("io.github.josephmawa.Egghead");
+      this.settings = Gio.Settings.new(pkg.name);
       this.settings.bind(
         "window-width",
         this,
@@ -119,7 +119,7 @@ export const EggheadWindow = GObject.registerClass(
 
     loadStyles = () => {
       const cssProvider = new Gtk.CssProvider();
-      cssProvider.load_from_resource("io/github/josephmawa/Egghead/index.css");
+      cssProvider.load_from_resource(__getResourcePath__("index.css"));
 
       Gtk.StyleContext.add_provider_for_display(
         this.display,
