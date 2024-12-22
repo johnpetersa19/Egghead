@@ -31,6 +31,7 @@ export const EggheadApplication = GObject.registerClass(
 
       this.set_accels_for_action("app.quit", ["<primary>q"]);
       this.set_accels_for_action("win.toggle-sidebar", ["F9"]);
+      this.set_accels_for_action("win.enable-search-mode", ["<primary>f"]);
       this.set_accels_for_action("app.preferences", ["<primary>comma"]);
 
       const showAboutAction = new Gio.SimpleAction({ name: "about" });

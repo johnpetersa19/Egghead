@@ -44,7 +44,12 @@
                 <property name="action-name">win.toggle-sidebar</property>
               </object>
             </child>
-
+             <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Search Categories</property>
+                <property name="action-name">win.enable-search-mode</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>

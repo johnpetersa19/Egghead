@@ -53,6 +53,11 @@
                       <object class="GtkSearchEntry">
                         <property name="placeholder-text" translatable="yes">Search categories</property>
                         <property name="hexpand">true</property>
+                        <signal 
+                        name="search-changed" 
+                        handler="handleSearch" 
+                        object="EggheadWindow" 
+                        swapped="no"/>
                         <accessibility>
                           <property name="label" translatable="yes" context="a11y">Search</property>
                           <property name="description" translatable="yes" context="a11y">Type to search categories</property>

@@ -46,6 +46,11 @@ export const EggheadWindow = GObject.registerClass(
     activateCategory(listView, position) {
       const model = listView.model;
       const selectedItem = model?.selected_item?.item;
+      console.log(selectedItem);
+    }
+
+    handleSearch(searchEntry) {
+      this.stringFilter.set_search(searchEntry.text);
     }
 
     createSidebar = () => {
@@ -56,7 +61,13 @@ export const EggheadWindow = GObject.registerClass(
         store.append(new Category(category));
       }
 
-      const tree = Gtk.TreeListModel.new(store, false, false, (item) => {
+      const propExpression = Gtk.PropertyExpression.new(Category, null, "name");
+      const stringFilter = Gtk.StringFilter.new(propExpression);
+      const filter = Gtk.FilterListModel.new(store, stringFilter);
+
+      this.stringFilter = stringFilter;
+
+      const tree = Gtk.TreeListModel.new(filter, false, false, (item) => {
         if (!item.hasChildren) return null;
 
         const store = Gio.ListStore.new(Category);
