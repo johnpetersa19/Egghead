@@ -11,7 +11,28 @@ export const EggheadWindow = GObject.registerClass(
   {
     GTypeName: "EggheadWindow",
     Template: __getResourceUri__("window.ui"),
-    InternalChildren: ["split_view", "search_bar", "list_view"],
+    Properties: {
+      category_name: GObject.ParamSpec.string(
+        "category_name",
+        "categoryName",
+        "Selected Category Name",
+        GObject.ParamFlags.READWRITE,
+        ""
+      ),
+      category_id: GObject.ParamSpec.int(
+        "category_id",
+        "categoryId",
+        "Selected Category ID",
+        GObject.ParamFlags.READWRITE,
+        0
+      ),
+    },
+    InternalChildren: [
+      "split_view",
+      "search_bar",
+      "list_view",
+      "difficulty_level_stack",
+    ],
   },
   class EggheadWindow extends Adw.ApplicationWindow {
     constructor(application) {
@@ -24,6 +45,17 @@ export const EggheadWindow = GObject.registerClass(
       this.bindSettings();
       this.setPreferredColorScheme();
     }
+
+    setSelectedCategory = (category) => {
+      this.category_name = category.name;
+      this.category_id = category.id;
+
+      if (category.hasChildren) {
+        this._difficulty_level_stack.visible_child_name = "category_view";
+      } else {
+        this._difficulty_level_stack.visible_child_name = "sub_category_view";
+      }
+    };
 
     createActions = () => {
       const toggleSidebar = new Gio.SimpleAction({ name: "toggle-sidebar" });
@@ -46,7 +78,10 @@ export const EggheadWindow = GObject.registerClass(
     activateCategory(listView, position) {
       const model = listView.model;
       const selectedItem = model?.selected_item?.item;
-      console.log(selectedItem);
+
+      if (selectedItem) {
+        this.setSelectedCategory(selectedItem);
+      }
     }
 
     handleSearch(searchEntry) {
@@ -99,6 +134,8 @@ export const EggheadWindow = GObject.registerClass(
 
       this._list_view.model = selection;
       this._list_view.factory = factory;
+
+      this.setSelectedCategory(this.triviaCategories[0]);
     };
 
     bindSettings = () => {

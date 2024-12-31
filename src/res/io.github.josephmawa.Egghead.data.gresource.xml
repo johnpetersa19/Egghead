@@ -8,10 +8,11 @@
     <file preprocess="xml-stripblanks" compressed="true" alias="preferences.ui">ui/preferences.ui</file>
   </gresource>
   <gresource prefix="/io/github/josephmawa/Egghead">
-    <file alias="index.css">styles/index.css</file>
+    <file compressed="true" alias="index.css">styles/index.css</file>
   </gresource>
   <gresource prefix="/io/github/josephmawa/Egghead/icons">
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/egghead-open-menu-symbolic.svg">icons/egghead-open-menu-symbolic.svg</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/egghead-sidebar-show-right-symbolic-rtl.svg">icons/egghead-sidebar-show-right-symbolic-rtl.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/clock-stopwatch-symbolic.svg">icons/clock-stopwatch-symbolic.svg</file>
   </gresource>
 </gresources>
