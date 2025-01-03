@@ -10,249 +10,316 @@
     <property name="content">
       <object class="GtkWindowHandle">
         <child>
-          <object class="AdwOverlaySplitView" id="split_view">
-            <property name="max-sidebar-width">330</property>
-            <property name="sidebar-width-fraction">0.4</property>
-            <property name="sidebar">
-              <object class="AdwToolbarView">
-                <child type="top">
-                  <object class="AdwHeaderBar">
-                    <child type="start">
-                      <object class="GtkToggleButton" id="search_button">
-                        <property name="icon-name">system-search-symbolic</property>
-                        <property name="valign">center</property>
-                        <property name="tooltip-text" translatable="yes">Search Categories</property>
-                        <property name="action-name">win.enable-search-mode</property>
-                      </object>
-                    </child>
-                    <property name="title-widget">
-                      <object class="GtkLabel">
-                        <property name="ellipsize">end</property>
-                        <property name="label" translatable="yes">Categories</property>
-                        <style>
-                          <class name="heading" />
-                        </style>
-                      </object>
-                    </property>
-                    <child type="end">
-                      <object class="GtkMenuButton">
-                        <property name="icon-name">egghead-open-menu-symbolic</property>
-                        <property name="menu-model">primary_menu</property>
-                        <property name="primary">true</property>
-                        <property name="tooltip-text" translatable="yes">Primary Menu</property>
-                        <accessibility>
-                          <property name="label" translatable="yes" context="accessibility">Primary menu</property>
-                        </accessibility>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="top">
-                  <object class="GtkSearchBar" id="search_bar">
-                    <property name="child">
-                      <object class="GtkSearchEntry">
-                        <property name="placeholder-text" translatable="yes">Search categories</property>
-                        <property name="hexpand">true</property>
-                        <signal
-                          name="search-changed"
-                          handler="handleSearch"
-                          object="EggheadWindow"
-                          swapped="no" />
-                        <accessibility>
-                          <property name="label" translatable="yes" context="a11y">Search</property>
-                          <property name="description" translatable="yes" context="a11y">Type to search categories</property>
-                        </accessibility>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-                <property name="content">
-                  <object class="GtkScrolledWindow">
-                    <property name="hscrollbar-policy">never</property>
-                    <property name="vscrollbar-policy">automatic</property>
-                    <property name="propagate-natural-height">true</property>
-                    <property name="vexpand">true</property>
-                    <property name="child">
-                      <object class="GtkListView" id="list_view">
-                        <property name="single-click-activate">true</property>
-                        <property name="vexpand">true</property>
-                        <style>
-                          <class name="navigation-sidebar" />
-                        </style>
-                        <signal name="activate" handler="activateCategory" object="EggheadWindow" swapped="no" />
-                      </object>
-                    </property>
-                  </object>
-                </property>
-              </object>
-            </property>
-            <property name="content">
-              <object class="AdwToolbarView">
-                <child type="top">
-                  <object class="AdwHeaderBar">
-                    <property name="show-title">True</property>
-                    <property name="centering-policy">strict</property>
-                    <child type="start">
-                      <object class="GtkToggleButton">
-                        <property name="icon-name">egghead-sidebar-show-right-symbolic-rtl</property>
-                        <property name="tooltip-text" translatable="yes" context="Navigate back to the main screen">Toggle Sidebar</property>
-                        <accessibility>
-                          <property name="label" translatable="yes" context="accessibility">Toggle Sidebar</property>
-                        </accessibility>
-                        <property name="action-name">win.toggle-sidebar</property>
-                      </object>
-                    </child>
-                    <property name="title-widget">
-                      <object class="AdwWindowTitle">
-                        <property name="title">00:00</property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-                <property name="content">
-                  <object class="GtkBox">
-                    <property name="orientation">vertical</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="vexpand">true</property>
-                    <property name="margin-start">18</property>
-                    <property name="margin-end">18</property>
-                    <property name="margin-top">18</property>
-                    <property name="margin-bottom">18</property>
-                    <property name="spacing">18</property>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon-name">clock-stopwatch-symbolic</property>
-                        <property name="pixel-size">84</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label" bind-source="EggheadWindow" bind-property="category_name" bind-flags="sync-create" />
-                        <style>
-                          <class name="title-1" />
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwClamp">
-                        <property name="maximum-size">50</property>
-                        <property name="tightening-threshold">50</property>
-                        <property name="child">
-                          <object class="GtkSeparator">
-                            <property name="orientation">horizontal</property>
-                          </object>
-                        </property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkStack" id="difficulty_level_stack">
-                        <property name="transition_type">crossfade</property>
-                        <property name="visible-child-name">category_view</property>
-                        <child>
-                          <object class="GtkStackPage" id="category_view">
-                            <property name="name">category_view</property>
-                            <property name="child">
+          <object class="GtkStack" id="main_stack">
+            <property name="transition_type">crossfade</property>
+            <child>
+              <object class="GtkStackPage" id="quiz_view">
+                <property name="name">quiz_view</property>
+                <property name="child">
+                  <object class="AdwOverlaySplitView" id="split_view">
+                    <property name="max-sidebar-width">330</property>
+                    <property name="sidebar-width-fraction">0.4</property>
+                    <property name="sidebar">
+                      <object class="AdwToolbarView">
+                        <child type="top">
+                          <object class="AdwHeaderBar">
+                            <child type="start">
+                              <object class="GtkToggleButton" id="search_button">
+                                <property name="icon-name">system-search-symbolic</property>
+                                <property name="valign">center</property>
+                                <property name="tooltip-text" translatable="yes">Search Categories</property>
+                                <property name="action-name">win.enable-search-mode</property>
+                              </object>
+                            </child>
+                            <property name="title-widget">
                               <object class="GtkLabel">
-                                <property name="use-markup">True</property>
-                                <property name="label">&lt;span font-weight=&quot;bold&quot;&gt;Select category to continue&lt;/span&gt;</property>
+                                <property name="ellipsize">end</property>
+                                <property name="label" translatable="yes">Categories</property>
+                                <style>
+                                  <class name="heading" />
+                                </style>
+                              </object>
+                            </property>
+                            <child type="end">
+                              <object class="GtkMenuButton">
+                                <property name="icon-name">egghead-open-menu-symbolic</property>
+                                <property name="menu-model">primary_menu</property>
+                                <property name="primary">true</property>
+                                <property name="tooltip-text" translatable="yes">Primary Menu</property>
+                                <accessibility>
+                                  <property name="label" translatable="yes" context="accessibility">Primary menu</property>
+                                </accessibility>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="top">
+                          <object class="GtkSearchBar" id="search_bar">
+                            <property name="child">
+                              <object class="GtkSearchEntry">
+                                <property name="placeholder-text" translatable="yes">Search categories</property>
+                                <property name="hexpand">true</property>
+                                <signal
+                                  name="search-changed"
+                                  handler="handleSearch"
+                                  object="EggheadWindow"
+                                  swapped="no" />
+                                <accessibility>
+                                  <property name="label" translatable="yes" context="a11y">Search</property>
+                                  <property name="description" translatable="yes" context="a11y">Type to search categories</property>
+                                </accessibility>
                               </object>
                             </property>
                           </object>
                         </child>
-                        <child>
-                          <object class="GtkStackPage" id="sub_category_view">
-                            <property name="name">sub_category_view</property>
+                        <property name="content">
+                          <object class="GtkScrolledWindow">
+                            <property name="hscrollbar-policy">never</property>
+                            <property name="vscrollbar-policy">automatic</property>
+                            <property name="propagate-natural-height">true</property>
+                            <property name="vexpand">true</property>
                             <property name="child">
-                              <object class="GtkBox">
-                                <property name="orientation">vertical</property>
-                                <property name="halign">center</property>
-                                <property name="valign">center</property>
+                              <object class="GtkListView" id="list_view">
+                                <property name="single-click-activate">true</property>
                                 <property name="vexpand">true</property>
-                                <property name="spacing">18</property>
+                                <style>
+                                  <class name="navigation-sidebar" />
+                                </style>
+                                <signal name="activate" handler="activateCategory" object="EggheadWindow" swapped="no" />
+                              </object>
+                            </property>
+                          </object>
+                        </property>
+                      </object>
+                    </property>
+                    <property name="content">
+                      <object class="AdwToolbarView">
+                        <child type="top">
+                          <object class="AdwHeaderBar">
+                            <property name="show-title">True</property>
+                            <property name="centering-policy">strict</property>
+                            <child type="start">
+                              <object class="GtkToggleButton">
+                                <property name="icon-name">egghead-sidebar-show-right-symbolic-rtl</property>
+                                <property name="tooltip-text" translatable="yes" context="Navigate back to the main screen">Toggle Sidebar</property>
+                                <accessibility>
+                                  <property name="label" translatable="yes" context="accessibility">Toggle Sidebar</property>
+                                </accessibility>
+                                <property name="action-name">win.toggle-sidebar</property>
+                              </object>
+                            </child>
+                            <property name="title-widget">
+                              <object class="AdwWindowTitle">
+                                <property name="title">00:00</property>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
+                        <property name="content">
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="vexpand">true</property>
+                            <property name="margin-start">18</property>
+                            <property name="margin-end">18</property>
+                            <property name="margin-top">18</property>
+                            <property name="margin-bottom">18</property>
+                            <property name="spacing">18</property>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="icon-name">clock-stopwatch-symbolic</property>
+                                <property name="pixel-size">84</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label" bind-source="EggheadWindow" bind-property="category_name" bind-flags="sync-create" />
+                                <style>
+                                  <class name="title-1" />
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="AdwClamp">
+                                <property name="maximum-size">50</property>
+                                <property name="tightening-threshold">50</property>
+                                <property name="child">
+                                  <object class="GtkSeparator">
+                                    <property name="orientation">horizontal</property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkStack" id="difficulty_level_stack">
+                                <property name="transition_type">crossfade</property>
                                 <child>
-                                  <object class="GtkLabel">
-                                    <property name="use-markup">True</property>
-                                    <property name="label">&lt;span font-weight=&quot;bold&quot;&gt;Select difficulty level&lt;/span&gt;</property>
+                                  <object class="GtkStackPage" id="category_view">
+                                    <property name="name">category_view</property>
+                                    <property name="child">
+                                      <object class="GtkLabel">
+                                        <property name="use-markup">True</property>
+                                        <property name="label">&lt;span font-weight=&quot;bold&quot;&gt;Select category to continue&lt;/span&gt;</property>
+                                      </object>
+                                    </property>
                                   </object>
                                 </child>
                                 <child>
-                                  <object class="AdwClamp">
-                                    <property name="maximum-size">400</property>
-                                    <property name="tightening-threshold">400</property>
+                                  <object class="GtkStackPage" id="sub_category_view">
+                                    <property name="name">sub_category_view</property>
                                     <property name="child">
-                                      <object class="AdwPreferencesGroup">
+                                      <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <property name="halign">center</property>
+                                        <property name="valign">center</property>
+                                        <property name="vexpand">true</property>
+                                        <property name="spacing">18</property>
                                         <child>
-                                          <object class="AdwActionRow">
-                                            <property name="activatable_widget">any</property>
-                                            <property name="title" translatable="yes">Mixed</property>
-                                            <child type="prefix">
-                                              <object class="GtkCheckButton" id="any">
-                                                <property name="valign">center</property>
-                                                <property name="active">True</property>
-                                              </object>
-                                            </child>
+                                          <object class="GtkLabel">
+                                            <property name="use-markup">True</property>
+                                            <property name="label">&lt;span font-weight=&quot;bold&quot;&gt;Select difficulty level&lt;/span&gt;</property>
                                           </object>
                                         </child>
                                         <child>
-                                          <object class="AdwActionRow">
-                                            <property name="activatable_widget">easy</property>
-                                            <property name="title" translatable="yes">Easy</property>
-                                            <child type="prefix">
-                                              <object class="GtkCheckButton" id="easy">
-                                                <property name="group">any</property>
-                                                <property name="valign">center</property>
+                                          <object class="AdwClamp">
+                                            <property name="maximum-size">300</property>
+                                            <property name="tightening-threshold">300</property>
+                                            <property name="child">
+                                              <object class="AdwPreferencesGroup">
+                                                <child>
+                                                  <object class="AdwActionRow">
+                                                    <property name="activatable_widget">any</property>
+                                                    <property name="title" translatable="yes">Mixed</property>
+                                                    <child type="prefix">
+                                                      <object class="GtkCheckButton" id="any">
+                                                        <property name="valign">center</property>
+                                                        <property name="active">True</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwActionRow">
+                                                    <property name="activatable_widget">easy</property>
+                                                    <property name="title" translatable="yes">Easy</property>
+                                                    <child type="prefix">
+                                                      <object class="GtkCheckButton" id="easy">
+                                                        <property name="group">any</property>
+                                                        <property name="valign">center</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwActionRow">
+                                                    <property name="activatable_widget">medium</property>
+                                                    <property name="title" translatable="yes">Medium</property>
+                                                    <child type="prefix">
+                                                      <object class="GtkCheckButton" id="medium">
+                                                        <property name="group">any</property>
+                                                        <property name="valign">center</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwActionRow">
+                                                    <property name="activatable_widget">hard</property>
+                                                    <property name="title" translatable="yes">Hard</property>
+                                                    <child type="prefix">
+                                                      <object class="GtkCheckButton" id="hard">
+                                                        <property name="group">any</property>
+                                                        <property name="valign">center</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
                                               </object>
-                                            </child>
+                                            </property>
                                           </object>
                                         </child>
                                         <child>
-                                          <object class="AdwActionRow">
-                                            <property name="activatable_widget">medium</property>
-                                            <property name="title" translatable="yes">Medium</property>
-                                            <child type="prefix">
-                                              <object class="GtkCheckButton" id="medium">
-                                                <property name="group">any</property>
-                                                <property name="valign">center</property>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="AdwActionRow">
-                                            <property name="activatable_widget">hard</property>
-                                            <property name="title" translatable="yes">Hard</property>
-                                            <child type="prefix">
-                                              <object class="GtkCheckButton" id="hard">
-                                                <property name="group">any</property>
-                                                <property name="valign">center</property>
-                                              </object>
-                                            </child>
+                                          <object class="GtkButton">
+                                            <property name="label" translatable="yes" context="Start quiz">Start</property>
+                                            <property name="halign">center</property>
+                                            <style>
+                                              <class name="suggested-action" />
+                                            </style>
+                                            <property name="action-name">win.start-quiz</property>
                                           </object>
                                         </child>
                                       </object>
                                     </property>
                                   </object>
                                 </child>
-                                <child>
-                                  <object class="GtkButton">
-                                    <property name="label">Start Quiz</property>
-                                    <property name="halign">center</property>
-                                    <style>
-                                      <class name="suggested-action" />
-                                    </style>
-                                  </object>
-                                </child>
+                                <!-- Gtk emits the warning below when this property is placed before the GtkStackPage it references.
+                          Child name 'category_view' not found in GtkStack -->
+                                <property name="visible-child-name">category_view</property>
                               </object>
-                            </property>
+                            </child>
                           </object>
-                        </child>
+                        </property>
                       </object>
-                    </child>
+                    </property>
                   </object>
                 </property>
               </object>
-            </property>
+            </child>
+            <child>
+              <object class="GtkStackPage" id="download_view">
+                <property name="name">download_view</property>
+                <property name="child">
+                  <object class="AdwToolbarView">
+                    <child type="top">
+                      <object class="AdwHeaderBar">
+                        <property name="show-title">True</property>
+                        <property name="centering-policy">strict</property>
+                        <child type="start">
+                          <object class="GtkButton">
+                            <property name="icon-name">go-next-symbolic-rtl</property>
+                            <property name="tooltip-text" translatable="yes" context="Back to main screen">Back</property>
+                            <accessibility>
+                              <property name="label" translatable="yes" context="accessibility">Back</property>
+                            </accessibility>
+                            <property name="action-name">win.go-back</property>
+                          </object>
+                        </child>
+                        <property name="title-widget">
+                          <object class="AdwWindowTitle">
+                            <property name="title">Egghead</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <property name="content">
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="vexpand">true</property>
+                        <property name="margin-start">18</property>
+                        <property name="margin-end">18</property>
+                        <property name="margin-top">18</property>
+                        <property name="margin-bottom">18</property>
+                        <property name="spacing">18</property>
+                        <child>
+                          <object class="GtkSpinner">
+                            <property name="spinning">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="use-markup">True</property>
+                            <property name="label" translatable="yes" context="TRANSLATORS: Only translate the text 'Downloading'">&lt;span font-weight=&quot;bold&quot;&gt;Downloading&lt;/span&gt;</property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </property>
+              </object>
+            </child>
           </object>
         </child>
       </object>

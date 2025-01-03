@@ -26,8 +26,16 @@ export const EggheadWindow = GObject.registerClass(
         GObject.ParamFlags.READWRITE,
         0
       ),
+      is_downloading: GObject.ParamSpec.boolean(
+        "is_downloading",
+        "isDownloading",
+        "Is downloading quiz",
+        GObject.ParamFlags.READWRITE,
+        false
+      ),
     },
     InternalChildren: [
+      "main_stack",
       "split_view",
       "search_bar",
       "list_view",
@@ -71,8 +79,55 @@ export const EggheadWindow = GObject.registerClass(
           !this._search_bar.search_mode_enabled;
       });
 
+      const startQuiz = new Gio.SimpleAction({
+        name: "start-quiz",
+      });
+      startQuiz.connect("activate", () => {
+        this._main_stack.visible_child_name = "download_view";
+        this._is_downloading = true;
+      });
+
+      const goBack = new Gio.SimpleAction({
+        name: "go-back",
+      });
+      goBack.connect("activate", () => {
+        if (this._is_downloading) {
+          const alertDialog = new Adw.AlertDialog({
+            heading: _("Cancel Download"),
+            body: _(
+              "Downloading quiz. Are you sure you want to cancel this download?"
+            ),
+            default_response: "cancel_download",
+            close_response: "close_dialog",
+            presentation_mode: "floating",
+          });
+
+          alertDialog.add_response("cancel_download", _("Cancel"));
+          alertDialog.add_response("close_dialog", _("Close"));
+
+          alertDialog.set_response_appearance(
+            "cancel_download",
+            Adw.ResponseAppearance.DESTRUCTIVE
+          );
+          alertDialog.set_response_appearance(
+            "close_dialog",
+            Adw.ResponseAppearance.SUGGESTED
+          );
+
+          alertDialog.connect("response", (_alertDialog, response) => {
+            if (response === "close_dialog") return;
+            // Cancel download and switch view
+            this._main_stack.visible_child_name = "quiz_view";
+          });
+
+          alertDialog.present(this);
+        }
+      });
+
       this.add_action(toggleSidebar);
       this.add_action(enableSearchMode);
+      this.add_action(startQuiz);
+      this.add_action(goBack);
     };
 
     activateCategory(listView, position) {
