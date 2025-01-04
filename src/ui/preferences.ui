@@ -14,7 +14,7 @@
         <property name="title" translatable="yes">Preferences</property>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Color Theme Settings</property>
+            <property name="title" translatable="yes">Color Theme</property>
             <property name="description" translatable="yes">Set color theme</property>
             <child>
               <object class="AdwPreferencesRow">
@@ -73,6 +73,18 @@
                     </child>
                   </object>
                 </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Difficulty Level</property>
+            <property name="description" translatable="yes">Set difficulty level</property>
+            <child>
+              <object class="AdwComboRow" id="difficulty_level">
+                <property name="enable-search">true</property>
+                <property name="title" translatable="yes">Select difficulty level</property>
               </object>
             </child>
           </object>

@@ -40,6 +40,10 @@ export const EggheadWindow = GObject.registerClass(
       "search_bar",
       "list_view",
       "difficulty_level_stack",
+      "mixed",
+      "easy",
+      "medium",
+      "hard",
     ],
   },
   class EggheadWindow extends Adw.ApplicationWindow {
@@ -49,9 +53,12 @@ export const EggheadWindow = GObject.registerClass(
       this.createActions();
       this.createSidebar();
 
+      console.log(this._mixed.get_name())
+
       this.loadStyles();
       this.bindSettings();
       this.setPreferredColorScheme();
+      this.setDefaultDifficultyLevel();
     }
 
     setSelectedCategory = (category) => {
@@ -94,9 +101,7 @@ export const EggheadWindow = GObject.registerClass(
         if (this._is_downloading) {
           const alertDialog = new Adw.AlertDialog({
             heading: _("Cancel Download"),
-            body: _(
-              "Downloading quiz. Are you sure you want to cancel this download?"
-            ),
+            body: _("Are you sure you want to cancel this download?"),
             default_response: "cancel_download",
             close_response: "close_dialog",
             presentation_mode: "floating",
@@ -116,8 +121,8 @@ export const EggheadWindow = GObject.registerClass(
 
           alertDialog.connect("response", (_alertDialog, response) => {
             if (response === "close_dialog") return;
-            // Cancel download and switch view
             this._main_stack.visible_child_name = "quiz_view";
+            this._is_downloading = false;
           });
 
           alertDialog.present(this);
@@ -218,6 +223,11 @@ export const EggheadWindow = GObject.registerClass(
         "changed::preferred-theme",
         this.setPreferredColorScheme
       );
+
+      this.settings.connect(
+        "changed::difficulty",
+        this.setDefaultDifficultyLevel
+      );
     };
 
     loadStyles = () => {
@@ -249,6 +259,31 @@ export const EggheadWindow = GObject.registerClass(
       }
 
       this.application.get_style_manager().color_scheme = colorScheme;
+    };
+
+    setDefaultDifficultyLevel = () => {
+      const defaultDifficultyLevel = this.settings.get_string("difficulty");
+
+      switch (defaultDifficultyLevel) {
+        case "mixed":
+          this._mixed.active = true;
+          break;
+
+        case "active":
+          this._easy.active = true;
+          break;
+
+        case "medium":
+          this._medium.active = true;
+          break;
+
+        case "hard":
+          this._hard.active = true;
+          break;
+
+        default:
+          break;
+      }
     };
   }
 );

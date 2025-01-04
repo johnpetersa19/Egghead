@@ -18,5 +18,14 @@
       </choices>
       <default>"system"</default>
     </key>
+    <key name="difficulty" type="s">
+      <choices>
+        <choice value="mixed" />
+        <choice value="easy" />
+        <choice value="medium" />
+        <choice value="hard" />
+      </choices>
+      <default>"mixed"</default>
+    </key>
   </schema>
 </schemalist>

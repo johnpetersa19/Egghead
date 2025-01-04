@@ -126,6 +126,7 @@
                             <property name="margin-top">18</property>
                             <property name="margin-bottom">18</property>
                             <property name="spacing">18</property>
+                            <!-- This is a placeholder. It will be replaced -->
                             <child>
                               <object class="GtkImage">
                                 <property name="icon-name">clock-stopwatch-symbolic</property>
@@ -189,10 +190,10 @@
                                               <object class="AdwPreferencesGroup">
                                                 <child>
                                                   <object class="AdwActionRow">
-                                                    <property name="activatable_widget">any</property>
+                                                    <property name="activatable_widget">mixed</property>
                                                     <property name="title" translatable="yes">Mixed</property>
                                                     <child type="prefix">
-                                                      <object class="GtkCheckButton" id="any">
+                                                      <object class="GtkCheckButton" id="mixed">
                                                         <property name="valign">center</property>
                                                         <property name="active">True</property>
                                                       </object>
@@ -205,7 +206,7 @@
                                                     <property name="title" translatable="yes">Easy</property>
                                                     <child type="prefix">
                                                       <object class="GtkCheckButton" id="easy">
-                                                        <property name="group">any</property>
+                                                        <property name="group">mixed</property>
                                                         <property name="valign">center</property>
                                                       </object>
                                                     </child>
@@ -217,7 +218,7 @@
                                                     <property name="title" translatable="yes">Medium</property>
                                                     <child type="prefix">
                                                       <object class="GtkCheckButton" id="medium">
-                                                        <property name="group">any</property>
+                                                        <property name="group">mixed</property>
                                                         <property name="valign">center</property>
                                                       </object>
                                                     </child>
@@ -229,7 +230,7 @@
                                                     <property name="title" translatable="yes">Hard</property>
                                                     <child type="prefix">
                                                       <object class="GtkCheckButton" id="hard">
-                                                        <property name="group">any</property>
+                                                        <property name="group">mixed</property>
                                                         <property name="valign">center</property>
                                                       </object>
                                                     </child>
@@ -306,6 +307,8 @@
                         <child>
                           <object class="GtkSpinner">
                             <property name="spinning">True</property>
+                            <property name="height-request">24</property>
+                            <property name="width-request">24</property>
                           </object>
                         </child>
                         <child>
