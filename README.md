@@ -20,7 +20,7 @@
 <!-- markdownlint-enable -->
 <!-- markdownlint-disable headings -->
 
-Egghead is simple quiz app.
+Egghead is simple trivia app.The quiz is sourced from [Open Trivia Database](https://opentdb.com/).
 
  ## Main features
 
@@ -51,6 +51,11 @@ a PR.
 combination to run the project after opening it in GNOME builder. You can also
  use the <kbd>▶</kbd> button at the top.
  <!-- markdownlint-enable no-inline-html -->
+
+ ## Translation
+
+ The quiz is sourced from [Open Trivia Database](https://opentdb.com/) in English.
+ Therefore, I don't think it makes sense to translate the app.
 
 ## License
 
