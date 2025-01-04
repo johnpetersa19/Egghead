@@ -20,7 +20,7 @@
 <!-- markdownlint-enable -->
 <!-- markdownlint-disable headings -->
 
-Egghead is simple trivia app.The quiz is sourced from [Open Trivia Database](https://opentdb.com/).
+Egghead is simple trivia app. The quiz is sourced from [Open Trivia Database](https://opentdb.com/).
 
  ## Main features
 
@@ -32,7 +32,7 @@ Egghead is simple trivia app.The quiz is sourced from [Open Trivia Database](htt
 ## Contributing
 
 If you find this app useful, do consider contributing. If you are wondering how,
-you can contribute in the following ways.
+you can contribute in the following ways:
 
 - Star the project repository on GitHub
 - Report bugs if you encounter some. There are probably a handful of them.
