@@ -11,5 +11,6 @@
   <gresource prefix="/io/github/josephmawa/Egghead/js">
     <file compressed="true">util/data.js</file>
     <file compressed="true">util/utils.js</file>
+    <file compressed="true">util/page.js</file>
   </gresource>
 </gresources>

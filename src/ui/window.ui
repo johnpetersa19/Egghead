@@ -25,7 +25,7 @@
                           <object class="AdwHeaderBar">
                             <child type="start">
                               <object class="GtkToggleButton" id="search_button">
-                                <property name="icon-name">system-search-symbolic</property>
+                                <property name="icon-name">egghead-system-search-symbolic</property>
                                 <property name="valign">center</property>
                                 <property name="tooltip-text" translatable="yes">Search Categories</property>
                                 <property name="action-name">win.enable-search-mode</property>
@@ -254,9 +254,124 @@
                                     </property>
                                   </object>
                                 </child>
+                                <child>
+                                  <object class="GtkStackPage" id="quiz_session_view">
+                                    <property name="name">quiz_session_view</property>
+                                    <property name="child">
+                                      <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <property name="halign">center</property>
+                                        <property name="valign">center</property>
+                                        <property name="vexpand">true</property>
+                                        <property name="spacing">18</property>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <property name="label">Question</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <property name="label">Solutions</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">horizontal</property>
+                                            <property name="valign">center</property>
+                                            <property name="halign">center</property>
+                                            <property name="spacing">18</property>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <property name="orientation">horizontal</property>
+                                                <property name="valign">center</property>
+                                                <property name="halign">center</property>
+                                                <property name="spacing">2</property>
+                                                <child>
+                                                  <object class="GtkButton">
+                                                    <property name="icon-name">egghead-go-first-symbolic</property>
+                                                    <property name="action-name">win.go-to-first-page</property>
+                                                    <style>
+                                                      <class name="circular" />
+                                                    </style>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkButton">
+                                                    <property name="icon-name">egghead-go-next-symbolic-rtl</property>
+                                                    <property name="action-name">win.go-to-previous-page</property>
+                                                    <style>
+                                                      <class name="circular" />
+                                                    </style>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkScrolledWindow">
+                                                <property name="propagate_natural_height">true</property>
+                                                <property name="propagate_natural_width">true</property>
+                                                <property name="hscrollbar-policy">always</property>
+                                                <property name="max-content-width">200</property>
+                                                <property name="max-content-height">15</property>
+                                                <child>
+                                                  <object class="GtkListView" id="pagination_list_view">
+                                                    <style>
+                                                      <class name="frame" />
+                                                      <class name="border-radius" />
+                                                    </style>
+                                                    <property name="orientation">horizontal</property>
+                                                    <property name="show-separators">True</property>
+                                                    <property name="single-click-activate">True</property>
+                                                    <property name="model">
+                                                      <object class="GtkSingleSelection" id="single_selection">
+                                                        <property name="selected" bind-source="EggheadWindow" bind-property="selected" bind-flags="sync-create" />
+                                                      </object>
+                                                    </property>
+                                                    <property name="factory">
+                                                      <object class="GtkBuilderListItemFactory">
+                                                        <property name="resource">/io/github/josephmawa/Egghead/page.ui</property>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox">
+                                                <property name="orientation">horizontal</property>
+                                                <property name="valign">center</property>
+                                                <property name="halign">center</property>
+                                                <property name="spacing">2</property>
+                                                <child>
+                                                  <object class="GtkButton">
+                                                    <property name="icon-name">egghead-go-next-symbolic</property>
+                                                    <property name="action-name">win.go-to-next-page</property>
+                                                    <style>
+                                                      <class name="circular" />
+                                                    </style>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkButton">
+                                                    <property name="icon-name">egghead-go-first-symbolic-rtl</property>
+                                                    <property name="action-name">win.go-to-last-page</property>
+                                                    <style>
+                                                      <class name="circular" />
+                                                    </style>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
                                 <!-- Gtk emits the warning below when this property is placed before the GtkStackPage it references.
                           Child name 'category_view' not found in GtkStack -->
-                                <property name="visible-child-name">category_view</property>
+                                <!-- <property name="visible-child-name">category_view</property> -->
+                                <property name="visible-child-name">quiz_session_view</property>
                               </object>
                             </child>
                           </object>
@@ -278,7 +393,7 @@
                         <property name="centering-policy">strict</property>
                         <child type="start">
                           <object class="GtkButton">
-                            <property name="icon-name">go-next-symbolic-rtl</property>
+                            <property name="icon-name">egghead-go-next-symbolic-rtl</property>
                             <property name="tooltip-text" translatable="yes" context="Back to main screen">Back</property>
                             <accessibility>
                               <property name="label" translatable="yes" context="accessibility">Back</property>

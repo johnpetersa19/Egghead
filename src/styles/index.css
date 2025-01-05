@@ -1,3 +1,11 @@
 .preferred-color-scheme-row {
   padding: 10px;
 }
+
+.border-radius {
+  border-radius: 10px;
+}
+
+.padding {
+  padding: 10px;
+}

@@ -4,8 +4,9 @@ import Gtk from "gi://Gtk";
 import Gio from "gi://Gio";
 
 import { Category } from "./category.js";
-import { triviaCategories } from "./util/data.js";
+import { triviaCategories, quiz } from "./util/data.js";
 import { parseTriviaCategories } from "./util/utils.js";
+import { Page } from "./util/page.js";
 
 export const EggheadWindow = GObject.registerClass(
   {
@@ -33,12 +34,21 @@ export const EggheadWindow = GObject.registerClass(
         GObject.ParamFlags.READWRITE,
         false
       ),
+      selected: GObject.ParamSpec.int(
+        "selected",
+        "Selected",
+        "Selected quiz index",
+        GObject.ParamFlags.READWRITE,
+        0
+      ),
     },
     InternalChildren: [
       "main_stack",
       "split_view",
       "search_bar",
       "list_view",
+      "pagination_list_view",
+      "single_selection",
       "difficulty_level_stack",
       "mixed",
       "easy",
@@ -51,14 +61,14 @@ export const EggheadWindow = GObject.registerClass(
       super({ application });
 
       this.createActions();
+      this.createPaginationActions();
       this.createSidebar();
-
-      console.log(this._mixed.get_name())
 
       this.loadStyles();
       this.bindSettings();
       this.setPreferredColorScheme();
       this.setDefaultDifficultyLevel();
+      this.setListViewModel();
     }
 
     setSelectedCategory = (category) => {
@@ -92,6 +102,10 @@ export const EggheadWindow = GObject.registerClass(
       startQuiz.connect("activate", () => {
         this._main_stack.visible_child_name = "download_view";
         this._is_downloading = true;
+        setTimeout(() => {
+          this._main_stack.visible_child_name = "quiz_view";
+          this._difficulty_level_stack.visible_child_name = "quiz_session_view";
+        }, 2_000);
       });
 
       const goBack = new Gio.SimpleAction({
@@ -133,6 +147,56 @@ export const EggheadWindow = GObject.registerClass(
       this.add_action(enableSearchMode);
       this.add_action(startQuiz);
       this.add_action(goBack);
+    };
+
+    createPaginationActions = () => {
+      const goToFirstPage = new Gio.SimpleAction({
+        name: "go-to-first-page",
+      });
+      goToFirstPage.connect("activate", () => {
+        this.selected = 0;
+        this.scrollTo(this.selected);
+      });
+
+      const goToLastPage = new Gio.SimpleAction({
+        name: "go-to-last-page",
+      });
+      goToLastPage.connect("activate", () => {
+        const numItems = this._pagination_list_view.model.get_n_items();
+        this.selected = numItems - 1;
+        this.scrollTo(this.selected);
+      });
+
+      const goToPreviousPage = new Gio.SimpleAction({
+        name: "go-to-previous-page",
+      });
+      goToPreviousPage.connect("activate", () => {
+        if (this.selected === 0) return;
+
+        this.selected--;
+        this.scrollTo(this.selected);
+      });
+
+      const goToNextPage = new Gio.SimpleAction({
+        name: "go-to-next-page",
+      });
+
+      goToNextPage.connect("activate", () => {
+        if (
+          this.selected ===
+          this._pagination_list_view.model.get_n_items() - 1
+        ) {
+          return;
+        }
+
+        this.selected++;
+        this.scrollTo(this.selected);
+      });
+
+      this.add_action(goToFirstPage);
+      this.add_action(goToLastPage);
+      this.add_action(goToPreviousPage);
+      this.add_action(goToNextPage);
     };
 
     activateCategory(listView, position) {
@@ -284,6 +348,30 @@ export const EggheadWindow = GObject.registerClass(
         default:
           break;
       }
+    };
+
+    setListViewModel = () => {
+      const store = Gio.ListStore.new(Page);
+
+      for (let i = 0; i < 300; i++) {
+        store.append(new Page(i.toString()));
+      }
+
+      this._single_selection.model = store;
+      this.selected = 0;
+
+      this._pagination_list_view.connect("activate", (listView, position) => {
+        this.selected = position;
+        this.scrollTo(position);
+      });
+    };
+
+    scrollTo = (position) => {
+      this._pagination_list_view.scroll_to(
+        position,
+        Gtk.ListScrollFlags.FOCUS,
+        null
+      );
     };
   }
 );
