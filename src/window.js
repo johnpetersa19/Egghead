@@ -5,7 +5,7 @@ import Gio from "gi://Gio";
 
 import { Category } from "./category.js";
 import { triviaCategories, quiz } from "./util/data.js";
-import { parseTriviaCategories } from "./util/utils.js";
+import { parseTriviaCategories, clamp } from "./util/utils.js";
 import { Page } from "./util/page.js";
 
 export const EggheadWindow = GObject.registerClass(
@@ -180,12 +180,9 @@ export const EggheadWindow = GObject.registerClass(
       const goToNextPage = new Gio.SimpleAction({
         name: "go-to-next-page",
       });
-
       goToNextPage.connect("activate", () => {
-        if (
-          this.selected ===
-          this._pagination_list_view.model.get_n_items() - 1
-        ) {
+        const numItems = this._pagination_list_view.model.get_n_items() - 1;
+        if (this.selected === numItems) {
           return;
         }
 

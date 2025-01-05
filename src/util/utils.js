@@ -1,30 +1,30 @@
 export function parseTriviaCategories(categories) {
   const categoriesMap = new Map();
 
-  for (const category of categories) {
-    if (category.name.includes(":")) {
-      let [_category, _name] = category.name.split(":");
+  for (const categoryObject of categories) {
+    if (categoryObject.name.includes(":")) {
+      let [category, name] = categoryObject.name.split(":");
 
-      _category = _category.replaceAll("&", "And").trim();
-      _name = _name.replaceAll("&", "And").trim();
+      category = category.replaceAll("&", "And").trim();
+      name = name.replaceAll("&", "And").trim();
 
-      category.name = _name;
-      category.hasChildren = false;
-      category.children = [];
+      categoryObject.name = name;
+      categoryObject.hasChildren = false;
+      categoryObject.children = [];
 
-      if (!categoriesMap.has(_category)) {
-        categoriesMap.set(_category, [category]);
+      if (!categoriesMap.has(category)) {
+        categoriesMap.set(category, [categoryObject]);
         continue;
       }
 
-      categoriesMap.get(_category).push(category);
+      categoriesMap.get(category).push(categoryObject);
       continue;
     }
 
-    category.hasChildren = false;
-    category.children = [];
-    category.name = category.name.replaceAll("&", "And");
-    categoriesMap.set(category.name, category);
+    categoryObject.hasChildren = false;
+    categoryObject.children = [];
+    categoryObject.name = categoryObject.name.replaceAll("&", "And");
+    categoriesMap.set(categoryObject.name, categoryObject);
   }
 
   const parsedCategories = [];
@@ -46,4 +46,11 @@ export function parseTriviaCategories(categories) {
   }
 
   return parsedCategories;
+}
+
+export function clamp(minimum, maximum, value) {
+  if (value < minimum) value = minimum;
+  if (value > maximum) value = maximum;
+
+  return value;
 }
