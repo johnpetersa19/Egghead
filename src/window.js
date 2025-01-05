@@ -50,6 +50,10 @@ export const EggheadWindow = GObject.registerClass(
       "pagination_list_view",
       "single_selection",
       "difficulty_level_stack",
+      "go_to_first_page_btn",
+      "go_to_prev_page_btn",
+      "go_to_last_page_btn",
+      "go_to_next_page_btn",
       "mixed",
       "easy",
       "medium",
@@ -69,6 +73,7 @@ export const EggheadWindow = GObject.registerClass(
       this.setPreferredColorScheme();
       this.setDefaultDifficultyLevel();
       this.setListViewModel();
+      this.bindPaginationBtns();
     }
 
     setSelectedCategory = (category) => {
@@ -173,21 +178,19 @@ export const EggheadWindow = GObject.registerClass(
       goToPreviousPage.connect("activate", () => {
         if (this.selected === 0) return;
 
-        this.selected--;
-        this.scrollTo(this.selected);
+        this.scrollTo(--this.selected);
       });
 
       const goToNextPage = new Gio.SimpleAction({
         name: "go-to-next-page",
       });
       goToNextPage.connect("activate", () => {
-        const numItems = this._pagination_list_view.model.get_n_items() - 1;
-        if (this.selected === numItems) {
+        const numItems = this._pagination_list_view.model.get_n_items();
+        if (this.selected === numItems - 1) {
           return;
         }
 
-        this.selected++;
-        this.scrollTo(this.selected);
+        this.scrollTo(++this.selected);
       });
 
       this.add_action(goToFirstPage);
@@ -291,6 +294,58 @@ export const EggheadWindow = GObject.registerClass(
       );
     };
 
+    bindPaginationBtns = () => {
+      this.bind_property_full(
+        "selected",
+        this._go_to_first_page_btn,
+        "sensitive",
+        GObject.BindingFlags.DEFAULT || GObject.BindingFlags.SYNC_CREATE,
+        (_, selected) => {
+          if (selected > 0) return [true, true];
+          return [true, false];
+        },
+        null
+      );
+
+      this.bind_property_full(
+        "selected",
+        this._go_to_prev_page_btn,
+        "sensitive",
+        GObject.BindingFlags.DEFAULT || GObject.BindingFlags.SYNC_CREATE,
+        (_, selected) => {
+          if (selected > 0) return [true, true];
+          return [true, false];
+        },
+        null
+      );
+
+      this.bind_property_full(
+        "selected",
+        this._go_to_last_page_btn,
+        "sensitive",
+        GObject.BindingFlags.DEFAULT || GObject.BindingFlags.SYNC_CREATE,
+        (_, selected) => {
+          const numItems = this._pagination_list_view.model.get_n_items();
+          if (selected < numItems - 1) return [true, true];
+          return [true, false];
+        },
+        null
+      );
+
+      this.bind_property_full(
+        "selected",
+        this._go_to_next_page_btn,
+        "sensitive",
+        GObject.BindingFlags.DEFAULT || GObject.BindingFlags.SYNC_CREATE,
+        (_, selected) => {
+          const numItems = this._pagination_list_view.model.get_n_items();
+          if (selected < numItems - 1) return [true, true];
+          return [true, false];
+        },
+        null
+      );
+    };
+
     loadStyles = () => {
       const cssProvider = new Gtk.CssProvider();
       cssProvider.load_from_resource(__getResourcePath__("index.css"));
@@ -350,7 +405,7 @@ export const EggheadWindow = GObject.registerClass(
     setListViewModel = () => {
       const store = Gio.ListStore.new(Page);
 
-      for (let i = 0; i < 300; i++) {
+      for (let i = 0; i < quiz.results.length; i++) {
         store.append(new Page(i.toString()));
       }
 
