@@ -1,3 +1,15 @@
+import Gio from "gi://Gio";
+import Soup from "gi://Soup";
+import GLib from "gi://GLib";
+
+Gio._promisify(
+  Soup.Session.prototype,
+  "send_and_read_async",
+  "send_and_read_finish"
+);
+
+const httpSession = new Soup.Session();
+
 export function parseTriviaCategories(categories) {
   const categoriesMap = new Map();
 
@@ -48,9 +60,69 @@ export function parseTriviaCategories(categories) {
   return parsedCategories;
 }
 
-export function clamp(minimum, maximum, value) {
-  if (value < minimum) value = minimum;
-  if (value > maximum) value = maximum;
+export function shuffle(array) {
+  let currIdx = array.length,
+    tempVal,
+    randIdx;
+  while (0 !== currIdx) {
+    randIdx = Math.floor(Math.random() * currIdx);
+    currIdx -= 1;
+    tempVal = array[currIdx];
+    array[currIdx] = array[randIdx];
+    array[randIdx] = tempVal;
+  }
 
-  return value;
+  return array;
+}
+
+export async function fetchData(url) {
+  try {
+    const message = Soup.Message.new("GET", url);
+
+    const bytes = await httpSession.send_and_read_async(
+      message,
+      GLib.PRIORITY_DEFAULT,
+      null
+    );
+
+    if (message.get_status() !== Soup.Status.OK) {
+      console.error(`HTTP Status ${message.get_status()}`);
+      throw new Error("Failed to fetch data");
+    }
+
+    const textDecoder = new TextDecoder("utf-8");
+    const decodedText = textDecoder.decode(bytes.toArray());
+    const data = JSON.parse(decodedText);
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export function getQuestionCount(data, difficulty) {
+  switch (difficulty) {
+    case "mixed":
+      return data?.category_question_count?.total_question_count;
+    case "easy":
+      return data?.category_question_count?.total_easy_question_count;
+    case "medium":
+      return data?.category_question_count?.total_medium_question_count;
+    case "hard":
+      return data?.category_question_count?.total_hard_question_count;
+    default:
+      throw new Error("An error occurred while retrivieving question count");
+  }
+}
+
+function getQuizCountForEachReq(totalQuiz) {
+  const quizCountPerBatch = [];
+  while (totalQuiz >= 50) {
+    quizCountPerBatch.push(50);
+    totalQuiz -= 50;
+  }
+  if (totalQuiz > 0) {
+    quizCountPerBatch.push(totalQuiz);
+  }
+  return quizCountPerBatch;
 }

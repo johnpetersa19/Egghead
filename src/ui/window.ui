@@ -184,8 +184,8 @@
                                         </child>
                                         <child>
                                           <object class="AdwClamp">
-                                            <property name="maximum-size">300</property>
-                                            <property name="tightening-threshold">300</property>
+                                            <property name="maximum-size">200</property>
+                                            <property name="tightening-threshold">200</property>
                                             <property name="child">
                                               <object class="AdwPreferencesGroup">
                                                 <child>
@@ -196,6 +196,8 @@
                                                       <object class="GtkCheckButton" id="mixed">
                                                         <property name="valign">center</property>
                                                         <property name="active">True</property>
+                                                        <property name="action-name">win.select-difficulty</property>
+                                                        <property name="action-target">'mixed'</property>
                                                       </object>
                                                     </child>
                                                   </object>
@@ -208,6 +210,8 @@
                                                       <object class="GtkCheckButton" id="easy">
                                                         <property name="group">mixed</property>
                                                         <property name="valign">center</property>
+                                                        <property name="action-name">win.select-difficulty</property>
+                                                        <property name="action-target">'easy'</property>
                                                       </object>
                                                     </child>
                                                   </object>
@@ -220,6 +224,8 @@
                                                       <object class="GtkCheckButton" id="medium">
                                                         <property name="group">mixed</property>
                                                         <property name="valign">center</property>
+                                                        <property name="action-name">win.select-difficulty</property>
+                                                        <property name="action-target">'medium'</property>
                                                       </object>
                                                     </child>
                                                   </object>
@@ -232,6 +238,8 @@
                                                       <object class="GtkCheckButton" id="hard">
                                                         <property name="group">mixed</property>
                                                         <property name="valign">center</property>
+                                                        <property name="action-name">win.select-difficulty</property>
+                                                        <property name="action-target">'hard'</property>
                                                       </object>
                                                     </child>
                                                   </object>
@@ -273,17 +281,118 @@
                                             <property name="maximum-size">300</property>
                                             <property name="tightening-threshold">300</property>
                                             <property name="child">
-                                              <object class="GtkLabel">
-                                                <property name="wrap">True</property>
-                                                <property name="label">What&#039;s the second book in George R. R. Martin&#039;s &#039;A Song of Ice and Fire&#039; series?</property>
+                                              <object class="GtkBox">
+                                                <property name="orientation">vertical</property>
+                                                <child>
+                                                  <object class="AdwPreferencesGroup">
+                                                    <property name="title" translatable="yes">Question</property>
+                                                    <child>
+                                                      <object class="AdwPreferencesRow">
+                                                        <style>
+                                                          <class name="padding" />
+                                                        </style>
+                                                        <child>
+                                                          <object class="GtkLabel" id="question">
+                                                            <property name="wrap">true</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="use-markup">true</property>
+                                                            <binding name="label">
+                                                              <lookup name="question" type="Quiz">
+                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                              </lookup>
+                                                            </binding>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwPreferencesGroup" id="solutions">
+                                                    <property name="title" translatable="yes">Solutions</property>
+                                                    <child>
+                                                      <object class="AdwPreferencesRow">
+                                                        <style>
+                                                          <class name="padding" />
+                                                        </style>
+                                                        <child>
+                                                          <object class="GtkCheckButton" id="solution_1">
+                                                            <property name="sensitive">true</property>
+                                                            <binding name="label">
+                                                              <lookup name="answer_1" type="Answers">
+                                                                <lookup name="answers" type="Quiz">
+                                                                  <lookup name="quiz">EggheadWindow</lookup>
+                                                                </lookup>
+                                                              </lookup>
+                                                            </binding>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwPreferencesRow">
+                                                        <style>
+                                                          <class name="padding" />
+                                                        </style>
+                                                        <child>
+                                                          <object class="GtkCheckButton" id="solution_2">
+                                                            <property name="group">solution_1</property>
+                                                            <property name="sensitive">true</property>
+                                                            <binding name="label">
+                                                              <lookup name="answer_2" type="Answers">
+                                                                <lookup name="answers" type="Quiz">
+                                                                  <lookup name="quiz">EggheadWindow</lookup>
+                                                                </lookup>
+                                                              </lookup>
+                                                            </binding>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwPreferencesRow">
+                                                        <style>
+                                                          <class name="padding" />
+                                                        </style>
+                                                        <child>
+                                                          <object class="GtkCheckButton" id="solution_3">
+                                                            <property name="group">solution_1</property>
+                                                            <property name="sensitive">true</property>
+                                                            <binding name="label">
+                                                              <lookup name="answer_3" type="Answers">
+                                                                <lookup name="answers" type="Quiz">
+                                                                  <lookup name="quiz">EggheadWindow</lookup>
+                                                                </lookup>
+                                                              </lookup>
+                                                            </binding>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwPreferencesRow">
+                                                        <style>
+                                                          <class name="padding" />
+                                                        </style>
+                                                        <child>
+                                                          <object class="GtkCheckButton" id="solution_4">
+                                                            <property name="group">solution_1</property>
+                                                            <property name="sensitive">true</property>
+                                                            <binding name="label">
+                                                              <lookup name="answer_4" type="Answers">
+                                                                <lookup name="answers" type="Quiz">
+                                                                  <lookup name="quiz">EggheadWindow</lookup>
+                                                                </lookup>
+                                                              </lookup>
+                                                            </binding>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
                                               </object>
-
                                             </property>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel">
-                                            <property name="label">Solutions</property>
                                           </object>
                                         </child>
                                         <child>
