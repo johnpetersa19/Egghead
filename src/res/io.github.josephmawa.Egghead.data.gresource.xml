@@ -21,5 +21,6 @@
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/egghead-go-next-symbolic-rtl.svg">icons/egghead-go-next-symbolic-rtl.svg</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/egghead-go-next-symbolic.svg">icons/egghead-go-next-symbolic.svg</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/egghead-object-select-symbolic.svg">icons/egghead-object-select-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="scalable/actions/egghead-user-trash-symbolic.svg">icons/egghead-user-trash-symbolic.svg</file>
   </gresource>
 </gresources>

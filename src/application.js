@@ -35,6 +35,7 @@ export const EggheadApplication = GObject.registerClass(
       this.set_accels_for_action("win.enable-search-mode", ["<primary>f"]);
       this.set_accels_for_action("win.start-quiz", ["<alt>s"]);
       this.set_accels_for_action("win.go-back", ["<primary>Left"]);
+      this.set_accels_for_action("win.delete-saved-quiz", ["<primary>D"]);
       this.set_accels_for_action("app.preferences", ["<primary>comma"]);
 
       const showAboutAction = new Gio.SimpleAction({ name: "about" });

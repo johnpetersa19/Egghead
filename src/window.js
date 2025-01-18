@@ -212,11 +212,19 @@ export const EggheadWindow = GObject.registerClass(
         this.settings.set_value("difficulty", param);
       });
 
+      const deleteSavedQuiz = new Gio.SimpleAction({
+        name: "delete-saved-quiz",
+      });
+      deleteSavedQuiz.connect("activate", () => {
+        console.log("deleted saved quiz");
+      });
+
       this.add_action(toggleSidebar);
       this.add_action(enableSearchMode);
       this.add_action(startQuiz);
       this.add_action(goBack);
       this.add_action(selectDifficulty);
+      this.add_action(deleteSavedQuiz);
     };
 
     createPaginationActions = () => {

@@ -72,6 +72,12 @@
                 <property name="action-name">win.start-quiz</property>
               </object>
             </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Delete Saved Quiz</property>
+                <property name="action-name">win.delete-saved-quiz</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
