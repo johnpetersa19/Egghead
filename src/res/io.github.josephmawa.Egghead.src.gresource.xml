@@ -11,5 +11,10 @@
   <gresource prefix="/io/github/josephmawa/Egghead/js">
     <file compressed="true">util/data.js</file>
     <file compressed="true">util/utils.js</file>
+    <file compressed="true">util/page.js</file>
+    <file compressed="true">util/quiz.js</file>
+  </gresource>
+  <gresource prefix="/io/github/josephmawa/Egghead/js">
+    <file compressed="true">lib/he.js</file>
   </gresource>
 </gresources>

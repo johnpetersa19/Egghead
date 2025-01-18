@@ -1,0 +1,22 @@
+<interface>
+  <template class="GtkListItem">
+    <property name="child">
+      <object class="GtkBox">
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <child>
+          <object class="GtkLabel">
+            <style>
+              <class name="padding" />
+            </style>
+            <binding name="label">
+              <lookup name="page" type="Page">
+                <lookup name="item">GtkListItem</lookup>
+              </lookup>
+            </binding>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

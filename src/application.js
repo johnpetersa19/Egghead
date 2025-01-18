@@ -6,6 +6,7 @@ import Adw from "gi://Adw?version=1";
 import { EggheadWindow } from "./window.js";
 import { AboutDialog } from "./about.js";
 import { EggheadPreferencesDialog } from "./preferences.js";
+import "./lib/he.js";
 
 export const EggheadApplication = GObject.registerClass(
   class EggheadApplication extends Adw.Application {
