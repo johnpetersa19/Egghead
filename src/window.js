@@ -81,8 +81,6 @@ export const EggheadWindow = GObject.registerClass(
       "pagination_list_view",
       "single_selection",
       "difficulty_level_stack",
-      "solutions",
-      "question",
       "go_to_first_page_btn",
       "go_to_prev_page_btn",
       "go_to_last_page_btn",
@@ -91,10 +89,6 @@ export const EggheadWindow = GObject.registerClass(
       "easy",
       "medium",
       "hard",
-      "solution_1",
-      "solution_2",
-      "solution_3",
-      "solution_4",
     ],
   },
   class EggheadWindow extends Adw.ApplicationWindow {
@@ -312,7 +306,36 @@ export const EggheadWindow = GObject.registerClass(
       const factory = new Gtk.SignalListItemFactory();
 
       factory.connect("setup", (_, listItem) => {
-        listItem.child = new Gtk.TreeExpander({ child: new Gtk.Label() });
+        const hBox = new Gtk.Box({
+          orientation: Gtk.Orientation.HORIZONTAL,
+          halign: Gtk.Align.FILL,
+        });
+
+        const hBoxInner1 = new Gtk.Box({
+          orientation: Gtk.Orientation.HORIZONTAL,
+          halign: Gtk.Align.START,
+          hexpand: true,
+        });
+        const hBoxInner2 = new Gtk.Box({
+          orientation: Gtk.Orientation.HORIZONTAL,
+          halign: Gtk.Align.END,
+          hexpand: true,
+        });
+
+        const label = new Gtk.Label();
+        const icon = new Gtk.Image({
+          icon_name: "egghead-object-select-symbolic",
+          visible: false,
+          pixel_size: 12,
+        });
+
+        hBoxInner1.append(label);
+        hBoxInner2.append(icon);
+
+        hBox.append(hBoxInner1);
+        hBox.append(hBoxInner2);
+
+        listItem.child = new Gtk.TreeExpander({ child: hBox });
       });
 
       factory.connect("bind", (_, listItem) => {
@@ -321,8 +344,21 @@ export const EggheadWindow = GObject.registerClass(
 
         expander.list_row = listRow;
 
-        const label = expander.child;
+        const hBox = expander.child;
+        const label = hBox?.get_first_child()?.get_first_child();
+        const image = hBox?.get_last_child()?.get_first_child();
         const object = listRow.item;
+
+        this.bind_property_full(
+          "category_id",
+          image,
+          "visible",
+          GObject.BindingFlags.DEFAULT || GObject.BindingFlags.SYNC_CREATE,
+          (_, categoryId) => {
+            return [true, object.id === categoryId];
+          },
+          null
+        );
 
         label.label = object.name;
       });
