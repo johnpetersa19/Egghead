@@ -328,14 +328,35 @@
                                                                 </style>
                                                                 <child>
                                                                   <object class="GtkCheckButton" id="multiple_solution_1">
-                                                                    <property name="sensitive">true</property>
                                                                     <binding name="label">
-                                                                      <lookup name="answer_1" type="Answers">
-                                                                        <lookup name="answers" type="Quiz">
-                                                                          <lookup name="quiz">EggheadWindow</lookup>
+                                                                      <lookup name="answer" type="Answer">
+                                                                        <lookup name="answer_1" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
                                                                         </lookup>
                                                                       </lookup>
                                                                     </binding>
+                                                                    <binding name="active">
+                                                                      <lookup name="active" type="Answer">
+                                                                        <lookup name="answer_1" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <binding name="sensitive">
+                                                                      <lookup name="sensitive" type="Answer">
+                                                                        <lookup name="answer_1" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <property name="action-name">win.pick-answer</property>
+                                                                    <property name="action-target">'answer_1'</property>
                                                                   </object>
                                                                 </child>
                                                               </object>
@@ -346,16 +367,37 @@
                                                                   <class name="padding" />
                                                                 </style>
                                                                 <child>
-                                                                  <object class="GtkCheckButton">
+                                                                  <object class="GtkCheckButton" id="multiple_solution_2">
                                                                     <property name="group">multiple_solution_1</property>
-                                                                    <property name="sensitive">true</property>
                                                                     <binding name="label">
-                                                                      <lookup name="answer_2" type="Answers">
-                                                                        <lookup name="answers" type="Quiz">
-                                                                          <lookup name="quiz">EggheadWindow</lookup>
+                                                                      <lookup name="answer" type="Answer">
+                                                                        <lookup name="answer_2" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
                                                                         </lookup>
                                                                       </lookup>
                                                                     </binding>
+                                                                    <binding name="active">
+                                                                      <lookup name="active" type="Answer">
+                                                                        <lookup name="answer_2" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <binding name="sensitive">
+                                                                      <lookup name="sensitive" type="Answer">
+                                                                        <lookup name="answer_2" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <property name="action-name">win.pick-answer</property>
+                                                                    <property name="action-target">'answer_2'</property>
                                                                   </object>
                                                                 </child>
                                                               </object>
@@ -366,16 +408,37 @@
                                                                   <class name="padding" />
                                                                 </style>
                                                                 <child>
-                                                                  <object class="GtkCheckButton">
+                                                                  <object class="GtkCheckButton" id="multiple_solution_3">
                                                                     <property name="group">multiple_solution_1</property>
-                                                                    <property name="sensitive">true</property>
                                                                     <binding name="label">
-                                                                      <lookup name="answer_3" type="Answers">
-                                                                        <lookup name="answers" type="Quiz">
-                                                                          <lookup name="quiz">EggheadWindow</lookup>
+                                                                      <lookup name="answer" type="Answer">
+                                                                        <lookup name="answer_3" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
                                                                         </lookup>
                                                                       </lookup>
                                                                     </binding>
+                                                                    <binding name="active">
+                                                                      <lookup name="active" type="Answer">
+                                                                        <lookup name="answer_3" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <binding name="sensitive">
+                                                                      <lookup name="sensitive" type="Answer">
+                                                                        <lookup name="answer_3" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <property name="action-name">win.pick-answer</property>
+                                                                    <property name="action-target">'answer_3'</property>
                                                                   </object>
                                                                 </child>
                                                               </object>
@@ -386,16 +449,37 @@
                                                                   <class name="padding" />
                                                                 </style>
                                                                 <child>
-                                                                  <object class="GtkCheckButton">
+                                                                  <object class="GtkCheckButton" id="multiple_solution_4">
                                                                     <property name="group">multiple_solution_1</property>
-                                                                    <property name="sensitive">true</property>
                                                                     <binding name="label">
-                                                                      <lookup name="answer_4" type="Answers">
-                                                                        <lookup name="answers" type="Quiz">
-                                                                          <lookup name="quiz">EggheadWindow</lookup>
+                                                                      <lookup name="answer" type="Answer">
+                                                                        <lookup name="answer_4" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
                                                                         </lookup>
                                                                       </lookup>
                                                                     </binding>
+                                                                    <binding name="active">
+                                                                      <lookup name="active" type="Answer">
+                                                                        <lookup name="answer_4" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <binding name="sensitive">
+                                                                      <lookup name="sensitive" type="Answer">
+                                                                        <lookup name="answer_4" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <property name="action-name">win.pick-answer</property>
+                                                                    <property name="action-target">'answer_4'</property>
                                                                   </object>
                                                                 </child>
                                                               </object>
@@ -417,14 +501,35 @@
                                                                 </style>
                                                                 <child>
                                                                   <object class="GtkCheckButton" id="boolean_solution_1">
-                                                                    <property name="sensitive">true</property>
                                                                     <binding name="label">
-                                                                      <lookup name="answer_1" type="Answers">
-                                                                        <lookup name="answers" type="Quiz">
-                                                                          <lookup name="quiz">EggheadWindow</lookup>
+                                                                      <lookup name="answer" type="Answer">
+                                                                        <lookup name="answer_1" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
                                                                         </lookup>
                                                                       </lookup>
                                                                     </binding>
+                                                                    <binding name="active">
+                                                                      <lookup name="active" type="Answer">
+                                                                        <lookup name="answer_1" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <binding name="sensitive">
+                                                                      <lookup name="sensitive" type="Answer">
+                                                                        <lookup name="answer_1" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <property name="action-name">win.pick-answer</property>
+                                                                    <property name="action-target">'answer_1'</property>
                                                                   </object>
                                                                 </child>
                                                               </object>
@@ -435,16 +540,37 @@
                                                                   <class name="padding" />
                                                                 </style>
                                                                 <child>
-                                                                  <object class="GtkCheckButton">
+                                                                  <object class="GtkCheckButton" id="boolean_solution_2">
                                                                     <property name="group">boolean_solution_1</property>
-                                                                    <property name="sensitive">true</property>
                                                                     <binding name="label">
-                                                                      <lookup name="answer_2" type="Answers">
-                                                                        <lookup name="answers" type="Quiz">
-                                                                          <lookup name="quiz">EggheadWindow</lookup>
+                                                                      <lookup name="answer" type="Answer">
+                                                                        <lookup name="answer_2" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
                                                                         </lookup>
                                                                       </lookup>
                                                                     </binding>
+                                                                    <binding name="active">
+                                                                      <lookup name="active" type="Answer">
+                                                                        <lookup name="answer_2" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <binding name="sensitive">
+                                                                      <lookup name="sensitive" type="Answer">
+                                                                        <lookup name="answer_2" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
+                                                                    <property name="action-name">win.pick-answer</property>
+                                                                    <property name="action-target">'answer_2'</property>
                                                                   </object>
                                                                 </child>
                                                               </object>

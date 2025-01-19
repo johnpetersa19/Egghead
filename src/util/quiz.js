@@ -6,56 +6,92 @@ export const initialQuiz = {
   category: "",
   question: "",
   correct_answer: "",
-  answers: ["", "", "", ""],
+  answers: [
+    { answer: "", active: false, sensitive: true },
+    { answer: "", active: false, sensitive: true },
+    { answer: "", active: false, sensitive: true },
+    { answer: "", active: false, sensitive: true },
+  ],
 };
 
+const Answer = GObject.registerClass(
+  {
+    GTypeName: "Answer",
+    Properties: {
+      answer: GObject.ParamSpec.string(
+        "answer",
+        "Answer",
+        "One of the possible answers",
+        GObject.ParamFlags.READWRITE,
+        ""
+      ),
+      active: GObject.ParamSpec.boolean(
+        "active",
+        "Active",
+        "Is this CheckButton active",
+        GObject.ParamFlags.READWRITE,
+        false
+      ),
+      sensitive: GObject.ParamSpec.boolean(
+        "sensitive",
+        "Sensitive",
+        "Is this CheckButton sensitive",
+        GObject.ParamFlags.READWRITE,
+        true
+      ),
+    },
+  },
+  class extends GObject.Object {
+    constructor({ answer, active, sensitive }) {
+      super();
+      this.answer = answer;
+      this.active = active;
+      this.sensitive = sensitive;
+    }
+  }
+);
 
 const Answers = GObject.registerClass(
   {
     GTypeName: "Answers",
     Properties: {
-      answer_1: GObject.ParamSpec.string(
+      answer_1: GObject.ParamSpec.object(
         "answer_1",
         "answer1",
         "First answer",
         GObject.ParamFlags.READWRITE,
-        ""
+        new Answer({ answer: "", active: false, sensitive: true })
       ),
-      answer_2: GObject.ParamSpec.string(
+      answer_2: GObject.ParamSpec.object(
         "answer_2",
         "answer2",
         "Second answer",
         GObject.ParamFlags.READWRITE,
-        ""
+        new Answer({ answer: "", active: false, sensitive: true })
       ),
-      answer_3: GObject.ParamSpec.string(
+      answer_3: GObject.ParamSpec.object(
         "answer_3",
         "answer3",
         "Third answer",
         GObject.ParamFlags.READWRITE,
-        ""
+        new Answer({ answer: "", active: false, sensitive: true })
       ),
-      answer_4: GObject.ParamSpec.string(
+      answer_4: GObject.ParamSpec.object(
         "answer_4",
         "answer4",
         "Fourth answer",
         GObject.ParamFlags.READWRITE,
-        ""
+        new Answer({ answer: "", active: false, sensitive: true })
       ),
     },
   },
   class Answers extends GObject.Object {
     constructor(answers) {
       super();
-      this.answer_1 = answers[0];
-      this.answer_2 = answers[1];
-      if (answers.length > 2) {
-        this.answer_3 = answers[2];
-        this.answer_4 = answers[3];
-      } else {
-        this.answer_3 = "";
-        this.answer_4 = "";
-      }
+      this.answer_1 = new Answer(answers[0]);
+      this.answer_2 = new Answer(answers[1]);
+      this.answer_3 = new Answer(answers[2]);
+      this.answer_4 = new Answer(answers[3]);
     }
   }
 );

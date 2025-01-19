@@ -81,14 +81,24 @@ export const EggheadWindow = GObject.registerClass(
       "pagination_list_view",
       "single_selection",
       "difficulty_level_stack",
+      // Pagination
       "go_to_first_page_btn",
       "go_to_prev_page_btn",
       "go_to_last_page_btn",
       "go_to_next_page_btn",
+      // Difficulty
       "mixed",
       "easy",
       "medium",
       "hard",
+      // Multiple solutions
+      "multiple_solution_1",
+      "multiple_solution_2",
+      "multiple_solution_3",
+      "multiple_solution_4",
+      // Boolean solutions
+      "boolean_solution_1",
+      "boolean_solution_2",
     ],
   },
   class EggheadWindow extends Adw.ApplicationWindow {
@@ -219,12 +229,23 @@ export const EggheadWindow = GObject.registerClass(
         console.log("deleted saved quiz");
       });
 
+      const pickAnswer = new Gio.SimpleAction({
+        name: "pick-answer",
+        parameter_type: GLib.VariantType.new("s"),
+      });
+      pickAnswer.connect("activate", (_pickAnswer, param) => {
+        const answerId = param.unpack();
+        
+        this.quiz.answers[answerId].active = true;
+      });
+
       this.add_action(toggleSidebar);
       this.add_action(enableSearchMode);
       this.add_action(startQuiz);
       this.add_action(goBack);
       this.add_action(selectDifficulty);
       this.add_action(deleteSavedQuiz);
+      this.add_action(pickAnswer);
     };
 
     createPaginationActions = () => {
@@ -469,7 +490,6 @@ export const EggheadWindow = GObject.registerClass(
         GObject.BindingFlags.DEFAULT || GObject.BindingFlags.SYNC_CREATE,
         (_, selected) => {
           const quizObject = this.data[selected];
-
           return [true, new Quiz(quizObject)];
         },
         null
@@ -566,10 +586,25 @@ export const EggheadWindow = GObject.registerClass(
         incorrect_answers.push(correct_answer);
 
         const answers = incorrect_answers.map((answer) => {
-          return __LIB__.decode(answer);
+          return {
+            answer: __LIB__.decode(answer),
+            active: false,
+            sensitive: true,
+          };
         });
 
-        data[i].answers = shuffle(answers);
+        const shuffledAnswers = shuffle(answers);
+        if (shuffledAnswers.length < 4) {
+          const answer = {
+            answer: "",
+            active: false,
+            sensitive: true,
+          };
+
+          shuffledAnswers.push({ ...answer }, { ...answer });
+        }
+
+        data[i].answers = shuffledAnswers;
         data[i].question = __LIB__.decode(question);
       }
 
