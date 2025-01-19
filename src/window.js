@@ -258,6 +258,16 @@ export const EggheadWindow = GObject.registerClass(
         }
       });
 
+      const submitSolution = new Gio.SimpleAction({
+        name: "submit-solution",
+      });
+      submitSolution.connect("activate", () => {
+        const props = ["answer_1", "answer_2", "answer_3", "answer_4"];
+        for (const prop of props) {
+          this.quiz.answers[prop].sensitive = false;
+        }
+      });
+
       this.add_action(toggleSidebar);
       this.add_action(enableSearchMode);
       this.add_action(startQuiz);
@@ -265,6 +275,7 @@ export const EggheadWindow = GObject.registerClass(
       this.add_action(selectDifficulty);
       this.add_action(deleteSavedQuiz);
       this.add_action(pickAnswer);
+      this.add_action(submitSolution);
     };
 
     createPaginationActions = () => {
