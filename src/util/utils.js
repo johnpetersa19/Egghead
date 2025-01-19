@@ -126,3 +126,7 @@ function getQuizCountForEachReq(totalQuiz) {
   }
   return quizCountPerBatch;
 }
+
+function fetchQuiz(params) {
+  
+}

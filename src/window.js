@@ -6,7 +6,7 @@ import Soup from "gi://Soup";
 import GLib from "gi://GLib";
 
 import { Category } from "./category.js";
-import { triviaCategories, quiz } from "./util/data.js";
+import { triviaCategories } from "./util/data.js";
 import {
   parseTriviaCategories,
   shuffle,
@@ -72,6 +72,13 @@ export const EggheadWindow = GObject.registerClass(
         GObject.ParamFlags.READWRITE,
         new Quiz(initialQuiz)
       ),
+      quizStore: GObject.ParamSpec.object(
+        "quizStore",
+        "quiz_store",
+        "Quiz list store",
+        GObject.ParamFlags.READWRITE,
+        GObject.Object
+      ),
     },
     InternalChildren: [
       "main_stack",
@@ -104,7 +111,8 @@ export const EggheadWindow = GObject.registerClass(
   class EggheadWindow extends Adw.ApplicationWindow {
     constructor(application) {
       super({ application });
-      this.data = [initialQuiz];
+      this.quizStore = new Gio.ListStore(Quiz);
+
       this.createActions();
       this.createPaginationActions();
       this.createSidebar();
@@ -149,7 +157,7 @@ export const EggheadWindow = GObject.registerClass(
       startQuiz.connect("activate", async () => {
         try {
           this._main_stack.visible_child_name = "download_view";
-          this._is_downloading = true;
+          this.is_downloading = true;
 
           const questionCountUrl = `${BASE_URL}/api_count.php?category=${this.category_id}`;
           const questionCountObject = await fetchData(questionCountUrl);
@@ -167,12 +175,13 @@ export const EggheadWindow = GObject.registerClass(
           }
 
           const data = await fetchData(quizUrl);
-          this.data = this.formatData(data.results);
+          const formattedData = this.formatData(data.results);
+          this.populateListStore(formattedData);
           this.setListViewModel();
           this.initQuiz();
           this._main_stack.visible_child_name = "quiz_view";
           this._difficulty_level_stack.visible_child_name = "quiz_session_view";
-          this._is_downloading = false;
+          this.is_downloading = false;
         } catch (error) {
           console.error(err);
           // Switch to error view. Be sure to implement it
@@ -235,8 +244,18 @@ export const EggheadWindow = GObject.registerClass(
       });
       pickAnswer.connect("activate", (_pickAnswer, param) => {
         const answerId = param.unpack();
-        
         this.quiz.answers[answerId].active = true;
+
+        const otherIds = [
+          "answer_1",
+          "answer_2",
+          "answer_3",
+          "answer_4",
+        ].filter((id) => id !== answerId);
+
+        for (const id of otherIds) {
+          this.quiz.answers[id].active = false;
+        }
       });
 
       this.add_action(toggleSidebar);
@@ -489,8 +508,8 @@ export const EggheadWindow = GObject.registerClass(
         "quiz",
         GObject.BindingFlags.DEFAULT || GObject.BindingFlags.SYNC_CREATE,
         (_, selected) => {
-          const quizObject = this.data[selected];
-          return [true, new Quiz(quizObject)];
+          const quizObject = this.quizStore.get_item(selected);
+          return [true, quizObject];
         },
         null
       );
@@ -554,8 +573,9 @@ export const EggheadWindow = GObject.registerClass(
 
     setListViewModel = () => {
       const store = Gio.ListStore.new(Page);
+      const numItems = this.quizStore.get_n_items();
 
-      for (let i = 0; i < this.data.length; i++) {
+      for (let i = 0; i < numItems; i++) {
         store.append(new Page(i.toString()));
       }
 
@@ -569,7 +589,7 @@ export const EggheadWindow = GObject.registerClass(
     };
 
     initQuiz = () => {
-      this.quiz = new Quiz(this.data[this.selected]);
+      this.quiz = this.quizStore.get_item(this.selected);
     };
 
     scrollTo = (position) => {
@@ -609,6 +629,13 @@ export const EggheadWindow = GObject.registerClass(
       }
 
       return shuffle(data);
+    };
+
+    populateListStore = (data) => {
+      this.quizStore.remove_all();
+      for (const object of data) {
+        this.quizStore.append(new Quiz(object));
+      }
     };
   }
 );

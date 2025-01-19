@@ -3,7 +3,7 @@ import GObject from "gi://GObject";
 export const initialQuiz = {
   type: "",
   difficulty: "",
-  category: "",
+  category: "multiple",
   question: "",
   correct_answer: "",
   answers: [
