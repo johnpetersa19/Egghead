@@ -2,6 +2,8 @@ import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 import GLib from "gi://GLib";
 
+const BASE_URL = "https://opentdb.com";
+
 Gio._promisify(
   Soup.Session.prototype,
   "send_and_read_async",
@@ -127,6 +129,35 @@ function getQuizCountForEachReq(totalQuiz) {
   return quizCountPerBatch;
 }
 
-function fetchQuiz(params) {
-  
+export async function fetchQuiz(category, difficulty) {
+  const tokenUrl = `${BASE_URL}/api_token.php?command=request`;
+  const quizCountUrl = `${BASE_URL}/api_count.php?category=${category}`;
+  console.log("fetching data");
+
+  const [tokenData, quizCount] = await Promise.all(
+    [tokenUrl, quizCountUrl].map(async (url) => {
+      const responseData = await fetchData(url);
+      return responseData;
+    })
+  );
+
+  if (!tokenData || !quizCount) {
+    throw new Error("An error occurred while fetching token and quiz count");
+  }
+
+  const count = getQuestionCount(quizCount, difficulty);
+  // Get maximum of 50 questions for the start
+  const quizCountForEachReq = getQuizCountForEachReq(count > 50 ? 50 : count);
+  const quizUrl = `${BASE_URL}/api.php?category=${category}&difficulty=${difficulty}&token=${tokenData.token}`;
+
+  const urls = quizCountForEachReq.map((c) => `${quizUrl}&amount=${c}`);
+
+  const data = await Promise.all(
+    urls.map(async (url) => {
+      const data = await fetchData(url);
+      return data?.results ?? [];
+    })
+  );
+
+  return data.flat(1);
 }

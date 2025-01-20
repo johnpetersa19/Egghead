@@ -11,6 +11,7 @@ import {
   parseTriviaCategories,
   shuffle,
   fetchData,
+  fetchQuiz,
   getQuestionCount,
 } from "./util/utils.js";
 import { Quiz, initialQuiz } from "./util/quiz.js";
@@ -159,26 +160,19 @@ export const EggheadWindow = GObject.registerClass(
           this._main_stack.visible_child_name = "download_view";
           this.is_downloading = true;
 
-          const questionCountUrl = `${BASE_URL}/api_count.php?category=${this.category_id}`;
-          const questionCountObject = await fetchData(questionCountUrl);
           const difficultyLevel = this.settings.get_string("difficulty");
-          const questionCount = getQuestionCount(
-            questionCountObject,
-            difficultyLevel
-          );
 
-          let quizUrl;
-          if (questionCount > 50) {
-            quizUrl = `${BASE_URL}/api.php?amount=50&category=${this.category_id}`;
-          } else {
-            quizUrl = `${BASE_URL}/api.php?amount=${questionCount}&category=${this.category_id}`;
+          const data = await fetchQuiz(this.category_id, difficultyLevel);
+          if (data.length === 0) {
+            throw new Error("Failed to fetch data");
           }
 
-          const data = await fetchData(quizUrl);
-          const formattedData = this.formatData(data.results);
+          const formattedData = this.formatData(data);
+
           this.populateListStore(formattedData);
           this.setListViewModel();
           this.initQuiz();
+
           this._main_stack.visible_child_name = "quiz_view";
           this._difficulty_level_stack.visible_child_name = "quiz_session_view";
           this.is_downloading = false;
@@ -621,6 +615,7 @@ export const EggheadWindow = GObject.registerClass(
             answer: __LIB__.decode(answer),
             active: false,
             sensitive: true,
+            css_classes: [""],
           };
         });
 
@@ -630,6 +625,7 @@ export const EggheadWindow = GObject.registerClass(
             answer: "",
             active: false,
             sensitive: true,
+            css_classes: [""],
           };
 
           shuffledAnswers.push({ ...answer }, { ...answer });

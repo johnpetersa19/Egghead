@@ -355,6 +355,15 @@
                                                                         </lookup>
                                                                       </lookup>
                                                                     </binding>
+                                                                    <binding name="css-classes">
+                                                                      <lookup name="css_classes" type="Answer">
+                                                                        <lookup name="answer_1" type="Answers">
+                                                                          <lookup name="answers" type="Quiz">
+                                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                                          </lookup>
+                                                                        </lookup>
+                                                                      </lookup>
+                                                                    </binding>
                                                                     <property name="action-name">win.pick-answer</property>
                                                                     <property name="action-target">'answer_1'</property>
                                                                   </object>

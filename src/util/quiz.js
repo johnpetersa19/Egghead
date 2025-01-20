@@ -7,10 +7,10 @@ export const initialQuiz = {
   question: "",
   correct_answer: "",
   answers: [
-    { answer: "", active: false, sensitive: true },
-    { answer: "", active: false, sensitive: true },
-    { answer: "", active: false, sensitive: true },
-    { answer: "", active: false, sensitive: true },
+    { answer: "", active: false, sensitive: true, css_classes: [""] },
+    { answer: "", active: false, sensitive: true, css_classes: [""] },
+    { answer: "", active: false, sensitive: true, css_classes: [""] },
+    { answer: "", active: false, sensitive: true, css_classes: [""] },
   ],
 };
 
@@ -39,14 +39,22 @@ const Answer = GObject.registerClass(
         GObject.ParamFlags.READWRITE,
         true
       ),
+      css_classes: GObject.ParamSpec.boxed(
+        "css-classes",
+        null,
+        null,
+        GObject.ParamFlags.READWRITE,
+        GObject.type_from_name("GStrv")
+      ),
     },
   },
   class extends GObject.Object {
-    constructor({ answer, active, sensitive }) {
+    constructor({ answer, active, sensitive, css_classes }) {
       super();
       this.answer = answer;
       this.active = active;
       this.sensitive = sensitive;
+      this.css_classes = css_classes;
     }
   }
 );
