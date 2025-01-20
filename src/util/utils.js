@@ -146,11 +146,12 @@ export async function fetchQuiz(category, difficulty) {
   }
 
   const count = getQuestionCount(quizCount, difficulty);
-  // Get maximum of 50 questions for the start
+  // FIXME: Getting a maximum of 50 questions at the moment
+  // Increase to get all questions and save them client side
   const quizCountForEachReq = getQuizCountForEachReq(count > 50 ? 50 : count);
   const quizUrl = `${BASE_URL}/api.php?category=${category}&difficulty=${difficulty}&token=${tokenData.token}`;
 
-  const urls = quizCountForEachReq.map((c) => `${quizUrl}&amount=${c}`);
+  const urls = quizCountForEachReq.map((url) => `${quizUrl}&amount=${url}`);
 
   const data = await Promise.all(
     urls.map(async (url) => {
