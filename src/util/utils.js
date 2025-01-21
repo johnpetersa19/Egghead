@@ -162,3 +162,38 @@ export async function fetchQuiz(category, difficulty) {
 
   return data.flat(1);
 }
+
+export function formatData(data) {
+  for (let i = 0; i < data.length; i++) {
+    const { correct_answer, incorrect_answers, question } = data[i];
+    incorrect_answers.push(correct_answer);
+
+    const answers = incorrect_answers.map((answer) => {
+      return {
+        answer: __LIB__.decode(answer),
+        active: false,
+        sensitive: true,
+        css_classes: [""],
+      };
+    });
+
+    const shuffledAnswers = shuffle(answers);
+    if (shuffledAnswers.length < 4) {
+      const answer = {
+        answer: "",
+        active: false,
+        sensitive: true,
+        css_classes: [""],
+      };
+
+      shuffledAnswers.push({ ...answer }, { ...answer });
+    }
+
+    data[i].answers = shuffledAnswers;
+    data[i].submit_button_sensitive = false;
+    data[i].question = __LIB__.decode(question);
+    data[i].correct_answer = __LIB__.decode(correct_answer);
+  }
+
+  return shuffle(data);
+}

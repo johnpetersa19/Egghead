@@ -6,6 +6,7 @@ export const initialQuiz = {
   category: "multiple",
   question: "",
   correct_answer: "",
+  submit_button_sensitive: false,
   answers: [
     { answer: "", active: false, sensitive: true, css_classes: [""] },
     { answer: "", active: false, sensitive: true, css_classes: [""] },
@@ -143,6 +144,13 @@ export const Quiz = GObject.registerClass(
         GObject.ParamFlags.READWRITE,
         ""
       ),
+      submit_button_sensitive: GObject.ParamSpec.boolean(
+        "submit_button_sensitive",
+        "submitButtonSensitive",
+        "Submit button is sensitive if a user has picked an answer but hasn't submitted",
+        GObject.ParamFlags.READWRITE,
+        false
+      ),
       answers: GObject.ParamSpec.object(
         "answers",
         "Answers",
@@ -160,6 +168,7 @@ export const Quiz = GObject.registerClass(
       this.category = quiz.category;
       this.question = quiz.question;
       this.correct_answer = quiz.correct_answer;
+      this.submit_button_sensitive = quiz.submit_button_sensitive
       this.answers = new Answers(quiz.answers);
     }
   }

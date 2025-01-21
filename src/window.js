@@ -2,29 +2,13 @@ import GObject from "gi://GObject";
 import Adw from "gi://Adw";
 import Gtk from "gi://Gtk";
 import Gio from "gi://Gio";
-import Soup from "gi://Soup";
 import GLib from "gi://GLib";
 
 import { Category } from "./category.js";
 import { triviaCategories } from "./util/data.js";
-import {
-  parseTriviaCategories,
-  shuffle,
-  fetchData,
-  fetchQuiz,
-  getQuestionCount,
-} from "./util/utils.js";
+import { parseTriviaCategories, fetchQuiz, formatData } from "./util/utils.js";
 import { Quiz, initialQuiz } from "./util/quiz.js";
 import { Page } from "./util/page.js";
-
-Gio._promisify(
-  Soup.Session.prototype,
-  "send_and_read_async",
-  "send_and_read_finish"
-);
-
-const httpSession = new Soup.Session();
-const BASE_URL = "https://opentdb.com";
 
 export const EggheadWindow = GObject.registerClass(
   {
@@ -99,14 +83,6 @@ export const EggheadWindow = GObject.registerClass(
       "easy",
       "medium",
       "hard",
-      // Multiple solutions
-      "multiple_solution_1",
-      "multiple_solution_2",
-      "multiple_solution_3",
-      "multiple_solution_4",
-      // Boolean solutions
-      "boolean_solution_1",
-      "boolean_solution_2",
     ],
   },
   class EggheadWindow extends Adw.ApplicationWindow {
@@ -167,7 +143,7 @@ export const EggheadWindow = GObject.registerClass(
             throw new Error("Failed to fetch data");
           }
 
-          const formattedData = this.formatData(data);
+          const formattedData = formatData(data);
 
           this.populateListStore(formattedData);
           this.setListViewModel();
@@ -178,6 +154,7 @@ export const EggheadWindow = GObject.registerClass(
           this.is_downloading = false;
         } catch (error) {
           console.error(err);
+          this.is_downloading = false;
           // Switch to error view. Be sure to implement it
         }
       });
@@ -250,16 +227,41 @@ export const EggheadWindow = GObject.registerClass(
         for (const id of otherIds) {
           this.quiz.answers[id].active = false;
         }
+        this.quiz.submit_button_sensitive = true;
       });
 
       const submitSolution = new Gio.SimpleAction({
         name: "submit-solution",
       });
       submitSolution.connect("activate", () => {
-        const props = ["answer_1", "answer_2", "answer_3", "answer_4"];
-        for (const prop of props) {
-          this.quiz.answers[prop].sensitive = false;
+        const answerIds = ["answer_1", "answer_2", "answer_3", "answer_4"];
+        let selectedAnswerId, correctAnswerId;
+        for (const answerId of answerIds) {
+          this.quiz.answers[answerId].sensitive = false;
+
+          if (this.quiz.answers[answerId].active) {
+            selectedAnswerId = answerId;
+          }
+
+          if (this.quiz.answers[answerId].answer === this.quiz.correct_answer) {
+            correctAnswerId = answerId;
+          }
         }
+
+        if (!selectedAnswerId || !correctAnswerId) {
+          throw new Error(
+            `Both ${selectedAnswerId} and ${correctAnswerId} should not be undefined`
+          );
+        }
+
+        if (selectedAnswerId === correctAnswerId) {
+          this.quiz.answers[selectedAnswerId].css_classes = ["success"];
+        } else {
+          this.quiz.answers[selectedAnswerId].css_classes = ["error"];
+          this.quiz.answers[correctAnswerId].css_classes = ["success"];
+        }
+
+        this.quiz.submit_button_sensitive = false;
       });
 
       this.add_action(toggleSidebar);
@@ -603,39 +605,6 @@ export const EggheadWindow = GObject.registerClass(
         Gtk.ListScrollFlags.FOCUS,
         null
       );
-    };
-
-    formatData = (data) => {
-      for (let i = 0; i < data.length; i++) {
-        const { correct_answer, incorrect_answers, question } = data[i];
-        incorrect_answers.push(correct_answer);
-
-        const answers = incorrect_answers.map((answer) => {
-          return {
-            answer: __LIB__.decode(answer),
-            active: false,
-            sensitive: true,
-            css_classes: [""],
-          };
-        });
-
-        const shuffledAnswers = shuffle(answers);
-        if (shuffledAnswers.length < 4) {
-          const answer = {
-            answer: "",
-            active: false,
-            sensitive: true,
-            css_classes: [""],
-          };
-
-          shuffledAnswers.push({ ...answer }, { ...answer });
-        }
-
-        data[i].answers = shuffledAnswers;
-        data[i].question = __LIB__.decode(question);
-      }
-
-      return shuffle(data);
     };
 
     populateListStore = (data) => {
