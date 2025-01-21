@@ -132,7 +132,6 @@ function getQuizCountForEachReq(totalQuiz) {
 export async function fetchQuiz(category, difficulty) {
   const tokenUrl = `${BASE_URL}/api_token.php?command=request`;
   const quizCountUrl = `${BASE_URL}/api_count.php?category=${category}`;
-  console.log("fetching data");
 
   const [tokenData, quizCount] = await Promise.all(
     [tokenUrl, quizCountUrl].map(async (url) => {

@@ -4,7 +4,7 @@
   <requires lib="Adw" version="1.5" />
   <template class="EggheadPreferencesDialog" parent="AdwPreferencesDialog">
     <property name="content_width">300</property>
-    <property name="content_height">500</property>
+    <property name="content_height">400</property>
     <property name="title" translatable="yes">Preferences</property>
     <property name="search-enabled">true</property>
     <property name="presentation-mode">floating</property>
@@ -79,23 +79,19 @@
         </child>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Difficulty Level</property>
-            <property name="description" translatable="yes">Set difficulty level</property>
+            <property name="title" translatable="yes">Quiz Settings</property>
+            <property name="description" translatable="yes">Change quiz settings</property>
             <child>
               <object class="AdwComboRow" id="difficulty_level">
                 <property name="enable-search">true</property>
-                <property name="title" translatable="yes">Select difficulty level</property>
+                <property name="title" translatable="yes">Difficulty Level</property>
+                <property name="subtitle" translatable="yes">Select default difficulty level</property>
               </object>
             </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Saved Quiz</property>
-            <property name="description" translatable="yes">Saved quiz settings</property>
             <child>
               <object class="AdwActionRow">
-                <property name="title" translatable="yes">Delete saved quiz</property>
+                <property name="title" translatable="yes">Delete Saved Quiz</property>
+                <property name="subtitle" translatable="yes">Delete all saved quiz</property>
                 <property name="activatable-widget">delete-saved-quiz</property>
                 <child>
                   <object class="GtkButton" id="delete-saved-quiz">
