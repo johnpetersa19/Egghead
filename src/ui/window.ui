@@ -10,6 +10,7 @@
     <property name="content">
       <object class="GtkWindowHandle">
         <child>
+        <!-- Main Stack -->
           <object class="GtkStack" id="main_stack">
             <property name="transition_type">crossfade</property>
             <child>

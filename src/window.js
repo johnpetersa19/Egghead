@@ -27,7 +27,11 @@ export const EggheadWindow = GObject.registerClass(
         "categoryId",
         "Selected Category ID",
         GObject.ParamFlags.READWRITE,
-        0
+        // This requires specifying min and max values
+        // for binding to work
+        0,
+        5000,
+        9
       ),
       is_downloading: GObject.ParamSpec.boolean(
         "is_downloading",
@@ -442,6 +446,13 @@ export const EggheadWindow = GObject.registerClass(
         "window-maximized",
         this,
         "maximized",
+        Gio.SettingsBindFlags.DEFAULT
+      );
+
+      this.settings.bind(
+        "category-id",
+        this,
+        "category_id",
         Gio.SettingsBindFlags.DEFAULT
       );
 

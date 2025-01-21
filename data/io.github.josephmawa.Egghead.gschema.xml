@@ -27,5 +27,11 @@
       </choices>
       <default>"mixed"</default>
     </key>
+    <key name="category-id" type="i">
+      <!-- For some reason integer types must have range specified or 
+      else the binding won't work -->
+      <range min="0" max="5000" />
+      <default>9</default>
+    </key>
   </schema>
 </schemalist>
