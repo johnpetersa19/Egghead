@@ -5,9 +5,16 @@
   <project_license>GPL-3.0-or-later</project_license>
 
   <name>Egghead</name>
-  <summary>Keep the summary shorter, between 10 and 35 characters</summary>
+  <summary>Learn while having fun</summary>
   <description>
-    <p>No description</p>
+    <p>A simple trivia app to enjoy in your free time</p>
+    <p>Below are the main features of Egghead:</p>
+    <ul>
+      <li>Download quiz</li>
+      <li>Save downloaded quiz</li>
+      <li>Delete saved quiz</li>
+      <li>Switch to dark, light, or system mode</li>
+    </ul>
   </description>
 
   <developer id="tld.vendor">
@@ -15,23 +22,23 @@
   </developer>
 
   <!-- Requered: Should be a link to the upstream homepage for the component -->
-  <url type="homepage">https://example.org/</url>
+  <url type="homepage">https://github.com/josephmawa/Egghead</url>
   <!-- Recommended: It is highly recommended for open-source projects to display the source code repository -->
-  <url type="vcs-browser">https://example.org/repository</url>
+  <url type="vcs-browser">https://github.com/josephmawa/Egghead</url>
   <!-- Should point to the software's bug tracking system, for users to report new bugs -->
-  <url type="bugtracker">https://example.org/issues</url>
+  <url type="bugtracker">https://github.com/josephmawa/Egghead/issues</url>
   <!-- Should link a FAQ page for this software, to answer some of the most-asked questions in detail -->
   <!-- URLs of this type should point to a webpage where users can submit or modify translations of the upstream project -->
-  <url type="translate">https://example.org/translate</url>
-  <url type="faq">https://example.org/faq</url>
+  <!-- <url type="translate">https://example.org/translate</url> -->
+  <!-- <url type="faq">https://example.org/faq</url> -->
   <!--Sould provide a web link to an online user's reference, a software manual or help page -->
-  <url type="help">https://example.org/help</url>
+  <!-- <url type="help">https://example.org/help</url> -->
   <!-- URLs of this type should point to a webpage showing information on how to donate to the described software project -->
-  <url type="donation">https://example.org/donate</url>
+  <!-- <url type="donation">https://example.org/donate</url> -->
   <!--This could for example be an HTTPS URL to an online form or a page describing how to contact the developer -->
-  <url type="contact">https://example.org/contact</url>
+  <!-- <url type="contact">https://example.org/contact</url> -->
   <!--URLs of this type should point to a webpage showing information on how to contribute to the described software project -->
-  <url type="contribute">https://example.org/contribute</url>
+  <url type="contribute">https://github.com/josephmawa/Egghead/blob/main/README.md#contributing</url>
 
   <translation type="gettext">egghead</translation>
   <!-- All graphical applications having a desktop file must have this tag in the MetaInfo.
@@ -48,24 +55,18 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://example.org/example1.png</image>
-      <caption>A caption</caption>
+      <image>https://raw.githubusercontent.com/josephmawa/Egghead/main/screenshots/egghead-dark-mode.png</image>
+      <caption>Egghead in dark mode</caption>
     </screenshot>
     <screenshot>
-      <image>https://example.org/example2.png</image>
-      <caption>A caption</caption>
+      <image>https://raw.githubusercontent.com/josephmawa/Egghead/main/screenshots/egghead-light-mode.png</image>
+      <caption>Egghead in light mode</caption>
     </screenshot>
   </screenshots>
-
   <releases>
-    <release version="1.0.1" date="2024-01-18">
-      <url type="details">https://example.org/changelog.html#version_1.0.1</url>
+    <release version="0.1.0" date="2024-01-18">
       <description translate="no">
-        <p>Release description</p>
-        <ul>
-          <li>List of changes</li>
-          <li>List of changes</li>
-        </ul>
+        <p>Initial release</p>
       </description>
     </release>
   </releases>

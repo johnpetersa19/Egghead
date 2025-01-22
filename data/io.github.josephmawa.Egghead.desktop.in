@@ -1,10 +1,11 @@
 [Desktop Entry]
-Name=egghead
+Name=Egghead
 Exec=io.github.josephmawa.Egghead
 Icon=io.github.josephmawa.Egghead
 Terminal=false
 Type=Application
-Categories=Utility;
-Keywords=GTK;
+Categories=GTK;GNOME;Education;Game;
+# Translators: These are search terms to find this application. Do NOT translate or localize the semicolons. The list MUST also end with a semicolon.
+Keywords=Trivia;Quiz;Learn;Knowledge;Education;Recreation;
 StartupNotify=true
 DBusActivatable=true
