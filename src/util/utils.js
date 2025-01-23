@@ -99,6 +99,7 @@ export async function fetchData(url) {
     return data;
   } catch (error) {
     console.error(error);
+    throw new Error(error);
   }
 }
 
@@ -130,36 +131,41 @@ function getQuizCountForEachReq(totalQuiz) {
 }
 
 export async function fetchQuiz(category, difficulty) {
-  const tokenUrl = `${BASE_URL}/api_token.php?command=request`;
-  const quizCountUrl = `${BASE_URL}/api_count.php?category=${category}`;
+  try {
+    const tokenUrl = `${BASE_URL}/api_token.php?command=request`;
+    const quizCountUrl = `${BASE_URL}/api_count.php?category=${category}`;
 
-  const [tokenData, quizCount] = await Promise.all(
-    [tokenUrl, quizCountUrl].map(async (url) => {
-      const responseData = await fetchData(url);
-      return responseData;
-    })
-  );
+    const [tokenData, quizCount] = await Promise.all(
+      [tokenUrl, quizCountUrl].map(async (url) => {
+        const responseData = await fetchData(url);
+        return responseData;
+      })
+    );
 
-  if (!tokenData || !quizCount) {
-    throw new Error("An error occurred while fetching token and quiz count");
+    if (!tokenData || !quizCount) {
+      throw new Error("An error occurred while fetching token and quiz count");
+    }
+
+    const count = getQuestionCount(quizCount, difficulty);
+    // FIXME: Getting a maximum of 50 questions at the moment
+    // Increase to get all questions and save them client side
+    const quizCountForEachReq = getQuizCountForEachReq(count > 50 ? 50 : count);
+    const quizUrl = `${BASE_URL}/api.php?category=${category}&difficulty=${difficulty}&token=${tokenData.token}`;
+
+    const urls = quizCountForEachReq.map((url) => `${quizUrl}&amount=${url}`);
+
+    const data = await Promise.all(
+      urls.map(async (url) => {
+        const data = await fetchData(url);
+        return data?.results ?? [];
+      })
+    );
+
+    return data.flat(1);
+  } catch (error) {
+    console.error(error)
+    throw new Error(error);
   }
-
-  const count = getQuestionCount(quizCount, difficulty);
-  // FIXME: Getting a maximum of 50 questions at the moment
-  // Increase to get all questions and save them client side
-  const quizCountForEachReq = getQuizCountForEachReq(count > 50 ? 50 : count);
-  const quizUrl = `${BASE_URL}/api.php?category=${category}&difficulty=${difficulty}&token=${tokenData.token}`;
-
-  const urls = quizCountForEachReq.map((url) => `${quizUrl}&amount=${url}`);
-
-  const data = await Promise.all(
-    urls.map(async (url) => {
-      const data = await fetchData(url);
-      return data?.results ?? [];
-    })
-  );
-
-  return data.flat(1);
 }
 
 export function formatData(data) {

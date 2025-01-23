@@ -10,7 +10,7 @@
     <property name="content">
       <object class="GtkWindowHandle">
         <child>
-        <!-- Main Stack -->
+          <!-- Main Stack -->
           <object class="GtkStack" id="main_stack">
             <property name="transition_type">crossfade</property>
             <child>
@@ -663,6 +663,7 @@
                                           </object>
                                         </child>
                                         <child>
+                                          <!-- Pagination UI -->
                                           <object class="AdwClamp">
                                             <property name="maximum-size">250</property>
                                             <property name="child">
@@ -711,8 +712,7 @@
                                                           <class name="border-radius" />
                                                         </style>
                                                         <property name="orientation">horizontal</property>
-                                                        <property name="show-separators">True</property>
-                                                        <property name="single-click-activate">True</property>
+                                                        <property name="single-click-activate">false</property>
                                                         <property name="model">
                                                           <object class="GtkSingleSelection" id="single_selection">
                                                             <property name="selected" bind-source="EggheadWindow" bind-property="selected" bind-flags="sync-create" />
@@ -776,6 +776,7 @@
               </object>
             </child>
             <child>
+              <!-- Download View -->
               <object class="GtkStackPage" id="download_view">
                 <property name="name">download_view</property>
                 <property name="child">
@@ -823,6 +824,90 @@
                           <object class="GtkLabel">
                             <property name="use-markup">True</property>
                             <property name="label" translatable="yes" context="TRANSLATORS: Only translate the text 'Downloading'">&lt;span font-weight=&quot;bold&quot;&gt;Downloading&lt;/span&gt;</property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <!-- Error View -->
+              <object class="GtkStackPage" id="error_view">
+                <property name="name">error_view</property>
+                <property name="child">
+                  <object class="AdwToolbarView">
+                    <child type="top">
+                      <object class="AdwHeaderBar">
+                        <property name="show-title">True</property>
+                        <property name="centering-policy">strict</property>
+                        <child type="start">
+                          <object class="GtkButton">
+                            <property name="icon-name">egghead-go-next-symbolic-rtl</property>
+                            <property name="tooltip-text" translatable="yes" context="Back to main screen">Back</property>
+                            <accessibility>
+                              <property name="label" translatable="yes" context="accessibility">Back</property>
+                            </accessibility>
+                            <property name="action-name">win.go-back</property>
+                          </object>
+                        </child>
+                        <property name="title-widget">
+                          <object class="AdwWindowTitle">
+                            <property name="title">Egghead</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <property name="content">
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="vexpand">true</property>
+                        <property name="margin-start">18</property>
+                        <property name="margin-end">18</property>
+                        <property name="margin-top">18</property>
+                        <property name="margin-bottom">18</property>
+                        <property name="spacing">18</property>
+                        <child>
+                          <object class="GtkExpander">
+                            <child type="label">
+                              <object class="GtkLabel">
+                                <property name="use-markup">true</property>
+                                <property name="label">&lt;span font-size=&quot;xx-large&quot; font-weight=&quot;bold&quot;&gt;Error&lt;/span&gt;</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="AdwClamp">
+                                <property name="maximum-size">250</property>
+                                <property name="child">
+                                  <object class="GtkScrolledWindow">
+                                    <property name="propagate_natural_height">true</property>
+                                    <property name="propagate_natural_width">true</property>
+                                    <property name="hscrollbar-policy">never</property>
+                                    <property name="max-content-width">200</property>
+                                    <property name="max-content-height">200</property>
+                                    <property name="has-frame">true</property>
+                                    <property name="child">
+                                      <object class="GtkLabel" id="error_message_label">
+                                        <property name="label">Unknow Error</property>
+                                        <property name="selectable">true</property>
+                                        <property name="use-markup">true</property>
+                                        <property name="xalign">0</property>
+                                        <property name="yalign">0</property>
+                                        <property name="wrap">true</property>
+                                        <property name="wrap-mode">word-char</property>
+                                        <property name="margin-bottom">6</property>
+                                        <property name="margin-start">6</property>
+                                        <property name="margin-end">6</property>
+                                        <property name="margin-top">6</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>

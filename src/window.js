@@ -27,8 +27,7 @@ export const EggheadWindow = GObject.registerClass(
         "categoryId",
         "Selected Category ID",
         GObject.ParamFlags.READWRITE,
-        // This requires specifying min and max values
-        // for binding to work
+        // This requires specifying min and max for binding to work
         0,
         5000,
         9
@@ -37,6 +36,13 @@ export const EggheadWindow = GObject.registerClass(
         "is_downloading",
         "isDownloading",
         "Is downloading quiz",
+        GObject.ParamFlags.READWRITE,
+        false
+      ),
+      has_error: GObject.ParamSpec.boolean(
+        "has_error",
+        "hasError",
+        "Has an error occurred?",
         GObject.ParamFlags.READWRITE,
         false
       ),
@@ -87,6 +93,8 @@ export const EggheadWindow = GObject.registerClass(
       "easy",
       "medium",
       "hard",
+      // Error
+      "error_message_label",
     ],
   },
   class EggheadWindow extends Adw.ApplicationWindow {
@@ -157,9 +165,8 @@ export const EggheadWindow = GObject.registerClass(
           this._difficulty_level_stack.visible_child_name = "quiz_session_view";
           this.is_downloading = false;
         } catch (error) {
-          console.error(err);
-          this.is_downloading = false;
-          // Switch to error view. Be sure to implement it
+          console.error(error);
+          this.setError(error.message);
         }
       });
 
@@ -195,6 +202,10 @@ export const EggheadWindow = GObject.registerClass(
           });
 
           alertDialog.present(this);
+        }
+
+        if (this.has_error) {
+          this.removeError();
         }
       });
 
@@ -238,34 +249,40 @@ export const EggheadWindow = GObject.registerClass(
         name: "submit-solution",
       });
       submitSolution.connect("activate", () => {
-        const answerIds = ["answer_1", "answer_2", "answer_3", "answer_4"];
-        let selectedAnswerId, correctAnswerId;
-        for (const answerId of answerIds) {
-          this.quiz.answers[answerId].sensitive = false;
+        try {
+          const answerIds = ["answer_1", "answer_2", "answer_3", "answer_4"];
+          let selectedAnswerId, correctAnswerId;
+          for (const answerId of answerIds) {
+            this.quiz.answers[answerId].sensitive = false;
 
-          if (this.quiz.answers[answerId].active) {
-            selectedAnswerId = answerId;
+            if (this.quiz.answers[answerId].active) {
+              selectedAnswerId = answerId;
+            }
+
+            if (
+              this.quiz.answers[answerId].answer === this.quiz.correct_answer
+            ) {
+              correctAnswerId = answerId;
+            }
           }
 
-          if (this.quiz.answers[answerId].answer === this.quiz.correct_answer) {
-            correctAnswerId = answerId;
+          if (!selectedAnswerId || !correctAnswerId) {
+            throw new Error(
+              `Both ${selectedAnswerId} and ${correctAnswerId} should not be undefined`
+            );
           }
-        }
 
-        if (!selectedAnswerId || !correctAnswerId) {
-          throw new Error(
-            `Both ${selectedAnswerId} and ${correctAnswerId} should not be undefined`
-          );
-        }
+          if (selectedAnswerId === correctAnswerId) {
+            this.quiz.answers[selectedAnswerId].css_classes = ["success"];
+          } else {
+            this.quiz.answers[selectedAnswerId].css_classes = ["error"];
+            this.quiz.answers[correctAnswerId].css_classes = ["success"];
+          }
 
-        if (selectedAnswerId === correctAnswerId) {
-          this.quiz.answers[selectedAnswerId].css_classes = ["success"];
-        } else {
-          this.quiz.answers[selectedAnswerId].css_classes = ["error"];
-          this.quiz.answers[correctAnswerId].css_classes = ["success"];
+          this.quiz.submit_button_sensitive = false;
+        } catch (error) {
+          this.setError(error.message);
         }
-
-        this.quiz.submit_button_sensitive = false;
       });
 
       this.add_action(toggleSidebar);
@@ -623,6 +640,18 @@ export const EggheadWindow = GObject.registerClass(
       for (const object of data) {
         this.quizStore.append(new Quiz(object));
       }
+    };
+
+    setError = (errorMessage) => {
+      this.has_error = true;
+      this._error_message_label.label = errorMessage;
+      this._main_stack.visible_child_name = "error_view";
+    };
+
+    removeError = () => {
+      this.has_error = false;
+      this._error_message_label.label = "";
+      this._main_stack.visible_child_name = "quiz_view";
     };
   }
 );
