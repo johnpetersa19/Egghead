@@ -4,6 +4,19 @@ data/io.github.josephmawa.Egghead.desktop.in
 data/io.github.josephmawa.Egghead.metainfo.xml.in
 data/io.github.josephmawa.Egghead.gschema.xml
 
+src/about.js
+src/application.js
+src/category.js
 src/main.js
+src/preferences.js
 src/window.js
-src/window.ui
+
+ui/help-overlay.ui
+ui/page.ui
+ui/preferences.ui
+ui/window.ui
+
+util/data.js
+util/page.js
+util/quiz.js
+util/utils.js
