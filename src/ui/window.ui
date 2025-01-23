@@ -678,22 +678,27 @@
                                                     <property name="valign">center</property>
                                                     <property name="halign">center</property>
                                                     <property name="spacing">2</property>
+                                                    <style>
+                                                      <class name="linked" />
+                                                    </style>
                                                     <child>
                                                       <object class="GtkButton" id="go_to_first_page_btn">
                                                         <property name="icon-name">egghead-go-first-symbolic</property>
                                                         <property name="action-name">win.go-to-first-page</property>
-                                                        <style>
-                                                          <class name="circular" />
-                                                        </style>
+                                                        <property name="tooltip-text" translatable="yes">First Question</property>
+                                                        <accessibility>
+                                                          <property name="label" translatable="yes" context="accessibility">First Question</property>
+                                                        </accessibility>
                                                       </object>
                                                     </child>
                                                     <child>
                                                       <object class="GtkButton" id="go_to_prev_page_btn">
                                                         <property name="icon-name">egghead-go-next-symbolic-rtl</property>
                                                         <property name="action-name">win.go-to-previous-page</property>
-                                                        <style>
-                                                          <class name="circular" />
-                                                        </style>
+                                                        <property name="tooltip-text" translatable="yes">Previous Question</property>
+                                                        <accessibility>
+                                                          <property name="label" translatable="yes" context="accessibility">Previous Question</property>
+                                                        </accessibility>
                                                       </object>
                                                     </child>
                                                   </object>
@@ -733,22 +738,27 @@
                                                     <property name="valign">center</property>
                                                     <property name="halign">center</property>
                                                     <property name="spacing">2</property>
+                                                    <style>
+                                                      <class name="linked" />
+                                                    </style>
                                                     <child>
                                                       <object class="GtkButton" id="go_to_next_page_btn">
                                                         <property name="icon-name">egghead-go-next-symbolic</property>
                                                         <property name="action-name">win.go-to-next-page</property>
-                                                        <style>
-                                                          <class name="circular" />
-                                                        </style>
+                                                        <property name="tooltip-text" translatable="yes">Next Question</property>
+                                                        <accessibility>
+                                                          <property name="label" translatable="yes" context="accessibility">Next Question</property>
+                                                        </accessibility>
                                                       </object>
                                                     </child>
                                                     <child>
                                                       <object class="GtkButton" id="go_to_last_page_btn">
                                                         <property name="icon-name">egghead-go-first-symbolic-rtl</property>
                                                         <property name="action-name">win.go-to-last-page</property>
-                                                        <style>
-                                                          <class name="circular" />
-                                                        </style>
+                                                        <property name="tooltip-text" translatable="yes">Last Question</property>
+                                                        <accessibility>
+                                                          <property name="label" translatable="yes" context="accessibility">Last Question</property>
+                                                        </accessibility>
                                                       </object>
                                                     </child>
                                                   </object>

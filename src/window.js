@@ -113,6 +113,7 @@ export const EggheadWindow = GObject.registerClass(
       this.setListViewModel();
       this.bindPaginationBtns();
       this.bindQuiz();
+      this.initCategoryNameProperty();
     }
 
     setSelectedCategory = (category) => {
@@ -611,7 +612,7 @@ export const EggheadWindow = GObject.registerClass(
       const numItems = this.quizStore.get_n_items();
 
       for (let i = 0; i < numItems; i++) {
-        store.append(new Page(i.toString()));
+        store.append(new Page((i + 1).toString()));
       }
 
       this._single_selection.model = store;
@@ -625,6 +626,28 @@ export const EggheadWindow = GObject.registerClass(
 
     initQuiz = () => {
       this.quiz = this.quizStore.get_item(this.selected);
+    };
+
+    initCategoryNameProperty = () => {
+      const categoryId = this.settings.get_value("category-id")?.unpack();
+
+      for (const category of this.triviaCategories) {
+        if (category.id === categoryId) {
+          this.category_name = category.name;
+          break;
+        }
+
+        if (category.hasChildren) {
+          const childCategory = category.children.find(
+            ({ id }) => id === categoryId
+          );
+
+          if (childCategory) {
+            this.category_name = childCategory.name;
+            break;
+          }
+        }
+      }
     };
 
     scrollTo = (position) => {

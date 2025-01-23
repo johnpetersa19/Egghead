@@ -163,7 +163,7 @@ export async function fetchQuiz(category, difficulty) {
 
     return data.flat(1);
   } catch (error) {
-    console.error(error)
+    console.error(error);
     throw new Error(error);
   }
 }
