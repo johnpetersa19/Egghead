@@ -46,6 +46,13 @@ export const EggheadWindow = GObject.registerClass(
         GObject.ParamFlags.READWRITE,
         false
       ),
+      game_on: GObject.ParamSpec.boolean(
+        "game_on",
+        "gameOn",
+        "Has started quiz",
+        GObject.ParamFlags.READWRITE,
+        false
+      ),
       selected: GObject.ParamSpec.int(
         "selected",
         "Selected",

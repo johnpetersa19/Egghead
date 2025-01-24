@@ -8,7 +8,8 @@ const aboutParams = {
   version: pkg.version,
   license_type: Gtk.License.LGPL_3_0,
   developers: ["Joseph Mawa"],
-  copyright: "Copyright © 2024 Joseph Mawa",
+  artists: ["Joseph Mawa"],
+  copyright: "Copyright © 2025 Joseph Mawa",
   ...__PROJECT_URLS__,
 };
 
