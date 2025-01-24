@@ -175,6 +175,7 @@ export const EggheadWindow = GObject.registerClass(
         } catch (error) {
           console.error(error);
           this.setError(error.message);
+          this.is_downloading = false;
         }
       });
 
@@ -182,7 +183,7 @@ export const EggheadWindow = GObject.registerClass(
         name: "go-back",
       });
       goBack.connect("activate", () => {
-        if (this._is_downloading) {
+        if (this.is_downloading) {
           const alertDialog = new Adw.AlertDialog({
             heading: _("Cancel Download"),
             body: _("Are you sure you want to cancel this download?"),
@@ -206,7 +207,7 @@ export const EggheadWindow = GObject.registerClass(
           alertDialog.connect("response", (_alertDialog, response) => {
             if (response === "close_dialog") return;
             this._main_stack.visible_child_name = "quiz_view";
-            this._is_downloading = false;
+            this.is_downloading = false;
           });
 
           alertDialog.present(this);
