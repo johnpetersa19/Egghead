@@ -150,7 +150,13 @@ export async function fetchQuiz(category, difficulty) {
     // FIXME: Getting a maximum of 50 questions at the moment
     // Increase to get all questions and save them client side
     const quizCountForEachReq = getQuizCountForEachReq(count > 50 ? 50 : count);
-    const quizUrl = `${BASE_URL}/api.php?category=${category}&difficulty=${difficulty}&token=${tokenData.token}`;
+    let quizUrl;
+
+    if (difficulty === "mixed") {
+      quizUrl = `${BASE_URL}/api.php?category=${category}&token=${tokenData.token}`;
+    } else {
+      quizUrl = `${BASE_URL}/api.php?category=${category}&difficulty=${difficulty}&token=${tokenData.token}`;
+    }
 
     const urls = quizCountForEachReq.map((url) => `${quizUrl}&amount=${url}`);
 

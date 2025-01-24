@@ -127,13 +127,6 @@
                             <property name="margin-top">18</property>
                             <property name="margin-bottom">18</property>
                             <property name="spacing">18</property>
-                            <!-- This image is a placeholder. It will be replaced -->
-                            <child>
-                              <object class="GtkImage">
-                                <property name="icon-name">clock-stopwatch-symbolic</property>
-                                <property name="pixel-size">84</property>
-                              </object>
-                            </child>
                             <child>
                               <object class="GtkLabel">
                                 <property name="label" bind-source="EggheadWindow" bind-property="category_name" bind-flags="sync-create" />
