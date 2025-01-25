@@ -6,9 +6,19 @@ import GLib from "gi://GLib";
 
 import { Category } from "./category.js";
 import { triviaCategories } from "./util/data.js";
-import { parseTriviaCategories, fetchQuiz, formatData } from "./util/utils.js";
+import {
+  parseTriviaCategories,
+  fetchQuiz,
+  formatData,
+  generateMetadata,
+} from "./util/utils.js";
 import { Quiz, initialQuiz } from "./util/quiz.js";
 import { Page } from "./util/page.js";
+
+function getFilePath(args) {
+  const DATA_DIR = GLib.get_user_data_dir();
+  return GLib.build_filenamev([DATA_DIR, "trivia", ...args]);
+}
 
 export const EggheadWindow = GObject.registerClass(
   {
@@ -121,6 +131,7 @@ export const EggheadWindow = GObject.registerClass(
       this.bindPaginationBtns();
       this.bindQuiz();
       this.initCategoryNameProperty();
+      this.getMetadata();
     }
 
     setSelectedCategory = (category) => {
@@ -723,6 +734,79 @@ export const EggheadWindow = GObject.registerClass(
       this.has_error = false;
       this._error_message_label.label = "";
       this._main_stack.visible_child_name = "quiz_view";
+    };
+
+    getMetadata = () => {
+      const filePath = getFilePath(["metadata.json"]);
+      let metaData = this.getSavedData(filePath);
+
+      if (Object.keys(metaData).length) {
+        this.metaData = metaData;
+        return;
+      }
+
+      metaData = generateMetadata(triviaCategories);
+      const flag = this.saveData(metaData, filePath);
+
+      if (flag) {
+        this.metaData = metaData;
+      } else {
+        console.log(_("Failed to save metadata"));
+      }
+    };
+
+    getSavedData = (filePath) => {
+      const file = Gio.File.new_for_path(filePath);
+      const path = file.get_path();
+      const fileExists = GLib.file_test(path, GLib.FileTest.EXISTS);
+
+      if (!fileExists) {
+        const data = [];
+        this.saveData(data, filePath);
+        return data;
+      }
+
+      const [success, arrBuff] = GLib.file_get_contents(path);
+
+      if (success) {
+        const decoder = new TextDecoder("utf-8");
+        const savedData = JSON.parse(decoder.decode(arrBuff));
+        return savedData;
+      } else {
+        console.log(_("Failed to read saved data"));
+        return [];
+      }
+    };
+
+    saveData = (data = [], filePath) => {
+      const file = Gio.File.new_for_path(filePath);
+      const path = file.get_parent().get_path();
+
+      // 0o777 is file permission, ugo+rwx, in numeric mode
+      const flag = GLib.mkdir_with_parents(path, 0o777);
+
+      if (flag === 0) {
+        const [success, tag] = file.replace_contents(
+          JSON.stringify(data),
+          null,
+          false,
+          Gio.FileCreateFlags.REPLACE_DESTINATION,
+          null
+        );
+
+        if (success) {
+          console.log(_("Successfully saved quiz to file"));
+          return true;
+        } else {
+          console.log(_("Failed to save quiz to file"));
+          return false;
+        }
+      }
+
+      if (flag === -1) {
+        console.log(_("An error occurred while creating directory"));
+        return false;
+      }
     };
   }
 );

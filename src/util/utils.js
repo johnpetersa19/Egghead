@@ -208,3 +208,20 @@ export function formatData(data) {
 
   return shuffle(data);
 }
+
+export function generateMetadata(categories) {
+  const metadata = {};
+  const difficulty = ["mixed", "easy", "medium", "hard"];
+
+  for (const category of categories) {
+    const difficultyObject = {};
+
+    for (const d of difficulty) {
+      difficultyObject[d] = { updatedOn: 0, saved: false };
+    }
+
+    metadata[category.id] = difficultyObject;
+  }
+
+  return metadata;
+}
