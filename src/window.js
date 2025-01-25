@@ -155,6 +155,7 @@ export const EggheadWindow = GObject.registerClass(
         try {
           this._main_stack.visible_child_name = "download_view";
           this.is_downloading = true;
+          this.selected = 0;
 
           const difficultyLevel = this.settings.get_string("difficulty");
 
@@ -168,6 +169,7 @@ export const EggheadWindow = GObject.registerClass(
           this.populateListStore(formattedData);
           this.setListViewModel();
           this.initQuiz();
+          this.bindPaginationBtns();
 
           this._main_stack.visible_child_name = "quiz_view";
           this._difficulty_level_stack.visible_child_name = "quiz_session_view";
@@ -177,6 +179,7 @@ export const EggheadWindow = GObject.registerClass(
           console.error(error);
           this.setError(error.message);
           this.is_downloading = false;
+          this.game_on = false;
         }
       });
 
