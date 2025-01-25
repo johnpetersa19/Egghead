@@ -172,6 +172,7 @@ export const EggheadWindow = GObject.registerClass(
           this._main_stack.visible_child_name = "quiz_view";
           this._difficulty_level_stack.visible_child_name = "quiz_session_view";
           this.is_downloading = false;
+          this.game_on = true;
         } catch (error) {
           console.error(error);
           this.setError(error.message);
@@ -350,11 +351,47 @@ export const EggheadWindow = GObject.registerClass(
     };
 
     activateCategory(listView, position) {
-      const model = listView.model;
-      const selectedItem = model?.selected_item?.item;
+      if (this.game_on) {
+        const alertDialog = new Adw.AlertDialog({
+          heading: _("Quiz in session"),
+          body: _("Are you sure you want to cancel this quiz?"),
+          default_response: "cancel_quiz",
+          close_response: "close_dialog",
+          presentation_mode: "floating",
+        });
 
-      if (selectedItem) {
-        this.setSelectedCategory(selectedItem);
+        alertDialog.add_response("cancel_quiz", _("Cancel"));
+        alertDialog.add_response("close_dialog", _("Close"));
+
+        alertDialog.set_response_appearance(
+          "cancel_quiz",
+          Adw.ResponseAppearance.DESTRUCTIVE
+        );
+        alertDialog.set_response_appearance(
+          "close_dialog",
+          Adw.ResponseAppearance.SUGGESTED
+        );
+
+        alertDialog.connect("response", (_alertDialog, response) => {
+          if (response === "close_dialog") return;
+          const model = listView.model;
+          const selectedItem = model?.selected_item?.item;
+
+          if (selectedItem) {
+            this.setSelectedCategory(selectedItem);
+            this.game_on = false;
+          }
+        });
+
+        alertDialog.present(this);
+      } else {
+        const model = listView.model;
+        const selectedItem = model?.selected_item?.item;
+
+        if (selectedItem) {
+          this.setSelectedCategory(selectedItem);
+          this.game_on = false;
+        }
       }
     }
 
