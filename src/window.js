@@ -11,6 +11,7 @@ import {
   fetchQuiz,
   formatData,
   generateMetadata,
+  shuffle,
 } from "./util/utils.js";
 import { Quiz, initialQuiz } from "./util/quiz.js";
 import { Page } from "./util/page.js";
@@ -169,13 +170,34 @@ export const EggheadWindow = GObject.registerClass(
           this.selected = 0;
 
           const difficultyLevel = this.settings.get_string("difficulty");
+          const metaData = this.metaData[this.category_id][difficultyLevel];
 
-          const data = await fetchQuiz(this.category_id, difficultyLevel);
-          if (data.length === 0) {
-            throw new Error("Failed to fetch data");
+          let formattedData;
+          const filePath = getFilePath([
+            this.category_id.toString(),
+            difficultyLevel,
+            "data.json",
+          ]);
+
+          if (metaData.saved) {
+            const data = this.getSavedData(filePath);
+            formattedData = shuffle(data);
+          } else {
+            const data = await fetchQuiz(this.category_id, difficultyLevel);
+            if (data.length === 0) {
+              throw new Error("Failed to fetch data");
+            }
+
+            metaData.saved = true;
+            metaData.updatedOn = Date.now();
+            this.metaData[this.category_id][difficultyLevel] = metaData;
+
+            formattedData = formatData(data);
+            this.saveData(formattedData, filePath);
+
+            const metaDataFilePath = getFilePath(["metadata.json"]);
+            this.saveData(this.metaData, metaDataFilePath);
           }
-
-          const formattedData = formatData(data);
 
           this.populateListStore(formattedData);
           this.setListViewModel();
