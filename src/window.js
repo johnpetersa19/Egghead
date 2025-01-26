@@ -267,7 +267,29 @@ export const EggheadWindow = GObject.registerClass(
         name: "delete-saved-quiz",
       });
       deleteSavedQuiz.connect("activate", () => {
-        console.log("deleted saved quiz");
+        const metaData = Object.keys(this.metaData);
+
+        for (const key of metaData) {
+          const difficulties = Object.keys(this.metaData[key]);
+          for (const difficulty of difficulties) {
+            const metaDataObj = this.metaData[key][difficulty];
+            if (metaDataObj.saved) {
+              const filePath = getFilePath([
+                key.toString(),
+                difficulty,
+                "data.json",
+              ]);
+
+              this.deleteSavedData(filePath);
+              metaDataObj.saved = false;
+              metaDataObj.updatedOn = 0;
+              this.metaData[key][difficulty] = metaDataObj;
+            }
+          }
+        }
+
+        const metaDataFilePath = getFilePath(["metadata.json"]);
+        this.saveData(this.metaData, metaDataFilePath);
       });
 
       const pickAnswer = new Gio.SimpleAction({
@@ -828,6 +850,41 @@ export const EggheadWindow = GObject.registerClass(
       if (flag === -1) {
         console.log(_("An error occurred while creating directory"));
         return false;
+      }
+    };
+
+    deleteSavedData = (path) => {
+      const file = Gio.File.new_for_path(path);
+      const filePath = file.get_path();
+
+      const fileExists = GLib.file_test(filePath, GLib.FileTest.EXISTS);
+      if (!fileExists) {
+        console.log(_("%s doesn't exist".format(filePath)));
+        throw new Error("%s doesn't exist".format(filePath));
+      }
+
+      const innerDirPath = file.get_parent()?.get_path();
+      const outerDirPath = file.get_parent()?.get_parent().get_path();
+
+      const fileDeleteFlag = file.delete(null);
+      if (fileDeleteFlag) {
+        console.log(_("Deleted %s successfully").format(filePath));
+      } else {
+        throw new Error("Failed to delete %s".format(filePath));
+      }
+
+      const innerDirDeleteFlag = GLib.rmdir(innerDirPath);
+      if (innerDirDeleteFlag === 0) {
+        console.log(_("Deleted %s successfully").format(innerDirPath));
+      } else {
+        throw new Error("Failed to delete %s".format(innerDirPath));
+      }
+
+      const outerDeleteflag = GLib.rmdir(outerDirPath);
+      if (outerDeleteflag === 0)
+        console.log(_("Deleted %s successfully").format(outerDirPath));
+      else {
+        console.log("Failed to delete %s".format(outerDirPath));
       }
     };
   }
