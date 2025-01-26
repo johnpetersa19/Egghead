@@ -55,12 +55,20 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/josephmawa/Egghead/main/screenshots/egghead-dark-mode.png</image>
-      <caption>Egghead in dark mode</caption>
+      <image>https://raw.githubusercontent.com/josephmawa/Egghead/main/screenshots/egghead-difficulty-view-light.png</image>
+      <caption>Egghead difficulty view in light mode</caption>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/josephmawa/Egghead/main/screenshots/egghead-light-mode.png</image>
-      <caption>Egghead in light mode</caption>
+      <image>https://raw.githubusercontent.com/josephmawa/Egghead/main/screenshots/egghead-difficulty-view-dark.png</image>
+      <caption>Egghead difficulty view in dark mode</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/josephmawa/Egghead/main/screenshots/egghead-quiz-view-light.png</image>
+      <caption>Egghead quiz view in light mode</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/josephmawa/Egghead/main/screenshots/egghead-quiz-view-dark.png</image>
+      <caption>Egghead quiz view in dark mode</caption>
     </screenshot>
   </screenshots>
   <releases>

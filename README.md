@@ -3,18 +3,23 @@
   <img src="./data/icons/hicolor/scalable/apps/io.github.josephmawa.Egghead.svg" alt="Egghead" width="128" height="128"/>
 </div>
 <h1 align="center">Egghead</h1>
-<p align="center"><b>Remain knowledgeable by attempting a variety of quiz categories</b></p>
+<p align="center"><b>Learn while having fun</b></p>
 <div align="center">
   <a href="https://flathub.org/apps/io.github.josephmawa.Egghead">
     <img width="240" alt="Get it on Flathub" src="https://flathub.org/api/badge?locale=en"/>
   </a>
 </div>
 <p align="center">
-  <img src="./screenshots/egghead-dark-mode.png" alt="Egghead in dark mode" width="734" height="690"/>
+  <img src="./screenshots/egghead-difficulty-view-light.png" alt="Egghead difficulty view in light mode" width="820" height="710"/>
 </p>
-
 <p align="center">
-  <img src="./screenshots/egghead-light-mode.png" alt="Egghead in light mode" width="734" height="690"/>
+  <img src="./screenshots/egghead-difficulty-view-dark.png" alt="Egghead difficulty view in dark mode" width="820" height="710"/>
+</p>
+<p align="center">
+  <img src="./screenshots/egghead-quiz-view-light.png" alt="Egghead quiz view in light mode" width="820" height="710"/>
+</p>
+<p align="center">
+  <img src="./screenshots/egghead-quiz-view-dark.png" alt="Egghead quiz view in dark mode" width="820" height="710"/>
 </p>
 
 <!-- markdownlint-enable -->
