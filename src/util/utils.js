@@ -225,3 +225,10 @@ export function generateMetadata(categories) {
 
   return metadata;
 }
+
+export function getCustomFilter(string) {
+  return (item) => {
+    if (item.hasChildren) return true;
+    return item.name.toLocaleLowerCase().includes(string);
+  };
+}

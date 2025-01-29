@@ -12,6 +12,7 @@ import {
   formatData,
   generateMetadata,
   shuffle,
+  getCustomFilter,
 } from "./util/utils.js";
 import { Quiz, initialQuiz } from "./util/quiz.js";
 import { Page } from "./util/page.js";
@@ -454,7 +455,15 @@ export const EggheadWindow = GObject.registerClass(
     }
 
     handleSearch(searchEntry) {
-      this.stringFilter.set_search(searchEntry.text);
+      const tree = this._list_view.model.model;
+      const searchText = searchEntry.text.toLocaleLowerCase().trim();
+
+      if (!searchText) {
+        tree.autoexpand = false;
+      } else {
+        tree.autoexpand = true;
+      }
+      this.customFilter.set_filter_func(getCustomFilter(searchText));
     }
 
     createSidebar = () => {
@@ -465,21 +474,21 @@ export const EggheadWindow = GObject.registerClass(
         store.append(new Category(category));
       }
 
-      const propExpression = Gtk.PropertyExpression.new(Category, null, "name");
-      const stringFilter = Gtk.StringFilter.new(propExpression);
-      const filter = Gtk.FilterListModel.new(store, stringFilter);
+      const customFilter = Gtk.CustomFilter.new(null);
+      const filter = Gtk.FilterListModel.new(store, customFilter);
 
-      this.stringFilter = stringFilter;
+      this.customFilter = customFilter;
 
       const tree = Gtk.TreeListModel.new(filter, false, false, (item) => {
         if (!item.hasChildren) return null;
 
-        const store = Gio.ListStore.new(Category);
+        const nestedStore = Gio.ListStore.new(Category);
+        const nestedModel = Gtk.FilterListModel.new(nestedStore, customFilter);
         for (const category of item.children) {
-          store.append(new Category(category));
+          nestedModel.model.append(new Category(category));
         }
 
-        return store;
+        return nestedModel;
       });
 
       const selection = Gtk.SingleSelection.new(tree);
