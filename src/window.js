@@ -268,29 +268,57 @@ export const EggheadWindow = GObject.registerClass(
         name: "delete-saved-quiz",
       });
       deleteSavedQuiz.connect("activate", () => {
-        const metaData = Object.keys(this.metaData);
+        const alertDialog = new Adw.AlertDialog({
+          heading: _("Delete Saved Quiz"),
+          body: _(
+            "Are you sure you want to delete all the saved quiz? This action is irreversible."
+          ),
+          default_response: "delete_saved_quiz",
+          close_response: "close_dialog",
+          presentation_mode: "floating",
+        });
 
-        for (const key of metaData) {
-          const difficulties = Object.keys(this.metaData[key]);
-          for (const difficulty of difficulties) {
-            const metaDataObj = this.metaData[key][difficulty];
-            if (metaDataObj.saved) {
-              const filePath = getFilePath([
-                key.toString(),
-                difficulty,
-                "data.json",
-              ]);
+        alertDialog.add_response("delete_saved_quiz", _("Delete"));
+        alertDialog.add_response("close_dialog", _("Close"));
 
-              this.deleteSavedData(filePath);
-              metaDataObj.saved = false;
-              metaDataObj.updatedOn = 0;
-              this.metaData[key][difficulty] = metaDataObj;
+        alertDialog.set_response_appearance(
+          "delete_saved_quiz",
+          Adw.ResponseAppearance.DESTRUCTIVE
+        );
+        alertDialog.set_response_appearance(
+          "close_dialog",
+          Adw.ResponseAppearance.SUGGESTED
+        );
+
+        alertDialog.connect("response", (_alertDialog, response) => {
+          if (response === "close_dialog") return;
+
+          const metaData = Object.keys(this.metaData);
+
+          for (const key of metaData) {
+            const difficulties = Object.keys(this.metaData[key]);
+            for (const difficulty of difficulties) {
+              const metaDataObj = this.metaData[key][difficulty];
+              if (metaDataObj.saved) {
+                const filePath = getFilePath([
+                  key.toString(),
+                  difficulty,
+                  "data.json",
+                ]);
+
+                this.deleteSavedData(filePath);
+                metaDataObj.saved = false;
+                metaDataObj.updatedOn = 0;
+                this.metaData[key][difficulty] = metaDataObj;
+              }
             }
           }
-        }
 
-        const metaDataFilePath = getFilePath(["metadata.json"]);
-        this.saveData(this.metaData, metaDataFilePath);
+          const metaDataFilePath = getFilePath(["metadata.json"]);
+          this.saveData(this.metaData, metaDataFilePath);
+        });
+
+        alertDialog.present(this);
       });
 
       const pickAnswer = new Gio.SimpleAction({
@@ -463,7 +491,7 @@ export const EggheadWindow = GObject.registerClass(
       } else {
         tree.autoexpand = true;
       }
-      
+
       this.customFilter.set_filter_func(getCustomFilter(searchText));
     }
 
