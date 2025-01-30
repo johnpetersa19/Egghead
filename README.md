@@ -60,6 +60,7 @@ combination to run the project after opening it in GNOME builder. You can also
  ## Translation
 
  The quiz is sourced from [Open Trivia Database](https://opentdb.com/) in English.
+ Even if the app UI is translated, the quiz will still remain in English.
  Therefore, I don't think it makes sense to translate the app.
 
 ## License
