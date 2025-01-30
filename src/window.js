@@ -456,13 +456,14 @@ export const EggheadWindow = GObject.registerClass(
 
     handleSearch(searchEntry) {
       const tree = this._list_view.model.model;
-      const searchText = searchEntry.text.toLocaleLowerCase().trim();
+      const searchText = searchEntry.text.trim().toLocaleLowerCase();
 
       if (!searchText) {
         tree.autoexpand = false;
       } else {
         tree.autoexpand = true;
       }
+      
       this.customFilter.set_filter_func(getCustomFilter(searchText));
     }
 
