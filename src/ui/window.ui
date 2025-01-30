@@ -819,8 +819,9 @@
                         <property name="margin-bottom">18</property>
                         <property name="spacing">18</property>
                         <child>
-                          <object class="GtkSpinner">
-                            <property name="spinning">True</property>
+                          <object class="AdwSpinner">
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
                             <property name="height-request">24</property>
                             <property name="width-request">24</property>
                           </object>
