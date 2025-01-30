@@ -8,107 +8,798 @@
     <property name="default-width">800</property>
     <property name="default-height">600</property>
     <property name="content">
-      <object class="GtkWindowHandle">
+      <object class="AdwToastOverlay" id="toast_overlay">
         <child>
-          <!-- Main Stack -->
-          <object class="GtkStack" id="main_stack">
-            <property name="transition_type">crossfade</property>
+          <object class="GtkWindowHandle">
             <child>
-              <object class="GtkStackPage" id="quiz_view">
-                <property name="name">quiz_view</property>
-                <property name="child">
-                  <object class="AdwOverlaySplitView" id="split_view">
-                    <property name="max-sidebar-width">330</property>
-                    <property name="sidebar-width-fraction">0.4</property>
-                    <!-- Sidebar -->
-                    <property name="sidebar">
-                      <object class="AdwToolbarView">
-                        <child type="top">
-                          <object class="AdwHeaderBar">
-                            <child type="start">
-                              <object class="GtkToggleButton" id="search_button">
-                                <property name="icon-name">egghead-system-search-symbolic</property>
-                                <property name="valign">center</property>
-                                <property name="tooltip-text" translatable="yes">Search Categories</property>
-                                <property name="action-name">win.enable-search-mode</property>
+              <!-- Main Stack -->
+              <object class="GtkStack" id="main_stack">
+                <property name="transition_type">crossfade</property>
+                <child>
+                  <object class="GtkStackPage" id="quiz_view">
+                    <property name="name">quiz_view</property>
+                    <property name="child">
+                      <object class="AdwOverlaySplitView" id="split_view">
+                        <property name="max-sidebar-width">330</property>
+                        <property name="sidebar-width-fraction">0.4</property>
+                        <!-- Sidebar -->
+                        <property name="sidebar">
+                          <object class="AdwToolbarView">
+                            <child type="top">
+                              <object class="AdwHeaderBar">
+                                <child type="start">
+                                  <object class="GtkToggleButton" id="search_button">
+                                    <property name="icon-name">egghead-system-search-symbolic</property>
+                                    <property name="valign">center</property>
+                                    <property name="tooltip-text" translatable="yes">Search Categories</property>
+                                    <property name="action-name">win.enable-search-mode</property>
+                                  </object>
+                                </child>
+                                <property name="title-widget">
+                                  <object class="GtkLabel">
+                                    <property name="ellipsize">end</property>
+                                    <property name="label" translatable="yes">Categories</property>
+                                    <style>
+                                      <class name="heading" />
+                                    </style>
+                                  </object>
+                                </property>
+                                <child type="end">
+                                  <object class="GtkMenuButton">
+                                    <property name="icon-name">egghead-open-menu-symbolic</property>
+                                    <property name="menu-model">primary_menu</property>
+                                    <property name="primary">true</property>
+                                    <property name="tooltip-text" translatable="yes">Primary Menu</property>
+                                    <accessibility>
+                                      <property name="label" translatable="yes" context="accessibility">Primary menu</property>
+                                    </accessibility>
+                                  </object>
+                                </child>
                               </object>
                             </child>
-                            <property name="title-widget">
-                              <object class="GtkLabel">
-                                <property name="ellipsize">end</property>
-                                <property name="label" translatable="yes">Categories</property>
-                                <style>
-                                  <class name="heading" />
-                                </style>
-                              </object>
-                            </property>
-                            <child type="end">
-                              <object class="GtkMenuButton">
-                                <property name="icon-name">egghead-open-menu-symbolic</property>
-                                <property name="menu-model">primary_menu</property>
-                                <property name="primary">true</property>
-                                <property name="tooltip-text" translatable="yes">Primary Menu</property>
-                                <accessibility>
-                                  <property name="label" translatable="yes" context="accessibility">Primary menu</property>
-                                </accessibility>
+                            <child type="top">
+                              <object class="GtkSearchBar" id="search_bar">
+                                <property name="child">
+                                  <object class="GtkSearchEntry">
+                                    <property name="placeholder-text" translatable="yes">Search categories</property>
+                                    <property name="hexpand">true</property>
+                                    <signal
+                                      name="search-changed"
+                                      handler="handleSearch"
+                                      object="EggheadWindow"
+                                      swapped="no" />
+                                    <accessibility>
+                                      <property name="label" translatable="yes" context="a11y">Search</property>
+                                      <property name="description" translatable="yes" context="a11y">Type to search categories</property>
+                                    </accessibility>
+                                  </object>
+                                </property>
                               </object>
                             </child>
-                          </object>
-                        </child>
-                        <child type="top">
-                          <object class="GtkSearchBar" id="search_bar">
-                            <property name="child">
-                              <object class="GtkSearchEntry">
-                                <property name="placeholder-text" translatable="yes">Search categories</property>
-                                <property name="hexpand">true</property>
-                                <signal
-                                  name="search-changed"
-                                  handler="handleSearch"
-                                  object="EggheadWindow"
-                                  swapped="no" />
-                                <accessibility>
-                                  <property name="label" translatable="yes" context="a11y">Search</property>
-                                  <property name="description" translatable="yes" context="a11y">Type to search categories</property>
-                                </accessibility>
-                              </object>
-                            </property>
-                          </object>
-                        </child>
-                        <property name="content">
-                          <object class="GtkScrolledWindow">
-                            <property name="hscrollbar-policy">never</property>
-                            <property name="vscrollbar-policy">automatic</property>
-                            <property name="propagate-natural-height">true</property>
-                            <property name="vexpand">true</property>
-                            <property name="child">
-                              <object class="GtkListView" id="list_view">
-                                <property name="single-click-activate">true</property>
+                            <property name="content">
+                              <object class="GtkScrolledWindow">
+                                <property name="hscrollbar-policy">never</property>
+                                <property name="vscrollbar-policy">automatic</property>
+                                <property name="propagate-natural-height">true</property>
                                 <property name="vexpand">true</property>
-                                <style>
-                                  <class name="navigation-sidebar" />
-                                </style>
-                                <signal name="activate" handler="activateCategory" object="EggheadWindow" swapped="no" />
+                                <property name="child">
+                                  <object class="GtkListView" id="list_view">
+                                    <property name="single-click-activate">true</property>
+                                    <property name="vexpand">true</property>
+                                    <style>
+                                      <class name="navigation-sidebar" />
+                                    </style>
+                                    <signal name="activate" handler="activateCategory" object="EggheadWindow" swapped="no" />
+                                  </object>
+                                </property>
+                              </object>
+                            </property>
+                          </object>
+                        </property>
+                        <!-- Content -->
+                        <property name="content">
+                          <object class="AdwToolbarView">
+                            <child type="top">
+                              <object class="AdwHeaderBar">
+                                <property name="show-title">True</property>
+                                <property name="centering-policy">strict</property>
+                                <child type="start">
+                                  <object class="GtkToggleButton">
+                                    <property name="icon-name">egghead-sidebar-show-right-symbolic-rtl</property>
+                                    <property name="tooltip-text" translatable="yes" context="Navigate back to the main screen">Toggle Sidebar</property>
+                                    <accessibility>
+                                      <property name="label" translatable="yes" context="accessibility">Toggle Sidebar</property>
+                                    </accessibility>
+                                    <property name="action-name">win.toggle-sidebar</property>
+                                  </object>
+                                </child>
+                                <property name="title-widget">
+                                  <object class="AdwWindowTitle">
+                                    <property name="title">Egghead</property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <property name="content">
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                                <property name="vexpand">true</property>
+                                <property name="margin-start">18</property>
+                                <property name="margin-end">18</property>
+                                <property name="margin-top">18</property>
+                                <property name="margin-bottom">18</property>
+                                <property name="spacing">18</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="label" bind-source="EggheadWindow" bind-property="category_name" bind-flags="sync-create" />
+                                    <style>
+                                      <class name="title-1" />
+                                    </style>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwClamp">
+                                    <property name="maximum-size">50</property>
+                                    <property name="tightening-threshold">50</property>
+                                    <property name="child">
+                                      <object class="GtkSeparator">
+                                        <property name="orientation">horizontal</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkStack" id="difficulty_level_stack">
+                                    <property name="transition_type">crossfade</property>
+                                    <child>
+                                      <object class="GtkStackPage" id="category_view">
+                                        <property name="name">category_view</property>
+                                        <property name="child">
+                                          <object class="GtkLabel">
+                                            <property name="use-markup">True</property>
+                                            <property name="label">&lt;span font-weight=&quot;bold&quot;&gt;Select category to continue&lt;/span&gt;</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkStackPage" id="sub_category_view">
+                                        <property name="name">sub_category_view</property>
+                                        <property name="child">
+                                          <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <property name="halign">center</property>
+                                            <property name="valign">center</property>
+                                            <property name="vexpand">true</property>
+                                            <property name="spacing">18</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="use-markup">True</property>
+                                                <property name="label">&lt;span font-weight=&quot;bold&quot;&gt;Select Difficulty&lt;/span&gt;</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="AdwClamp">
+                                                <property name="maximum-size">200</property>
+                                                <property name="tightening-threshold">200</property>
+                                                <property name="child">
+                                                  <object class="AdwPreferencesGroup">
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="activatable_widget">mixed</property>
+                                                        <property name="title" translatable="yes">Mixed</property>
+                                                        <child type="prefix">
+                                                          <object class="GtkCheckButton" id="mixed">
+                                                            <property name="valign">center</property>
+                                                            <property name="active">True</property>
+                                                            <property name="action-name">win.select-difficulty</property>
+                                                            <property name="action-target">'mixed'</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="activatable_widget">easy</property>
+                                                        <property name="title" translatable="yes">Easy</property>
+                                                        <child type="prefix">
+                                                          <object class="GtkCheckButton" id="easy">
+                                                            <property name="group">mixed</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="action-name">win.select-difficulty</property>
+                                                            <property name="action-target">'easy'</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="activatable_widget">medium</property>
+                                                        <property name="title" translatable="yes">Medium</property>
+                                                        <child type="prefix">
+                                                          <object class="GtkCheckButton" id="medium">
+                                                            <property name="group">mixed</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="action-name">win.select-difficulty</property>
+                                                            <property name="action-target">'medium'</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="activatable_widget">hard</property>
+                                                        <property name="title" translatable="yes">Hard</property>
+                                                        <child type="prefix">
+                                                          <object class="GtkCheckButton" id="hard">
+                                                            <property name="group">mixed</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="action-name">win.select-difficulty</property>
+                                                            <property name="action-target">'hard'</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton">
+                                                <property name="label" translatable="yes" context="Start quiz">Start</property>
+                                                <property name="halign">center</property>
+                                                <style>
+                                                  <class name="suggested-action" />
+                                                </style>
+                                                <property name="action-name">win.start-quiz</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkStackPage" id="quiz_session_view">
+                                        <property name="name">quiz_session_view</property>
+                                        <property name="child">
+                                          <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <property name="halign">center</property>
+                                            <property name="valign">center</property>
+                                            <property name="vexpand">true</property>
+                                            <property name="spacing">18</property>
+                                            <child>
+                                              <!-- NOTE - FIXME: This is to prevent the GtkLabel element from increasing in width.
+                                        Without AdwClamp, the GtkLabel element will be as wide as the screen size.
+                                        Setting the width-request property doesn't do anything. Be sure to implement this for
+                                        the entire quiz page  -->
+                                              <object class="AdwClamp">
+                                                <property name="maximum-size">300</property>
+                                                <property name="tightening-threshold">300</property>
+                                                <property name="child">
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="AdwPreferencesGroup">
+                                                        <property name="title" translatable="yes">Question</property>
+                                                        <child>
+                                                          <object class="AdwPreferencesRow">
+                                                            <style>
+                                                              <class name="padding" />
+                                                            </style>
+                                                            <child>
+                                                              <object class="GtkLabel" id="question">
+                                                                <property name="wrap">true</property>
+                                                                <property name="halign">start</property>
+                                                                <property name="use-markup">true</property>
+                                                                <binding name="label">
+                                                                  <lookup name="question" type="Quiz">
+                                                                    <lookup name="quiz">EggheadWindow</lookup>
+                                                                  </lookup>
+                                                                </binding>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkStack">
+                                                        <property name="transition-type">crossfade</property>
+                                                        <binding name="visible-child-name">
+                                                          <lookup name="type" type="Quiz">
+                                                            <lookup name="quiz">EggheadWindow</lookup>
+                                                          </lookup>
+                                                        </binding>
+                                                        <child>
+                                                          <object class="GtkStackPage">
+                                                            <property name="name">multiple</property>
+                                                            <property name="child">
+                                                              <object class="AdwPreferencesGroup" id="multiple_solutions">
+                                                                <property name="title" translatable="yes">Solutions</property>
+                                                                <child>
+                                                                  <object class="AdwPreferencesRow">
+                                                                    <style>
+                                                                      <class name="padding" />
+                                                                    </style>
+                                                                    <child>
+                                                                      <object class="GtkCheckButton" id="multiple_solution_1">
+                                                                        <binding name="label">
+                                                                          <lookup name="answer" type="Answer">
+                                                                            <lookup name="answer_1" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="active">
+                                                                          <lookup name="active" type="Answer">
+                                                                            <lookup name="answer_1" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="sensitive">
+                                                                          <lookup name="sensitive" type="Answer">
+                                                                            <lookup name="answer_1" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="css-classes">
+                                                                          <lookup name="css_classes" type="Answer">
+                                                                            <lookup name="answer_1" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <property name="action-name">win.pick-answer</property>
+                                                                        <property name="action-target">'answer_1'</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                                <child>
+                                                                  <object class="AdwPreferencesRow">
+                                                                    <style>
+                                                                      <class name="padding" />
+                                                                    </style>
+                                                                    <child>
+                                                                      <object class="GtkCheckButton" id="multiple_solution_2">
+                                                                        <property name="group">multiple_solution_1</property>
+                                                                        <binding name="label">
+                                                                          <lookup name="answer" type="Answer">
+                                                                            <lookup name="answer_2" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="active">
+                                                                          <lookup name="active" type="Answer">
+                                                                            <lookup name="answer_2" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="sensitive">
+                                                                          <lookup name="sensitive" type="Answer">
+                                                                            <lookup name="answer_2" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="css-classes">
+                                                                          <lookup name="css_classes" type="Answer">
+                                                                            <lookup name="answer_2" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <property name="action-name">win.pick-answer</property>
+                                                                        <property name="action-target">'answer_2'</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                                <child>
+                                                                  <object class="AdwPreferencesRow">
+                                                                    <style>
+                                                                      <class name="padding" />
+                                                                    </style>
+                                                                    <child>
+                                                                      <object class="GtkCheckButton" id="multiple_solution_3">
+                                                                        <property name="group">multiple_solution_1</property>
+                                                                        <binding name="label">
+                                                                          <lookup name="answer" type="Answer">
+                                                                            <lookup name="answer_3" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="active">
+                                                                          <lookup name="active" type="Answer">
+                                                                            <lookup name="answer_3" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="sensitive">
+                                                                          <lookup name="sensitive" type="Answer">
+                                                                            <lookup name="answer_3" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="css-classes">
+                                                                          <lookup name="css_classes" type="Answer">
+                                                                            <lookup name="answer_3" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <property name="action-name">win.pick-answer</property>
+                                                                        <property name="action-target">'answer_3'</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                                <child>
+                                                                  <object class="AdwPreferencesRow">
+                                                                    <style>
+                                                                      <class name="padding" />
+                                                                    </style>
+                                                                    <child>
+                                                                      <object class="GtkCheckButton" id="multiple_solution_4">
+                                                                        <property name="group">multiple_solution_1</property>
+                                                                        <binding name="label">
+                                                                          <lookup name="answer" type="Answer">
+                                                                            <lookup name="answer_4" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="active">
+                                                                          <lookup name="active" type="Answer">
+                                                                            <lookup name="answer_4" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="sensitive">
+                                                                          <lookup name="sensitive" type="Answer">
+                                                                            <lookup name="answer_4" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="css-classes">
+                                                                          <lookup name="css_classes" type="Answer">
+                                                                            <lookup name="answer_4" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <property name="action-name">win.pick-answer</property>
+                                                                        <property name="action-target">'answer_4'</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </property>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkStackPage">
+                                                            <property name="name">boolean</property>
+                                                            <property name="child">
+                                                              <object class="AdwPreferencesGroup" id="boolean_solutions">
+                                                                <property name="title" translatable="yes">Solutions</property>
+                                                                <child>
+                                                                  <object class="AdwPreferencesRow">
+                                                                    <style>
+                                                                      <class name="padding" />
+                                                                    </style>
+                                                                    <child>
+                                                                      <object class="GtkCheckButton" id="boolean_solution_1">
+                                                                        <binding name="label">
+                                                                          <lookup name="answer" type="Answer">
+                                                                            <lookup name="answer_1" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="active">
+                                                                          <lookup name="active" type="Answer">
+                                                                            <lookup name="answer_1" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="sensitive">
+                                                                          <lookup name="sensitive" type="Answer">
+                                                                            <lookup name="answer_1" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="css-classes">
+                                                                          <lookup name="css_classes" type="Answer">
+                                                                            <lookup name="answer_1" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <property name="action-name">win.pick-answer</property>
+                                                                        <property name="action-target">'answer_1'</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                                <child>
+                                                                  <object class="AdwPreferencesRow">
+                                                                    <style>
+                                                                      <class name="padding" />
+                                                                    </style>
+                                                                    <child>
+                                                                      <object class="GtkCheckButton" id="boolean_solution_2">
+                                                                        <property name="group">boolean_solution_1</property>
+                                                                        <binding name="label">
+                                                                          <lookup name="answer" type="Answer">
+                                                                            <lookup name="answer_2" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="active">
+                                                                          <lookup name="active" type="Answer">
+                                                                            <lookup name="answer_2" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="sensitive">
+                                                                          <lookup name="sensitive" type="Answer">
+                                                                            <lookup name="answer_2" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <binding name="css-classes">
+                                                                          <lookup name="css_classes" type="Answer">
+                                                                            <lookup name="answer_2" type="Answers">
+                                                                              <lookup name="answers" type="Quiz">
+                                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                                              </lookup>
+                                                                            </lookup>
+                                                                          </lookup>
+                                                                        </binding>
+                                                                        <property name="action-name">win.pick-answer</property>
+                                                                        <property name="action-target">'answer_2'</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <property name="orientation">horizontal</property>
+                                                        <property name="hexpand">true</property>
+                                                        <property name="halign">start</property>
+                                                        <property name="margin-top">18</property>
+                                                        <child>
+                                                          <object class="GtkButton">
+                                                            <property name="label" translatable="yes">Submit</property>
+                                                            <property name="action-name">win.submit-solution</property>
+                                                            <binding name="sensitive">
+                                                              <lookup name="submit_button_sensitive" type="Quiz">
+                                                                <lookup name="quiz">EggheadWindow</lookup>
+                                                              </lookup>
+                                                            </binding>
+                                                            <style>
+                                                              <class name="suggested-action" />
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <!-- Pagination UI -->
+                                              <object class="AdwClamp">
+                                                <property name="maximum-size">250</property>
+                                                <property name="child">
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">horizontal</property>
+                                                    <property name="valign">center</property>
+                                                    <property name="halign">center</property>
+                                                    <property name="spacing">18</property>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <property name="orientation">horizontal</property>
+                                                        <property name="valign">center</property>
+                                                        <property name="halign">center</property>
+                                                        <property name="spacing">2</property>
+                                                        <style>
+                                                          <class name="linked" />
+                                                        </style>
+                                                        <child>
+                                                          <object class="GtkButton" id="go_to_first_page_btn">
+                                                            <property name="icon-name">egghead-go-first-symbolic</property>
+                                                            <property name="action-name">win.go-to-first-page</property>
+                                                            <property name="tooltip-text" translatable="yes">First Question</property>
+                                                            <accessibility>
+                                                              <property name="label" translatable="yes" context="accessibility">First Question</property>
+                                                            </accessibility>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkButton" id="go_to_prev_page_btn">
+                                                            <property name="icon-name">egghead-go-next-symbolic-rtl</property>
+                                                            <property name="action-name">win.go-to-previous-page</property>
+                                                            <property name="tooltip-text" translatable="yes">Previous Question</property>
+                                                            <accessibility>
+                                                              <property name="label" translatable="yes" context="accessibility">Previous Question</property>
+                                                            </accessibility>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkScrolledWindow">
+                                                        <property name="propagate_natural_height">true</property>
+                                                        <property name="propagate_natural_width">true</property>
+                                                        <property name="hscrollbar-policy">always</property>
+                                                        <property name="max-content-width">200</property>
+                                                        <property name="max-content-height">15</property>
+                                                        <child>
+                                                          <object class="GtkListView" id="pagination_list_view">
+                                                            <style>
+                                                              <class name="frame" />
+                                                              <class name="border-radius" />
+                                                            </style>
+                                                            <property name="orientation">horizontal</property>
+                                                            <property name="single-click-activate">false</property>
+                                                            <property name="model">
+                                                              <object class="GtkSingleSelection" id="single_selection">
+                                                                <property name="selected" bind-source="EggheadWindow" bind-property="selected" bind-flags="sync-create" />
+                                                              </object>
+                                                            </property>
+                                                            <property name="factory">
+                                                              <object class="GtkBuilderListItemFactory">
+                                                                <property name="resource">/io/github/josephmawa/Egghead/page.ui</property>
+                                                              </object>
+                                                            </property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <property name="orientation">horizontal</property>
+                                                        <property name="valign">center</property>
+                                                        <property name="halign">center</property>
+                                                        <property name="spacing">2</property>
+                                                        <style>
+                                                          <class name="linked" />
+                                                        </style>
+                                                        <child>
+                                                          <object class="GtkButton" id="go_to_next_page_btn">
+                                                            <property name="icon-name">egghead-go-next-symbolic</property>
+                                                            <property name="action-name">win.go-to-next-page</property>
+                                                            <property name="tooltip-text" translatable="yes">Next Question</property>
+                                                            <accessibility>
+                                                              <property name="label" translatable="yes" context="accessibility">Next Question</property>
+                                                            </accessibility>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkButton" id="go_to_last_page_btn">
+                                                            <property name="icon-name">egghead-go-first-symbolic-rtl</property>
+                                                            <property name="action-name">win.go-to-last-page</property>
+                                                            <property name="tooltip-text" translatable="yes">Last Question</property>
+                                                            <accessibility>
+                                                              <property name="label" translatable="yes" context="accessibility">Last Question</property>
+                                                            </accessibility>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <!-- Gtk emits the warning below when this property is placed before the GtkStackPage it references.
+                          Child name 'category_view' not found in GtkStack -->
+                                    <!-- <property name="visible-child-name">category_view</property> -->
+                                    <property name="visible-child-name">quiz_session_view</property>
+                                  </object>
+                                </child>
                               </object>
                             </property>
                           </object>
                         </property>
                       </object>
                     </property>
-                    <!-- Content -->
-                    <property name="content">
+                  </object>
+                </child>
+                <child>
+                  <!-- Download View -->
+                  <object class="GtkStackPage" id="download_view">
+                    <property name="name">download_view</property>
+                    <property name="child">
                       <object class="AdwToolbarView">
                         <child type="top">
                           <object class="AdwHeaderBar">
                             <property name="show-title">True</property>
                             <property name="centering-policy">strict</property>
                             <child type="start">
-                              <object class="GtkToggleButton">
-                                <property name="icon-name">egghead-sidebar-show-right-symbolic-rtl</property>
-                                <property name="tooltip-text" translatable="yes" context="Navigate back to the main screen">Toggle Sidebar</property>
+                              <object class="GtkButton">
+                                <property name="icon-name">egghead-go-next-symbolic-rtl</property>
+                                <property name="tooltip-text" translatable="yes" context="Back to main screen">Back</property>
                                 <accessibility>
-                                  <property name="label" translatable="yes" context="accessibility">Toggle Sidebar</property>
+                                  <property name="label" translatable="yes" context="accessibility">Back</property>
                                 </accessibility>
-                                <property name="action-name">win.toggle-sidebar</property>
+                                <property name="action-name">win.go-back</property>
                               </object>
                             </child>
                             <property name="title-widget">
@@ -130,646 +821,17 @@
                             <property name="margin-bottom">18</property>
                             <property name="spacing">18</property>
                             <child>
+                              <object class="AdwSpinner">
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                                <property name="height-request">24</property>
+                                <property name="width-request">24</property>
+                              </object>
+                            </child>
+                            <child>
                               <object class="GtkLabel">
-                                <property name="label" bind-source="EggheadWindow" bind-property="category_name" bind-flags="sync-create" />
-                                <style>
-                                  <class name="title-1" />
-                                </style>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwClamp">
-                                <property name="maximum-size">50</property>
-                                <property name="tightening-threshold">50</property>
-                                <property name="child">
-                                  <object class="GtkSeparator">
-                                    <property name="orientation">horizontal</property>
-                                  </object>
-                                </property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkStack" id="difficulty_level_stack">
-                                <property name="transition_type">crossfade</property>
-                                <child>
-                                  <object class="GtkStackPage" id="category_view">
-                                    <property name="name">category_view</property>
-                                    <property name="child">
-                                      <object class="GtkLabel">
-                                        <property name="use-markup">True</property>
-                                        <property name="label">&lt;span font-weight=&quot;bold&quot;&gt;Select category to continue&lt;/span&gt;</property>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkStackPage" id="sub_category_view">
-                                    <property name="name">sub_category_view</property>
-                                    <property name="child">
-                                      <object class="GtkBox">
-                                        <property name="orientation">vertical</property>
-                                        <property name="halign">center</property>
-                                        <property name="valign">center</property>
-                                        <property name="vexpand">true</property>
-                                        <property name="spacing">18</property>
-                                        <child>
-                                          <object class="GtkLabel">
-                                            <property name="use-markup">True</property>
-                                            <property name="label">&lt;span font-weight=&quot;bold&quot;&gt;Select Difficulty&lt;/span&gt;</property>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="AdwClamp">
-                                            <property name="maximum-size">200</property>
-                                            <property name="tightening-threshold">200</property>
-                                            <property name="child">
-                                              <object class="AdwPreferencesGroup">
-                                                <child>
-                                                  <object class="AdwActionRow">
-                                                    <property name="activatable_widget">mixed</property>
-                                                    <property name="title" translatable="yes">Mixed</property>
-                                                    <child type="prefix">
-                                                      <object class="GtkCheckButton" id="mixed">
-                                                        <property name="valign">center</property>
-                                                        <property name="active">True</property>
-                                                        <property name="action-name">win.select-difficulty</property>
-                                                        <property name="action-target">'mixed'</property>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="AdwActionRow">
-                                                    <property name="activatable_widget">easy</property>
-                                                    <property name="title" translatable="yes">Easy</property>
-                                                    <child type="prefix">
-                                                      <object class="GtkCheckButton" id="easy">
-                                                        <property name="group">mixed</property>
-                                                        <property name="valign">center</property>
-                                                        <property name="action-name">win.select-difficulty</property>
-                                                        <property name="action-target">'easy'</property>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="AdwActionRow">
-                                                    <property name="activatable_widget">medium</property>
-                                                    <property name="title" translatable="yes">Medium</property>
-                                                    <child type="prefix">
-                                                      <object class="GtkCheckButton" id="medium">
-                                                        <property name="group">mixed</property>
-                                                        <property name="valign">center</property>
-                                                        <property name="action-name">win.select-difficulty</property>
-                                                        <property name="action-target">'medium'</property>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="AdwActionRow">
-                                                    <property name="activatable_widget">hard</property>
-                                                    <property name="title" translatable="yes">Hard</property>
-                                                    <child type="prefix">
-                                                      <object class="GtkCheckButton" id="hard">
-                                                        <property name="group">mixed</property>
-                                                        <property name="valign">center</property>
-                                                        <property name="action-name">win.select-difficulty</property>
-                                                        <property name="action-target">'hard'</property>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                              </object>
-                                            </property>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkButton">
-                                            <property name="label" translatable="yes" context="Start quiz">Start</property>
-                                            <property name="halign">center</property>
-                                            <style>
-                                              <class name="suggested-action" />
-                                            </style>
-                                            <property name="action-name">win.start-quiz</property>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkStackPage" id="quiz_session_view">
-                                    <property name="name">quiz_session_view</property>
-                                    <property name="child">
-                                      <object class="GtkBox">
-                                        <property name="orientation">vertical</property>
-                                        <property name="halign">center</property>
-                                        <property name="valign">center</property>
-                                        <property name="vexpand">true</property>
-                                        <property name="spacing">18</property>
-                                        <child>
-                                          <!-- NOTE - FIXME: This is to prevent the GtkLabel element from increasing in width.
-                                        Without AdwClamp, the GtkLabel element will be as wide as the screen size.
-                                        Setting the width-request property doesn't do anything. Be sure to implement this for
-                                        the entire quiz page  -->
-                                          <object class="AdwClamp">
-                                            <property name="maximum-size">300</property>
-                                            <property name="tightening-threshold">300</property>
-                                            <property name="child">
-                                              <object class="GtkBox">
-                                                <property name="orientation">vertical</property>
-                                                <child>
-                                                  <object class="AdwPreferencesGroup">
-                                                    <property name="title" translatable="yes">Question</property>
-                                                    <child>
-                                                      <object class="AdwPreferencesRow">
-                                                        <style>
-                                                          <class name="padding" />
-                                                        </style>
-                                                        <child>
-                                                          <object class="GtkLabel" id="question">
-                                                            <property name="wrap">true</property>
-                                                            <property name="halign">start</property>
-                                                            <property name="use-markup">true</property>
-                                                            <binding name="label">
-                                                              <lookup name="question" type="Quiz">
-                                                                <lookup name="quiz">EggheadWindow</lookup>
-                                                              </lookup>
-                                                            </binding>
-                                                          </object>
-                                                        </child>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkStack">
-                                                    <property name="transition-type">crossfade</property>
-                                                    <binding name="visible-child-name">
-                                                      <lookup name="type" type="Quiz">
-                                                        <lookup name="quiz">EggheadWindow</lookup>
-                                                      </lookup>
-                                                    </binding>
-                                                    <child>
-                                                      <object class="GtkStackPage">
-                                                        <property name="name">multiple</property>
-                                                        <property name="child">
-                                                          <object class="AdwPreferencesGroup" id="multiple_solutions">
-                                                            <property name="title" translatable="yes">Solutions</property>
-                                                            <child>
-                                                              <object class="AdwPreferencesRow">
-                                                                <style>
-                                                                  <class name="padding" />
-                                                                </style>
-                                                                <child>
-                                                                  <object class="GtkCheckButton" id="multiple_solution_1">
-                                                                    <binding name="label">
-                                                                      <lookup name="answer" type="Answer">
-                                                                        <lookup name="answer_1" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="active">
-                                                                      <lookup name="active" type="Answer">
-                                                                        <lookup name="answer_1" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="sensitive">
-                                                                      <lookup name="sensitive" type="Answer">
-                                                                        <lookup name="answer_1" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="css-classes">
-                                                                      <lookup name="css_classes" type="Answer">
-                                                                        <lookup name="answer_1" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <property name="action-name">win.pick-answer</property>
-                                                                    <property name="action-target">'answer_1'</property>
-                                                                  </object>
-                                                                </child>
-                                                              </object>
-                                                            </child>
-                                                            <child>
-                                                              <object class="AdwPreferencesRow">
-                                                                <style>
-                                                                  <class name="padding" />
-                                                                </style>
-                                                                <child>
-                                                                  <object class="GtkCheckButton" id="multiple_solution_2">
-                                                                    <property name="group">multiple_solution_1</property>
-                                                                    <binding name="label">
-                                                                      <lookup name="answer" type="Answer">
-                                                                        <lookup name="answer_2" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="active">
-                                                                      <lookup name="active" type="Answer">
-                                                                        <lookup name="answer_2" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="sensitive">
-                                                                      <lookup name="sensitive" type="Answer">
-                                                                        <lookup name="answer_2" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="css-classes">
-                                                                      <lookup name="css_classes" type="Answer">
-                                                                        <lookup name="answer_2" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <property name="action-name">win.pick-answer</property>
-                                                                    <property name="action-target">'answer_2'</property>
-                                                                  </object>
-                                                                </child>
-                                                              </object>
-                                                            </child>
-                                                            <child>
-                                                              <object class="AdwPreferencesRow">
-                                                                <style>
-                                                                  <class name="padding" />
-                                                                </style>
-                                                                <child>
-                                                                  <object class="GtkCheckButton" id="multiple_solution_3">
-                                                                    <property name="group">multiple_solution_1</property>
-                                                                    <binding name="label">
-                                                                      <lookup name="answer" type="Answer">
-                                                                        <lookup name="answer_3" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="active">
-                                                                      <lookup name="active" type="Answer">
-                                                                        <lookup name="answer_3" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="sensitive">
-                                                                      <lookup name="sensitive" type="Answer">
-                                                                        <lookup name="answer_3" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="css-classes">
-                                                                      <lookup name="css_classes" type="Answer">
-                                                                        <lookup name="answer_3" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <property name="action-name">win.pick-answer</property>
-                                                                    <property name="action-target">'answer_3'</property>
-                                                                  </object>
-                                                                </child>
-                                                              </object>
-                                                            </child>
-                                                            <child>
-                                                              <object class="AdwPreferencesRow">
-                                                                <style>
-                                                                  <class name="padding" />
-                                                                </style>
-                                                                <child>
-                                                                  <object class="GtkCheckButton" id="multiple_solution_4">
-                                                                    <property name="group">multiple_solution_1</property>
-                                                                    <binding name="label">
-                                                                      <lookup name="answer" type="Answer">
-                                                                        <lookup name="answer_4" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="active">
-                                                                      <lookup name="active" type="Answer">
-                                                                        <lookup name="answer_4" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="sensitive">
-                                                                      <lookup name="sensitive" type="Answer">
-                                                                        <lookup name="answer_4" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="css-classes">
-                                                                      <lookup name="css_classes" type="Answer">
-                                                                        <lookup name="answer_4" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <property name="action-name">win.pick-answer</property>
-                                                                    <property name="action-target">'answer_4'</property>
-                                                                  </object>
-                                                                </child>
-                                                              </object>
-                                                            </child>
-                                                          </object>
-                                                        </property>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkStackPage">
-                                                        <property name="name">boolean</property>
-                                                        <property name="child">
-                                                          <object class="AdwPreferencesGroup" id="boolean_solutions">
-                                                            <property name="title" translatable="yes">Solutions</property>
-                                                            <child>
-                                                              <object class="AdwPreferencesRow">
-                                                                <style>
-                                                                  <class name="padding" />
-                                                                </style>
-                                                                <child>
-                                                                  <object class="GtkCheckButton" id="boolean_solution_1">
-                                                                    <binding name="label">
-                                                                      <lookup name="answer" type="Answer">
-                                                                        <lookup name="answer_1" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="active">
-                                                                      <lookup name="active" type="Answer">
-                                                                        <lookup name="answer_1" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="sensitive">
-                                                                      <lookup name="sensitive" type="Answer">
-                                                                        <lookup name="answer_1" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="css-classes">
-                                                                      <lookup name="css_classes" type="Answer">
-                                                                        <lookup name="answer_1" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <property name="action-name">win.pick-answer</property>
-                                                                    <property name="action-target">'answer_1'</property>
-                                                                  </object>
-                                                                </child>
-                                                              </object>
-                                                            </child>
-                                                            <child>
-                                                              <object class="AdwPreferencesRow">
-                                                                <style>
-                                                                  <class name="padding" />
-                                                                </style>
-                                                                <child>
-                                                                  <object class="GtkCheckButton" id="boolean_solution_2">
-                                                                    <property name="group">boolean_solution_1</property>
-                                                                    <binding name="label">
-                                                                      <lookup name="answer" type="Answer">
-                                                                        <lookup name="answer_2" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="active">
-                                                                      <lookup name="active" type="Answer">
-                                                                        <lookup name="answer_2" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="sensitive">
-                                                                      <lookup name="sensitive" type="Answer">
-                                                                        <lookup name="answer_2" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <binding name="css-classes">
-                                                                      <lookup name="css_classes" type="Answer">
-                                                                        <lookup name="answer_2" type="Answers">
-                                                                          <lookup name="answers" type="Quiz">
-                                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                                          </lookup>
-                                                                        </lookup>
-                                                                      </lookup>
-                                                                    </binding>
-                                                                    <property name="action-name">win.pick-answer</property>
-                                                                    <property name="action-target">'answer_2'</property>
-                                                                  </object>
-                                                                </child>
-                                                              </object>
-                                                            </child>
-                                                          </object>
-                                                        </property>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkBox">
-                                                    <property name="orientation">horizontal</property>
-                                                    <property name="hexpand">true</property>
-                                                    <property name="halign">start</property>
-                                                    <property name="margin-top">18</property>
-                                                    <child>
-                                                      <object class="GtkButton">
-                                                        <property name="label" translatable="yes">Submit</property>
-                                                        <property name="action-name">win.submit-solution</property>
-                                                        <binding name="sensitive">
-                                                          <lookup name="submit_button_sensitive" type="Quiz">
-                                                            <lookup name="quiz">EggheadWindow</lookup>
-                                                          </lookup>
-                                                        </binding>
-                                                        <style>
-                                                          <class name="suggested-action" />
-                                                        </style>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                              </object>
-                                            </property>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <!-- Pagination UI -->
-                                          <object class="AdwClamp">
-                                            <property name="maximum-size">250</property>
-                                            <property name="child">
-                                              <object class="GtkBox">
-                                                <property name="orientation">horizontal</property>
-                                                <property name="valign">center</property>
-                                                <property name="halign">center</property>
-                                                <property name="spacing">18</property>
-                                                <child>
-                                                  <object class="GtkBox">
-                                                    <property name="orientation">horizontal</property>
-                                                    <property name="valign">center</property>
-                                                    <property name="halign">center</property>
-                                                    <property name="spacing">2</property>
-                                                    <style>
-                                                      <class name="linked" />
-                                                    </style>
-                                                    <child>
-                                                      <object class="GtkButton" id="go_to_first_page_btn">
-                                                        <property name="icon-name">egghead-go-first-symbolic</property>
-                                                        <property name="action-name">win.go-to-first-page</property>
-                                                        <property name="tooltip-text" translatable="yes">First Question</property>
-                                                        <accessibility>
-                                                          <property name="label" translatable="yes" context="accessibility">First Question</property>
-                                                        </accessibility>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkButton" id="go_to_prev_page_btn">
-                                                        <property name="icon-name">egghead-go-next-symbolic-rtl</property>
-                                                        <property name="action-name">win.go-to-previous-page</property>
-                                                        <property name="tooltip-text" translatable="yes">Previous Question</property>
-                                                        <accessibility>
-                                                          <property name="label" translatable="yes" context="accessibility">Previous Question</property>
-                                                        </accessibility>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkScrolledWindow">
-                                                    <property name="propagate_natural_height">true</property>
-                                                    <property name="propagate_natural_width">true</property>
-                                                    <property name="hscrollbar-policy">always</property>
-                                                    <property name="max-content-width">200</property>
-                                                    <property name="max-content-height">15</property>
-                                                    <child>
-                                                      <object class="GtkListView" id="pagination_list_view">
-                                                        <style>
-                                                          <class name="frame" />
-                                                          <class name="border-radius" />
-                                                        </style>
-                                                        <property name="orientation">horizontal</property>
-                                                        <property name="single-click-activate">false</property>
-                                                        <property name="model">
-                                                          <object class="GtkSingleSelection" id="single_selection">
-                                                            <property name="selected" bind-source="EggheadWindow" bind-property="selected" bind-flags="sync-create" />
-                                                          </object>
-                                                        </property>
-                                                        <property name="factory">
-                                                          <object class="GtkBuilderListItemFactory">
-                                                            <property name="resource">/io/github/josephmawa/Egghead/page.ui</property>
-                                                          </object>
-                                                        </property>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkBox">
-                                                    <property name="orientation">horizontal</property>
-                                                    <property name="valign">center</property>
-                                                    <property name="halign">center</property>
-                                                    <property name="spacing">2</property>
-                                                    <style>
-                                                      <class name="linked" />
-                                                    </style>
-                                                    <child>
-                                                      <object class="GtkButton" id="go_to_next_page_btn">
-                                                        <property name="icon-name">egghead-go-next-symbolic</property>
-                                                        <property name="action-name">win.go-to-next-page</property>
-                                                        <property name="tooltip-text" translatable="yes">Next Question</property>
-                                                        <accessibility>
-                                                          <property name="label" translatable="yes" context="accessibility">Next Question</property>
-                                                        </accessibility>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkButton" id="go_to_last_page_btn">
-                                                        <property name="icon-name">egghead-go-first-symbolic-rtl</property>
-                                                        <property name="action-name">win.go-to-last-page</property>
-                                                        <property name="tooltip-text" translatable="yes">Last Question</property>
-                                                        <accessibility>
-                                                          <property name="label" translatable="yes" context="accessibility">Last Question</property>
-                                                        </accessibility>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                              </object>
-                                            </property>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </child>
-                                <!-- Gtk emits the warning below when this property is placed before the GtkStackPage it references.
-                          Child name 'category_view' not found in GtkStack -->
-                                <!-- <property name="visible-child-name">category_view</property> -->
-                                <property name="visible-child-name">quiz_session_view</property>
+                                <property name="use-markup">True</property>
+                                <property name="label" translatable="yes" context="TRANSLATORS: Only translate the text 'Downloading'">&lt;span font-weight=&quot;bold&quot;&gt;Downloading&lt;/span&gt;</property>
                               </object>
                             </child>
                           </object>
@@ -777,149 +839,91 @@
                       </object>
                     </property>
                   </object>
-                </property>
-              </object>
-            </child>
-            <child>
-              <!-- Download View -->
-              <object class="GtkStackPage" id="download_view">
-                <property name="name">download_view</property>
-                <property name="child">
-                  <object class="AdwToolbarView">
-                    <child type="top">
-                      <object class="AdwHeaderBar">
-                        <property name="show-title">True</property>
-                        <property name="centering-policy">strict</property>
-                        <child type="start">
-                          <object class="GtkButton">
-                            <property name="icon-name">egghead-go-next-symbolic-rtl</property>
-                            <property name="tooltip-text" translatable="yes" context="Back to main screen">Back</property>
-                            <accessibility>
-                              <property name="label" translatable="yes" context="accessibility">Back</property>
-                            </accessibility>
-                            <property name="action-name">win.go-back</property>
+                </child>
+                <child>
+                  <!-- Error View -->
+                  <object class="GtkStackPage" id="error_view">
+                    <property name="name">error_view</property>
+                    <property name="child">
+                      <object class="AdwToolbarView">
+                        <child type="top">
+                          <object class="AdwHeaderBar">
+                            <property name="show-title">True</property>
+                            <property name="centering-policy">strict</property>
+                            <child type="start">
+                              <object class="GtkButton">
+                                <property name="icon-name">egghead-go-next-symbolic-rtl</property>
+                                <property name="tooltip-text" translatable="yes" context="Back to main screen">Back</property>
+                                <accessibility>
+                                  <property name="label" translatable="yes" context="accessibility">Back</property>
+                                </accessibility>
+                                <property name="action-name">win.go-back</property>
+                              </object>
+                            </child>
+                            <property name="title-widget">
+                              <object class="AdwWindowTitle">
+                                <property name="title">Egghead</property>
+                              </object>
+                            </property>
                           </object>
                         </child>
-                        <property name="title-widget">
-                          <object class="AdwWindowTitle">
-                            <property name="title">Egghead</property>
-                          </object>
-                        </property>
-                      </object>
-                    </child>
-                    <property name="content">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="halign">center</property>
-                        <property name="valign">center</property>
-                        <property name="vexpand">true</property>
-                        <property name="margin-start">18</property>
-                        <property name="margin-end">18</property>
-                        <property name="margin-top">18</property>
-                        <property name="margin-bottom">18</property>
-                        <property name="spacing">18</property>
-                        <child>
-                          <object class="AdwSpinner">
+                        <property name="content">
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
                             <property name="halign">center</property>
                             <property name="valign">center</property>
-                            <property name="height-request">24</property>
-                            <property name="width-request">24</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="use-markup">True</property>
-                            <property name="label" translatable="yes" context="TRANSLATORS: Only translate the text 'Downloading'">&lt;span font-weight=&quot;bold&quot;&gt;Downloading&lt;/span&gt;</property>
-                          </object>
-                        </child>
-                      </object>
-                    </property>
-                  </object>
-                </property>
-              </object>
-            </child>
-            <child>
-              <!-- Error View -->
-              <object class="GtkStackPage" id="error_view">
-                <property name="name">error_view</property>
-                <property name="child">
-                  <object class="AdwToolbarView">
-                    <child type="top">
-                      <object class="AdwHeaderBar">
-                        <property name="show-title">True</property>
-                        <property name="centering-policy">strict</property>
-                        <child type="start">
-                          <object class="GtkButton">
-                            <property name="icon-name">egghead-go-next-symbolic-rtl</property>
-                            <property name="tooltip-text" translatable="yes" context="Back to main screen">Back</property>
-                            <accessibility>
-                              <property name="label" translatable="yes" context="accessibility">Back</property>
-                            </accessibility>
-                            <property name="action-name">win.go-back</property>
-                          </object>
-                        </child>
-                        <property name="title-widget">
-                          <object class="AdwWindowTitle">
-                            <property name="title">Egghead</property>
-                          </object>
-                        </property>
-                      </object>
-                    </child>
-                    <property name="content">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="halign">center</property>
-                        <property name="valign">center</property>
-                        <property name="vexpand">true</property>
-                        <property name="margin-start">18</property>
-                        <property name="margin-end">18</property>
-                        <property name="margin-top">18</property>
-                        <property name="margin-bottom">18</property>
-                        <property name="spacing">18</property>
-                        <child>
-                          <object class="GtkExpander">
-                            <child type="label">
-                              <object class="GtkLabel">
-                                <property name="use-markup">true</property>
-                                <property name="label">&lt;span font-size=&quot;xx-large&quot; font-weight=&quot;bold&quot;&gt;Error&lt;/span&gt;</property>
-                              </object>
-                            </child>
+                            <property name="vexpand">true</property>
+                            <property name="margin-start">18</property>
+                            <property name="margin-end">18</property>
+                            <property name="margin-top">18</property>
+                            <property name="margin-bottom">18</property>
+                            <property name="spacing">18</property>
                             <child>
-                              <object class="AdwClamp">
-                                <property name="maximum-size">250</property>
-                                <property name="child">
-                                  <object class="GtkScrolledWindow">
-                                    <property name="propagate_natural_height">true</property>
-                                    <property name="propagate_natural_width">true</property>
-                                    <property name="hscrollbar-policy">never</property>
-                                    <property name="max-content-width">200</property>
-                                    <property name="max-content-height">200</property>
-                                    <property name="has-frame">true</property>
+                              <object class="GtkExpander">
+                                <child type="label">
+                                  <object class="GtkLabel">
+                                    <property name="use-markup">true</property>
+                                    <property name="label">&lt;span font-size=&quot;xx-large&quot; font-weight=&quot;bold&quot;&gt;Error&lt;/span&gt;</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwClamp">
+                                    <property name="maximum-size">250</property>
                                     <property name="child">
-                                      <object class="GtkLabel" id="error_message_label">
-                                        <property name="label">Unknow Error</property>
-                                        <property name="selectable">true</property>
-                                        <property name="use-markup">true</property>
-                                        <property name="xalign">0</property>
-                                        <property name="yalign">0</property>
-                                        <property name="wrap">true</property>
-                                        <property name="wrap-mode">word-char</property>
-                                        <property name="margin-bottom">6</property>
-                                        <property name="margin-start">6</property>
-                                        <property name="margin-end">6</property>
-                                        <property name="margin-top">6</property>
+                                      <object class="GtkScrolledWindow">
+                                        <property name="propagate_natural_height">true</property>
+                                        <property name="propagate_natural_width">true</property>
+                                        <property name="hscrollbar-policy">never</property>
+                                        <property name="max-content-width">200</property>
+                                        <property name="max-content-height">200</property>
+                                        <property name="has-frame">true</property>
+                                        <property name="child">
+                                          <object class="GtkLabel" id="error_message_label">
+                                            <property name="label">Unknow Error</property>
+                                            <property name="selectable">true</property>
+                                            <property name="use-markup">true</property>
+                                            <property name="xalign">0</property>
+                                            <property name="yalign">0</property>
+                                            <property name="wrap">true</property>
+                                            <property name="wrap-mode">word-char</property>
+                                            <property name="margin-bottom">6</property>
+                                            <property name="margin-start">6</property>
+                                            <property name="margin-end">6</property>
+                                            <property name="margin-top">6</property>
+                                          </object>
+                                        </property>
                                       </object>
                                     </property>
                                   </object>
-                                </property>
+                                </child>
                               </object>
                             </child>
                           </object>
-                        </child>
+                        </property>
                       </object>
                     </property>
                   </object>
-                </property>
+                </child>
               </object>
             </child>
           </object>

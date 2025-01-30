@@ -95,6 +95,9 @@ export const EggheadWindow = GObject.registerClass(
       ),
     },
     InternalChildren: [
+      // Toast
+      "toast_overlay",
+      // Main UI
       "main_stack",
       "split_view",
       "search_bar",
@@ -124,6 +127,7 @@ export const EggheadWindow = GObject.registerClass(
       this.createActions();
       this.createPaginationActions();
       this.createSidebar();
+      this.createToast();
 
       this.loadStyles();
       this.bindSettings();
@@ -316,6 +320,7 @@ export const EggheadWindow = GObject.registerClass(
 
           const metaDataFilePath = getFilePath(["metadata.json"]);
           this.saveData(this.metaData, metaDataFilePath);
+          this.displayToast(_("Deleted saved quiz"));
         });
 
         alertDialog.present(this);
@@ -835,6 +840,16 @@ export const EggheadWindow = GObject.registerClass(
       } else {
         console.log(_("Failed to save metadata"));
       }
+    };
+
+    createToast = () => {
+      this.toast = new Adw.Toast({ timeout: 1 });
+    };
+
+    displayToast = (message) => {
+      this.toast.dismiss();
+      this.toast.title = message;
+      this._toast_overlay.add_toast(this.toast);
     };
 
     getSavedData = (filePath) => {
