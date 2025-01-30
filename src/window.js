@@ -12,6 +12,7 @@ import {
   formatData,
   generateMetadata,
   shuffle,
+  getCustomFilter,
 } from "./util/utils.js";
 import { Quiz, initialQuiz } from "./util/quiz.js";
 import { Page } from "./util/page.js";
@@ -94,6 +95,9 @@ export const EggheadWindow = GObject.registerClass(
       ),
     },
     InternalChildren: [
+      // Toast
+      "toast_overlay",
+      // Main UI
       "main_stack",
       "split_view",
       "search_bar",
@@ -123,6 +127,7 @@ export const EggheadWindow = GObject.registerClass(
       this.createActions();
       this.createPaginationActions();
       this.createSidebar();
+      this.createToast();
 
       this.loadStyles();
       this.bindSettings();
@@ -267,29 +272,58 @@ export const EggheadWindow = GObject.registerClass(
         name: "delete-saved-quiz",
       });
       deleteSavedQuiz.connect("activate", () => {
-        const metaData = Object.keys(this.metaData);
+        const alertDialog = new Adw.AlertDialog({
+          heading: _("Delete Saved Quiz"),
+          body: _(
+            "Are you sure you want to delete all the saved quiz? This action is irreversible."
+          ),
+          default_response: "delete_saved_quiz",
+          close_response: "close_dialog",
+          presentation_mode: "floating",
+        });
 
-        for (const key of metaData) {
-          const difficulties = Object.keys(this.metaData[key]);
-          for (const difficulty of difficulties) {
-            const metaDataObj = this.metaData[key][difficulty];
-            if (metaDataObj.saved) {
-              const filePath = getFilePath([
-                key.toString(),
-                difficulty,
-                "data.json",
-              ]);
+        alertDialog.add_response("delete_saved_quiz", _("Delete"));
+        alertDialog.add_response("close_dialog", _("Close"));
 
-              this.deleteSavedData(filePath);
-              metaDataObj.saved = false;
-              metaDataObj.updatedOn = 0;
-              this.metaData[key][difficulty] = metaDataObj;
+        alertDialog.set_response_appearance(
+          "delete_saved_quiz",
+          Adw.ResponseAppearance.DESTRUCTIVE
+        );
+        alertDialog.set_response_appearance(
+          "close_dialog",
+          Adw.ResponseAppearance.SUGGESTED
+        );
+
+        alertDialog.connect("response", (_alertDialog, response) => {
+          if (response === "close_dialog") return;
+
+          const metaData = Object.keys(this.metaData);
+
+          for (const key of metaData) {
+            const difficulties = Object.keys(this.metaData[key]);
+            for (const difficulty of difficulties) {
+              const metaDataObj = this.metaData[key][difficulty];
+              if (metaDataObj.saved) {
+                const filePath = getFilePath([
+                  key.toString(),
+                  difficulty,
+                  "data.json",
+                ]);
+
+                this.deleteSavedData(filePath);
+                metaDataObj.saved = false;
+                metaDataObj.updatedOn = 0;
+                this.metaData[key][difficulty] = metaDataObj;
+              }
             }
           }
-        }
 
-        const metaDataFilePath = getFilePath(["metadata.json"]);
-        this.saveData(this.metaData, metaDataFilePath);
+          const metaDataFilePath = getFilePath(["metadata.json"]);
+          this.saveData(this.metaData, metaDataFilePath);
+          this.displayToast(_("Deleted saved quiz"));
+        });
+
+        alertDialog.present(this);
       });
 
       const pickAnswer = new Gio.SimpleAction({
@@ -454,7 +488,16 @@ export const EggheadWindow = GObject.registerClass(
     }
 
     handleSearch(searchEntry) {
-      this.stringFilter.set_search(searchEntry.text);
+      const tree = this._list_view.model.model;
+      const searchText = searchEntry.text.trim().toLocaleLowerCase();
+
+      if (!searchText) {
+        tree.autoexpand = false;
+      } else {
+        tree.autoexpand = true;
+      }
+
+      this.customFilter.set_filter_func(getCustomFilter(searchText));
     }
 
     createSidebar = () => {
@@ -465,21 +508,21 @@ export const EggheadWindow = GObject.registerClass(
         store.append(new Category(category));
       }
 
-      const propExpression = Gtk.PropertyExpression.new(Category, null, "name");
-      const stringFilter = Gtk.StringFilter.new(propExpression);
-      const filter = Gtk.FilterListModel.new(store, stringFilter);
+      const customFilter = Gtk.CustomFilter.new(null);
+      const filter = Gtk.FilterListModel.new(store, customFilter);
 
-      this.stringFilter = stringFilter;
+      this.customFilter = customFilter;
 
       const tree = Gtk.TreeListModel.new(filter, false, false, (item) => {
         if (!item.hasChildren) return null;
 
-        const store = Gio.ListStore.new(Category);
+        const nestedStore = Gio.ListStore.new(Category);
+        const nestedModel = Gtk.FilterListModel.new(nestedStore, customFilter);
         for (const category of item.children) {
-          store.append(new Category(category));
+          nestedModel.model.append(new Category(category));
         }
 
-        return store;
+        return nestedModel;
       });
 
       const selection = Gtk.SingleSelection.new(tree);
@@ -797,6 +840,16 @@ export const EggheadWindow = GObject.registerClass(
       } else {
         console.log(_("Failed to save metadata"));
       }
+    };
+
+    createToast = () => {
+      this.toast = new Adw.Toast({ timeout: 1 });
+    };
+
+    displayToast = (message) => {
+      this.toast.dismiss();
+      this.toast.title = message;
+      this._toast_overlay.add_toast(this.toast);
     };
 
     getSavedData = (filePath) => {
