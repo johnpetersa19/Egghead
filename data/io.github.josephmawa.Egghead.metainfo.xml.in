@@ -72,6 +72,16 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.1.1" date="2025-02-03">
+      <description translate="no">
+        <p>Fix search bug</p>
+        <p>Add alert dialog when deleting saved quiz</p>
+        <p>Change screenshots</p>
+        <p>Change brand color</p>
+        <p>Change loading spinner to Adw.Spinner</p>
+        <p>Remove placeholder data bundled with app</p>
+      </description>
+    </release>
     <release version="0.1.0" date="2025-01-26">
       <description translate="no">
         <p>Initial release</p>
