@@ -1,0 +1,406 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the egghead package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: egghead\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-04 21:57-0300\n"
+"PO-Revision-Date: 2025-02-04 22:11-0300\n"
+"Last-Translator: john peter <johnppetersa@gmail.com>\n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+
+#: data/io.github.josephmawa.Egghead.desktop.in:2
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:7 src/ui/window.ui:6
+msgid "Egghead"
+msgstr "Sabichão"
+
+#. Translators: These are search terms to find this application. Do NOT translate or localize the semicolons. The list MUST also end with a semicolon.
+#: data/io.github.josephmawa.Egghead.desktop.in:9
+msgid "Trivia;Quiz;Learn;Knowledge;Education;Recreation;"
+msgstr "Trivia; Quiz; Aprender; Conhecimento; Educação; Recreação;"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:8
+msgid "Learn while having fun"
+msgstr "Aprenda enquanto se diverte"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:10
+msgid "A simple trivia app to enjoy in your free time"
+msgstr ""
+"Um aplicativo simples de curiosidades para desfrutar no seu tempo livre"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:11
+msgid "Below are the main features of Egghead:"
+msgstr "Abaixo estão as principais características do Egghead:"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:13
+msgid "Download quiz"
+msgstr "Baixar quiz"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:14
+msgid "Save downloaded quiz"
+msgstr "Salvar questionário baixado"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:15
+msgid "Delete saved quiz"
+msgstr "Excluir questionário salvo"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:16
+msgid "Switch to dark, light, or system mode"
+msgstr "Alternar para o modo escuro, claro ou sistema"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:21
+msgid "Joseph Mawa"
+msgstr "José Mawa"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:59
+msgid "Egghead difficulty view in light mode"
+msgstr "Dificuldade da cabeça de ovo no modo de luz"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:63
+msgid "Egghead difficulty view in dark mode"
+msgstr "Visualização de dificuldade Egghead no modo escuro"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:67
+msgid "Egghead quiz view in light mode"
+msgstr "Visualização do questionário Egghead no modo claro"
+
+#: data/io.github.josephmawa.Egghead.metainfo.xml.in:71
+msgid "Egghead quiz view in dark mode"
+msgstr "Visualização do questionário Egghead no modo escuro"
+
+#: src/preferences.js:9 src/ui/window.ui:192
+msgid "Mixed"
+msgstr "Misturado"
+
+#: src/preferences.js:13 src/ui/window.ui:206
+msgid "Easy"
+msgstr "Fácil"
+
+#: src/preferences.js:17 src/ui/window.ui:220
+msgid "Medium"
+msgstr "Média"
+
+#: src/preferences.js:21 src/ui/window.ui:234
+msgid "Hard"
+msgstr "Duro"
+
+#: src/window.js:230
+msgid "Cancel Download"
+msgstr "Cancelar download"
+
+#: src/window.js:231
+msgid "Are you sure you want to cancel this download?"
+msgstr "Tem certeza de que deseja cancelar este download?"
+
+#: src/window.js:237 src/window.js:455
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/window.js:238 src/window.js:286 src/window.js:456
+msgid "Close"
+msgstr "Close"
+
+#: src/window.js:276 src/ui/preferences.ui:93
+msgid "Delete Saved Quiz"
+msgstr "Excluir questionário salvo"
+
+#: src/window.js:278
+msgid ""
+"Are you sure you want to delete all the saved quiz? This action is "
+"irreversible."
+msgstr ""
+"Tem certeza de que deseja excluir todos os questionários salvos? Esta "
+"ação é irreversível."
+
+#: src/window.js:285
+msgid "Delete"
+msgstr "Excluir"
+
+#: src/window.js:323
+msgid "Deleted saved quiz"
+msgstr "Questionário salvo excluído"
+
+#: src/window.js:448
+msgid "Quiz in session"
+msgstr "Quiz em sessão"
+
+#: src/window.js:449
+msgid "Are you sure you want to cancel this quiz?"
+msgstr "Tem certeza de que deseja cancelar este teste?"
+
+#: src/window.js:841
+msgid "Failed to save metadata"
+msgstr "Falha ao salvar metadados"
+
+#: src/window.js:873
+msgid "Failed to read saved data"
+msgstr "Falha ao ler os dados salvos"
+
+#: src/window.js:895
+msgid "Successfully saved quiz to file"
+msgstr "Teste salvo com sucesso no arquivo"
+
+#: src/window.js:898
+msgid "Failed to save quiz to file"
+msgstr "Falha ao salvar o questionário no arquivo"
+
+#: src/window.js:904
+msgid "An error occurred while creating directory"
+msgstr "Ocorreu um erro ao criar o diretório"
+
+#: src/window.js:915
+#, javascript-format
+msgid "%s doesn't exist"
+msgstr "%s não existe"
+
+#: src/window.js:924 src/window.js:931 src/window.js:938
+#, javascript-format
+msgid "Deleted %s successfully"
+msgstr "%s excluído com sucesso"
+
+#: src/ui/help-overlay.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Geral"
+
+#: src/ui/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Toggle Menu"
+msgstr "Alternar menu"
+
+#: src/ui/help-overlay.ui:20
+msgctxt "shortcut window"
+msgid "Show Preferences"
+msgstr "Mostrar preferências"
+
+#: src/ui/help-overlay.ui:26
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Mostrar atalhos"
+
+#: src/ui/help-overlay.ui:32
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Desistir"
+
+#: src/ui/help-overlay.ui:40
+msgctxt "shortcut window"
+msgid "Categories"
+msgstr "Categorias"
+
+#: src/ui/help-overlay.ui:43
+msgctxt "shortcut window"
+msgid "Toggle Sidebar"
+msgstr "Alternar barra lateral"
+
+#: src/ui/help-overlay.ui:49
+msgctxt "shortcut window"
+msgid "Search Categories"
+msgstr "Categorias de pesquisa"
+
+#: src/ui/help-overlay.ui:57
+msgctxt "shortcut window"
+msgid "Navigation"
+msgstr "Navegação"
+
+#: src/ui/help-overlay.ui:60
+msgctxt "shortcut window"
+msgid "Back"
+msgstr "Voltar"
+
+#: src/ui/help-overlay.ui:68
+msgctxt "shortcut window"
+msgid "Quiz"
+msgstr "Questionário"
+
+#: src/ui/help-overlay.ui:71
+msgctxt "shortcut window"
+msgid "Start Quiz"
+msgstr "Começar o questionário"
+
+#: src/ui/help-overlay.ui:77
+msgctxt "shortcut window"
+msgid "Delete Saved Quiz"
+msgstr "Excluir questionário salvo"
+
+#: src/ui/preferences.ui:8 src/ui/preferences.ui:14 src/ui/window.ui:937
+msgid "Preferences"
+msgstr "Preferências"
+
+#: src/ui/preferences.ui:17
+msgid "Color Theme"
+msgstr "Tema de cores"
+
+#: src/ui/preferences.ui:18
+msgid "Set color theme"
+msgstr "Definir tema de cores"
+
+#: src/ui/preferences.ui:24
+msgid "Color theme"
+msgstr "Tema de cores"
+
+#: src/ui/preferences.ui:40
+msgctxt "System color theme"
+msgid "System"
+msgstr "Sistema"
+
+#: src/ui/preferences.ui:54
+msgctxt "Light color theme"
+msgid "Light"
+msgstr "Claro"
+
+#: src/ui/preferences.ui:68
+msgctxt "Dark color theme"
+msgid "Dark"
+msgstr "Escuro"
+
+#: src/ui/preferences.ui:82
+msgid "Quiz Settings"
+msgstr "Configurações do questionário"
+
+#: src/ui/preferences.ui:83
+msgid "Change quiz settings"
+msgstr "Alterar as configurações do questionário"
+
+#: src/ui/preferences.ui:87
+msgid "Difficulty Level"
+msgstr "Nível de dificuldade"
+
+#: src/ui/preferences.ui:88
+msgid "Select default difficulty level"
+msgstr "Selecione o nível de dificuldade padrão"
+
+#: src/ui/preferences.ui:94 src/ui/preferences.ui:104
+msgid "Delete all saved quiz"
+msgstr "Excluir todos os questionários salvos"
+
+#: src/ui/preferences.ui:106
+msgctxt "accessibility"
+msgid "Delete all saved quiz"
+msgstr "Excluir todos os questionários salvos"
+
+#: src/ui/window.ui:34
+msgid "Search Categories"
+msgstr "Categorias de pesquisa"
+
+#: src/ui/window.ui:41
+msgid "Categories"
+msgstr "Categorias"
+
+#: src/ui/window.ui:52
+msgid "Primary Menu"
+msgstr "Menu Primário"
+
+#: src/ui/window.ui:54
+msgctxt "accessibility"
+msgid "Primary menu"
+msgstr "Menu Primário"
+
+#: src/ui/window.ui:64
+msgid "Search categories"
+msgstr "Categorias de pesquisa"
+
+#: src/ui/window.ui:72
+msgctxt "a11y"
+msgid "Search"
+msgstr "Procurar"
+
+#: src/ui/window.ui:73
+msgctxt "a11y"
+msgid "Type to search categories"
+msgstr "Digite para pesquisar categorias"
+
+#: src/ui/window.ui:109
+msgctxt "Navigate back to the main screen"
+msgid "Toggle Sidebar"
+msgstr "Alternar barra lateral"
+
+#: src/ui/window.ui:111
+msgctxt "accessibility"
+msgid "Toggle Sidebar"
+msgstr "Alternar barra lateral"
+
+#: src/ui/window.ui:251
+msgctxt "Start quiz"
+msgid "Start"
+msgstr "Começar"
+
+#: src/ui/window.ui:286
+msgid "Question"
+msgstr "Pergunta"
+
+#: src/ui/window.ui:321 src/ui/window.ui:530
+msgid "Solutions"
+msgstr "Soluções"
+
+#: src/ui/window.ui:644
+msgid "Submit"
+msgstr "Enviar"
+
+#: src/ui/window.ui:685
+msgid "First Question"
+msgstr "Quanto à primeira questão"
+
+#: src/ui/window.ui:687
+msgctxt "accessibility"
+msgid "First Question"
+msgstr "Quanto à primeira questão"
+
+#: src/ui/window.ui:695
+msgid "Previous Question"
+msgstr "Pergunta anterior"
+
+#: src/ui/window.ui:697
+msgctxt "accessibility"
+msgid "Previous Question"
+msgstr "Pergunta anterior"
+
+#: src/ui/window.ui:745
+msgid "Next Question"
+msgstr "Próxima pergunta"
+
+#: src/ui/window.ui:747
+msgctxt "accessibility"
+msgid "Next Question"
+msgstr "Próxima pergunta"
+
+#: src/ui/window.ui:755
+msgid "Last Question"
+msgstr "Última pergunta"
+
+#: src/ui/window.ui:757
+msgctxt "accessibility"
+msgid "Last Question"
+msgstr "Última pergunta"
+
+#: src/ui/window.ui:798 src/ui/window.ui:856
+msgctxt "Back to main screen"
+msgid "Back"
+msgstr "Voltar"
+
+#: src/ui/window.ui:800 src/ui/window.ui:858
+msgctxt "accessibility"
+msgid "Back"
+msgstr "Voltar"
+
+#: src/ui/window.ui:834
+msgctxt "TRANSLATORS: Only translate the text 'Downloading'"
+msgid "<span font-weight=\"bold\">Downloading</span>"
+msgstr "<span font-weight=\"bold\">Fazendo</span> download"
+
+#: src/ui/window.ui:941
+msgid "Keyboard Shortcuts"
+msgstr "Atalhos de teclado"
+
+#: src/ui/window.ui:945
+msgid "About Egghead"
+msgstr "Sobre o Sabichão"
