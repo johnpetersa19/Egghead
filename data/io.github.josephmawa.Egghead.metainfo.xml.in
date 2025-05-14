@@ -72,6 +72,16 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.1.2" date="2025-05-14">
+      <description translate="no">
+        <ul>
+          <li>Upgrade GNOME runtime to version 48</li>
+          <li>Add Brazilian Portuguese translation</li>
+          <li>Add Dutch translation</li>
+          <li>Add Italian translation</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.1" date="2025-02-03">
       <description translate="no">
         <ul>
