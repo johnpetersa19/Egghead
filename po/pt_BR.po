@@ -395,7 +395,7 @@ msgstr "Voltar"
 #: src/ui/window.ui:834
 msgctxt "TRANSLATORS: Only translate the text 'Downloading'"
 msgid "<span font-weight=\"bold\">Downloading</span>"
-msgstr "<span font-weight=\"bold\">Fazendo</span> download"
+msgstr "<span font-weight=\"bold\">Fazendo</span>"
 
 #: src/ui/window.ui:941
 msgid "Keyboard Shortcuts"
