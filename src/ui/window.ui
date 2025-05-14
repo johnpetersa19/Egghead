@@ -182,10 +182,9 @@
                                             </child>
                                             <child>
                                               <object class="AdwClamp">
-                                                <property name="maximum-size">200</property>
-                                                <property name="tightening-threshold">200</property>
                                                 <property name="child">
                                                   <object class="AdwPreferencesGroup">
+                                                    <property name="width-request">200</property>
                                                     <child>
                                                       <object class="AdwActionRow">
                                                         <property name="activatable_widget">mixed</property>
